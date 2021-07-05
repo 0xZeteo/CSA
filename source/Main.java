@@ -7,15 +7,55 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 public class Main implements ActionListener {
 
     JFrame frame;
-    JPanel panel, panelIRP;
+    JPanel panelMain, panelIRP, panelTop;
     JButton buttonIRP, buttonCSM;
     JButton buttonTechAndConnectionTypes, buttonDeliveryChannels, buttonProductsAndTechnologyServices, buttonOrganizationalCharacteristics, buttonExternalThreats;
+    JButton labelTop;
 
     public Main() {
+      
+        // buttons of the home page
+        buttonIRP = new JButton("Inherent Risk Profile");
+        buttonIRP.setBounds(50, 50, 200, 50);  ////////////////
+        buttonIRP.addActionListener(this);
+        buttonCSM = new JButton("Cybersecurity Maturity");
+        buttonCSM.setBounds(50, 100, 200, 50);     ////////////////
+        buttonCSM.addActionListener(this);
+
+        // buttons of the IRP page
+        buttonTechAndConnectionTypes = new JButton("Technologies and Connections");
+        buttonDeliveryChannels = new JButton("Delivery Channels");
+        buttonDeliveryChannels.setBounds(50,50,200,50);
+        buttonProductsAndTechnologyServices = new JButton("Products and Technologies");
+        buttonOrganizationalCharacteristics = new JButton("Organizational Characteristics");
+        buttonExternalThreats = new JButton("External Threats");
+
+        // main panel of the home page
+        panelMain = new JPanel();
+        panelMain.setLayout(null);
+        panelMain.add(buttonIRP);
+        panelMain.add(buttonCSM);
+
+        // panel of the IRP page
+        panelIRP = new JPanel();  
+        panelIRP.add(buttonTechAndConnectionTypes);
+        panelIRP.add(buttonDeliveryChannels);
+        panelIRP.add(buttonProductsAndTechnologyServices);
+        panelIRP.add(buttonOrganizationalCharacteristics);
+        panelIRP.add(buttonExternalThreats);
+
+        // top panel
+        panelTop = new JPanel();
+        panelTop.setSize(500,400);
+        labelTop = new JButton("Test");
+        labelTop.addActionListener(this);
+        panelTop.add(labelTop);
+        panelMain.add(panelTop);
 
         // main frame
         frame = new JFrame();
@@ -23,40 +63,8 @@ public class Main implements ActionListener {
         frame.setTitle("Home");
         frame.setSize(new Dimension(600,400));
         frame.setVisible(true);
-
-        // main panel of the home page
-        panel = new JPanel();
-        panel.setLayout(null);
-        panel.setSize(frame.getSize());
-        frame.setContentPane(panel);
-
-        // panel of the IRP page
-        panelIRP = new JPanel();
-
-        // buttons of the home page
-        buttonIRP = new JButton("Inherent Risk Profile");
-        buttonCSM = new JButton("Cybersecurity Maturity");
-        buttonIRP.setBounds(panel.getWidth() / 3, panel.getHeight() / 3, 200, 50);  ////////////////
-        buttonCSM.setBounds(buttonIRP.getX(), buttonIRP.getY() + 100, 200, 50);     ////////////////
-        buttonIRP.addActionListener(this);
-        buttonCSM.addActionListener(this);
-
-        // buttons of the IRP page
-        buttonDeliveryChannels = new JButton("Delivery Channels");
-        buttonDeliveryChannels.setBounds(50,50,200,50);
-        buttonTechAndConnectionTypes = new JButton("Technologies and Connections");
-        buttonProductsAndTechnologyServices = new JButton("Products and Technologies");
-        buttonOrganizationalCharacteristics = new JButton("Organizational Characteristics");
-        buttonExternalThreats = new JButton("External Threats");
-
-        panel.add(buttonIRP);
-        panel.add(buttonCSM); 
-        panelIRP.add(buttonDeliveryChannels);
-        panelIRP.add(buttonTechAndConnectionTypes);
-        panelIRP.add(buttonProductsAndTechnologyServices);
-        panelIRP.add(buttonOrganizationalCharacteristics);
-        panelIRP.add(buttonExternalThreats);
-        frame.add(panel, BorderLayout.CENTER);        
+        frame.add(panelMain, BorderLayout.CENTER);
+        frame.setContentPane(panelMain);
     }
 
     public static void main(String[] args){
@@ -87,5 +95,10 @@ public class Main implements ActionListener {
             frame.revalidate();
         }
 
+        if (e.getSource() == labelTop) {
+            frame.setContentPane(panelIRP);
+            frame.repaint();
+            frame.revalidate();
+        }
     }
 }
