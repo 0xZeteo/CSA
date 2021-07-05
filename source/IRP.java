@@ -1,9 +1,12 @@
 package source;
+
 import java.util.HashMap;
 
 /**
  * Inherent Risk Profile
- * Contains the questions, the answers, the scoring mechanism and the Risk level
+ * @Function void fillAnswers() - fills the answers submitted by the user to each question
+ * @Function void score() - counts the answers to determine the number in each risk level
+ * @Function int riskLevel() - returns the final risk level (least, minimal, moderate, significant, most)
  */
 public class IRP {
     
@@ -156,7 +159,7 @@ public class IRP {
 
     /**
      * Calculates the final risk level
-     * @return risk level (least, minimal, moderate, significant, most)
+     * @return risk - representing the final risk level (least, minimal, moderate, significant, most)
      * @ToDo update the formula to calculate the risk level
      */
     public int riskLevel() {
