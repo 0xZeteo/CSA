@@ -1,9 +1,15 @@
 package source;
 import java.util.HashMap;
 
+/**
+ * Inherent Risk Profile
+ * Contains the questions, the answers, the scoring mechanism and the Risk level
+ */
 public class IRP {
     
     HashMap<String, String[]> questions; // HashMap containing the category (String) as key and its relevant questions (String[]) as values
+    HashMap<String, String> answers; // HashMap containing each question and its answer, both as Strings
+    int least, minimal, moderate, significant, most; // Integers containing the count of every answer of each Risk Level
 
     // Questions under the category "Technologies and Connection Types"
     String[] questionsCategory1 = {
@@ -103,12 +109,15 @@ public class IRP {
                     // Least(), Minimal(), Moderate(), Significant(), Most() ---------------------------------
     };
 
+
     /**
      * Constructor
-     * Initializes the questions and their categories
+     * Puts the arrays of questions under their relative categories in the hashmap
      */
     public IRP() {
         questions = new HashMap<>();
+        answers = new HashMap<>();
+        least = 0; minimal = 0; moderate = 0; significant = 0; most = 0;
 
         questions.put("Technologies and Connection Types", questionsCategory1);
         questions.put("Delivery Channels", questionsCategory2);
@@ -117,6 +126,41 @@ public class IRP {
         questions.put("External Threats", questionsCategory5);
     }
 
-    
+    /**
+     * Fills the answer of each question (least, minimal, moderate, significant, most)
+     * @ToDo replace null with answers from the user
+     */
+    public void fillAnswers() {
+        for (String key : questions.keySet()) {
+            for (int i = 0; i < questions.get(key).length; i++) {
+                answers.put(questions.get(key)[i], null);
+            }
+        }
+    }
 
+    /**
+     * Counts the entries within each risk level (least, minimal, moderate, significant, most)
+     */
+    public void score() {
+        
+        for (String key : answers.keySet()) {
+            switch (answers.get(key)) {
+                case "Least": least++; break;
+                case "Minimal": minimal++; break;
+                case "Moderate": moderate++; break;
+                case "Significant": significant++; break;
+                case "Most": most++; break;
+            }
+        }
+    }
+
+    /**
+     * Calculates the final risk level
+     * @return risk level (least, minimal, moderate, significant, most)
+     * @ToDo update the formula to calculate the risk level
+     */
+    public int riskLevel() {
+        int risk = least + minimal + moderate + significant + most;
+        return risk;
+    }
 }
