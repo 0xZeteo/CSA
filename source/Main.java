@@ -78,7 +78,7 @@ public class Main implements ActionListener {
             }
         }
 
-        test.fillAnswers();
+        test.getAnswers();
         for (String key : test.answers.keySet()) {
             System.out.println(key + " : " + test.answers.get(key));
             
