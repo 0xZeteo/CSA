@@ -2,8 +2,7 @@ package source;
 
 public class Data {
 
-    public Data() {
-    }
+    public Data() {}
 
 
     /**
