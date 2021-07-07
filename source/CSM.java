@@ -1,20 +1,40 @@
 package source;
 
 import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * Cybersecurity Maturity Profile
+ * @Function void getAnswers()  - fills the answers submitted by the user to each question
+ * @Function void score()       - counts the answers to determine the number in each category and updates their variables
+ * @Function String riskLevel() - returns the final maturity level as a String
+ */
 public class CSM {
     
-    HashMap<String, HashMap<String,String[]>> questions;
-    HashMap<String, String[]> domain1, domain2, domain3, domain4, domain5;
+    // @key = Domain (String) || @value = HashMap<Category & Maturity Level (String), Questions (String[])>
+    HashMap<String, HashMap<String,String[]>> questions; 
 
+    // @key = Category & Maturity Level (String) || @value = Questions (String[])
+    HashMap<String, String[]> domain1, domain2, domain3, domain4, domain5; 
+
+    HashMap<String, String> answers;    // @key = Question (String) || @value = Answer (String)  
+    int Y, YC, N;                       // Integers to count the number of each answer 
+    
+    /**
+     * @Constructor
+     * Initializes all the variables 
+     * Fills the arrays of questions under their relative categories in the hashmap
+     */
     public CSM() {
         Data data = new Data();
         questions = new HashMap<>();
+        answers = new HashMap<>();
         domain1 = new HashMap<>();
         domain2 = new HashMap<>();
         domain3 = new HashMap<>();
         domain4 = new HashMap<>();
         domain5 = new HashMap<>();
+        Y = YC = N = 0;
 
         questions.put("Domain 1: Cyber Risk Management and Oversight", domain1);
         questions.put("Domain 2: Threat Intelligence and Collaboration", domain2);
@@ -201,5 +221,47 @@ public class CSM {
         domain5.put("Escalation & Reporting (Intermediate)", data.domain5EscalationAndReportingIntermediate);
         domain5.put("Escalation & Reporting (Advanced)", data.domain5EscalationAndReportingAdvanced);
         domain5.put("Escalation & Reporting (Innovative)", data.domain5EscalationAndReportingInnovative);
+    }
+
+    /**
+     * @Function getAnswers() - Gets the answer for each question from the user (possible answers: Y, Y(C), N)
+     * @ToDo replace null with answers from the user
+     */
+    public void getAnswers() {
+
+        for (String domainKey : questions.keySet()) 
+        {
+            Map<String, String[]> temp = questions.get(domainKey);
+            for (String categoryKey : temp.keySet()) 
+            {
+                for (int i = 0; i < temp.get(categoryKey).length; i++) {
+                    answers.put(temp.get(categoryKey)[i], null);
+                }
+            }
+        }
+    }
+
+    /**
+     * @Function score() - Counts the number of each answer and updates the variables (Y, Y(C), N)
+     */
+    public void score() {
+
+        for (String key : answers.keySet()) {
+            switch (answers.get(key)) {
+                case "Y"    : Y++;      break;
+                case "Y(C)" : YC++;     break;
+                case "N"    : N++;      break;
+            }
+        }
+    }
+
+    /**
+     * @Function riskLevel() - Calculates the final risk level
+     * @Return String        - representing the final risk level --------------
+     * @ToDo update the formula to calculate the risk level
+     */
+    public String riskLevel() {
+        String riskLevel = "";
+        return riskLevel;
     }
 }

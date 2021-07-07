@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
 
 public class Main implements ActionListener {
 
@@ -78,10 +77,19 @@ public class Main implements ActionListener {
             }
         }
 
+        System.out.println("-----------------------------------------------");
+
         test.getAnswers();
         for (String key : test.answers.keySet()) {
             System.out.println(key + " : " + test.answers.get(key));
             
+        }
+
+        CSM testCSM = new CSM();
+        testCSM.getAnswers();
+
+        for (String key : testCSM.answers.keySet()) {
+            System.out.println(key + " :       " + testCSM.answers.get(key));
         }
     }
 

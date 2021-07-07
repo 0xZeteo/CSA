@@ -51,11 +51,11 @@ public class IRP {
 
         for (String key : answers.keySet()) {
             switch (answers.get(key)) {
-                case "Least"      : least++;       break;
-                case "Minimal"    : minimal++;     break;
-                case "Moderate"   : moderate++;    break;
-                case "Significant": significant++; break;
-                case "Most"       : most++;        break;
+                case "Least"       : least++;       break;
+                case "Minimal"     : minimal++;     break;
+                case "Moderate"    : moderate++;    break;
+                case "Significant" : significant++; break;
+                case "Most"        : most++;        break;
             }
         }
     }
