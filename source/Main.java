@@ -62,6 +62,7 @@ public class Main implements ActionListener {
         frame.setTitle("Home");
         frame.setSize(new Dimension(600,400));
         frame.setVisible(true);
+        frame.pack();
         frame.add(panelMain, BorderLayout.CENTER);
         frame.setContentPane(panelMain);
     }

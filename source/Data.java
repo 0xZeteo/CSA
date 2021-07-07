@@ -112,8 +112,8 @@ public class Data {
 
     
     /**
-     * Arrays containing the questions of the Risk Maturity Level Names of the
-     * arrays represent the domain, the category and the level
+     * Arrays containing the questions of the Risk Maturity Level 
+     * Names of the arrays represent the domain, the category and the level
      */
 
     /* #region */
