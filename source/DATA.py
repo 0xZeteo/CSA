@@ -1,11 +1,12 @@
-# This file contains all the data required (questions, possible answers, ...)
-# IMPORTANT: PAY ATTENTION TO CASE SENSITIVITY WHEN DEALING WITH STRINGS
+
+""" HERE IS ALL THE DATA REQUIRED (QUESTIONS, POSSIBLE ANSWERS, ...)
+    IMPORTANT: PAY ATTENTION TO CASE SENSITIVITY WHEN DEALING WITH STRINGS """
 
 
-# Inherent Risk Profile Questions - 5 Categories
-# Each category consists of a dictionary
-# @Key = question
-# @Value = List["least", "minimal", "moderate", "significant", "most"] | contains the possible answers for the question under the 5 risk levels
+""" Inherent Risk Profile questions - 5 categories
+    Each category consists of a dictionary
+    @Key = question
+    @Value = List["least", "minimal", "moderate", "significant", "most"] | contains the possible answers for the question under the 5 risk levels """
 
 # Category 1: Technologies and Connection Types
 IRP_Category1 = {
@@ -145,11 +146,11 @@ IRP_Category5 = {
 }   #endregion
 
 
-# Cybersecurity Maturity Questions - 5 Domains
-# Each domain consists of a dictionary
-# @Key = category + level | category is indicated by the name of the key 
-#                         | level is indicated by the number at the end (1: Baseline, 2: Evolving, 3: Intermediate, 4: Advanced, 5: Innovative)
-# @Value = List[] | contains the questions under the category/level in the key
+""" Cybersecurity Maturity Questions - 5 Domains
+    Each domain consists of a dictionary
+    @Key = category + level | category is indicated by the name of the key 
+                            | level is indicated by the number at the end (1: Baseline, 2: Evolving, 3: Intermediate, 4: Advanced, 5: Innovative)
+    @Value = List[]         | contains the questions under the category/level in the key """
 
 # Domain 1: Cyber Risk Management and Oversight
 CSM_Domain1 = {
@@ -1115,25 +1116,25 @@ CSM_Domain5 = {
 }   #endregion
 
 
-# Assessment Factors
-# A dictionary linking each assessment factor to its relevant category of questions
-# @Key = Assessment Factor
-# @Value = List | contains the categories belonging to each assessment factor
+""" Assessment Factors
+    A dictionary linking each assessment factor to its relevant category of questions
+    @Key = Assessment Factor
+    @Value = List | contains the categories belonging to each assessment factor """
 CSM_Assessment_Factors = {
     #region
-    "Governance"                                : ["Oversight", "Strategy Policies", "IT Asset Management"],
-    "Risk Management"                           : ["Risk Management Program", "Risk Assessment", "Audit"],
-    "Resources"                                 : ["Staffing"],
-    "Training and Culture"                      : ["Training", "Culture"],
-    "Threat Intelligence"                       : ["Threat Intelligence and Information"],
-    "Monitoring and Analyzing"                  : ["Monitoring and Analyzing"],
-    "Information Sharing"                       : ["Information Sharing"],
-    "Preventive Controls"                       : ["Infrastructure Management", "Access and Data Management", "Device End Point Security", "Secure Coding"],
-    "Detective Controls"                        : ["Threat and Vulnerability Detection", "Anomalous Activity Detection", "Event Detection"],
-    "Corrective Controls"                       : ["Patch Management", "Remediation"],
-    "Connections"                               : ["Connections"],
-    "Relationship Management"                   : ["Due Diligence", "Contracts", "Ongoing Monitoring"],
-    "Incident Resilience Planning and Strategy" : ["Planning", "Testing"],
-    "Detection, Response and Mitigation"        : ["Detection", "Response and Mitigation"],
-    "Escalation and Reporting"                  : ["Escalation and Reporting"]
+    "Domain 1 - Governance"                                : ["Oversight", "Strategy Policies", "IT Asset Management"],
+    "Domain 1 - Risk Management"                           : ["Risk Management Program", "Risk Assessment", "Audit"],
+    "Domain 1 - Resources"                                 : ["Staffing"],
+    "Domain 1 - Training and Culture"                      : ["Training", "Culture"],
+    "Domain 2 - Threat Intelligence"                       : ["Threat Intelligence and Information"],
+    "Domain 2 - Monitoring and Analyzing"                  : ["Monitoring and Analyzing"],
+    "Domain 2 - Information Sharing"                       : ["Information Sharing"],
+    "Domain 3 - Preventive Controls"                       : ["Infrastructure Management", "Access and Data Management", "Device End Point Security", "Secure Coding"],
+    "Domain 3 - Detective Controls"                        : ["Threat and Vulnerability Detection", "Anomalous Activity Detection", "Event Detection"],
+    "Domain 3 - Corrective Controls"                       : ["Patch Management", "Remediation"],
+    "Domain 4 - Connections"                               : ["Connections"],
+    "Domain 4 - Relationship Management"                   : ["Due Diligence", "Contracts", "Ongoing Monitoring"],
+    "Domain 5 - Incident Resilience Planning and Strategy" : ["Planning", "Testing"],
+    "Domain 5 - Detection, Response and Mitigation"        : ["Detection", "Response and Mitigation"],
+    "Domain 5 - Escalation and Reporting"                  : ["Escalation and Reporting"]
 }   #endregion
