@@ -17,6 +17,6 @@ class Home_Page(tk.Frame):
 
         # add 2 text fields
 
-        irp_button.pack()
+        irp_button.pack(pady=50)
         csm_button.pack()
     #endregion

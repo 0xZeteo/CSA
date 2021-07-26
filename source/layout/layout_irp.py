@@ -403,11 +403,15 @@ class IRP_Cat5_Page(tk.Frame):
     #endregion
 
 
+""" This function clears the selection of radio buttons 
+    @Arg = List[] | contains the variable that is a reference to the radio buttons """
 def clear_pressed(values):
     for i in range(len(values)):
         values[i].set(0)
 
 
+""" This function counts the number of selected values in the radio buttons
+    @Arg = List[] | contains the variable that is a reference to the radio buttons """
 def submit_pressed(values):
     least = minimal = moderate = significant = most = total_selected = 0
     
@@ -430,7 +434,8 @@ def submit_pressed(values):
 
     return [least, minimal, moderate, significant, most, total_selected]
 
-            
+
+""" This functions calculates the total value of each risk level across all the categories of the Inherent Risk Profile """           
 def calculate_total():
     least_total = submit_pressed(IRP_Cat1_Page.values)[0] + submit_pressed(IRP_Cat2_Page.values)[0] + submit_pressed(IRP_Cat3_Page.values)[0] + submit_pressed(IRP_Cat4_Page.values)[0] + submit_pressed(IRP_Cat5_Page.values)[0]
     minimal_total = submit_pressed(IRP_Cat1_Page.values)[1] + submit_pressed(IRP_Cat2_Page.values)[1] + submit_pressed(IRP_Cat3_Page.values)[1] + submit_pressed(IRP_Cat4_Page.values)[1] + submit_pressed(IRP_Cat5_Page.values)[1]
