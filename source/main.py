@@ -14,7 +14,7 @@ class Main_App(tk.Tk):
         self.geometry("900x700")              # window size
         self.minsize(900, 700)                # window minimum size
         self.maxsize(900, 700)                # window maximum size
-        self.switch_frame(irp.IRP_Page)       # frame to display on app launch 
+        self.switch_frame(csm.CSM_Page)       # frame to display on app launch 
 
     def switch_frame(self, frame_class):
         # Destroys current frame and replaces it with a new one

@@ -146,14 +146,14 @@ IRP_Category5 = {
 }   #endregion
 
 
-""" Cybersecurity Maturity Questions - 5 Domains
-    Each domain consists of a dictionary
+""" Cybersecurity Maturity Questions - 5 Domains - Every domain is split into several Assessment Factors
+    Each dictionary references the domain and its relevant assessment factors (Domain_AssessmentFactor)
     @Key = category + level | category is indicated by the name of the key 
                             | level is indicated by the number at the end (1: Baseline, 2: Evolving, 3: Intermediate, 4: Advanced, 5: Innovative)
     @Value = List[]         | contains the questions under the category/level in the key """
 
 # Domain 1: Cyber Risk Management and Oversight
-CSM_Domain1 = {
+CSM_Domain1_Governance = {
     #region
     "Oversight 1" : [
         "Designated members of management are held accountable by the board or an appropriate board committee for implementing and managing the information security and business continuity programs. (FFIEC Information Security Booklet, page 3)",
@@ -260,8 +260,11 @@ CSM_Domain1 = {
     "IT Asset Management 5" : [
         "A formal change management function governs decentralized or highly distributed change requests and identifies and measures security risks that may cause increased exposure to cyber attack.",
         "Comprehensive automated enterprise tools are implemented to detect and block unauthorized changes to software and hardware."
-    ],
+    ]
+}   #endregion 
 
+CSM_Domain1_RiskManagement = {
+    #region
     "Risk Management Program 1" : [
         "An information security and business continuity risk management function(s) exists within the institution. (FFIEC Information Security Booklet, page 68)"
     ],
@@ -350,8 +353,11 @@ CSM_Domain1 = {
     "Audit 5" : [
         "A formal process is in place for the independent audit function to update its procedures based on changes to the evolving threat landscape across other sectors the institution depends upon.",
         "The independent audit function uses sophisticated data mining tools to perform continuous monitoring of cybersecurity processes or controls."
-    ],
+    ]  
+}   #endregion
 
+CSM_Domain1_Resources = {
+    #region
     "Staffing 1" : [
         "Information security roles and responsibilities have been identified. (FFIEC Information Security Booklet, page 7)",
         "Processes are in place to identify additional expertise needed to improve information security defenses. (FFIEC Information Security Work Program, Objective I: 2-8)"
@@ -375,8 +381,11 @@ CSM_Domain1 = {
 
     "Staffing 5" : [
         "The institution actively partners with industry associations and academia to inform curricula based on future cybersecurity staffing needs of the industry."
-    ],
-    
+    ]  
+}   #endregion
+
+CSM_Domain1_TrainingAndCulture = {
+    #region
     "Training 1" : [
         "Annual information security training is provided. (FFIEC Information Security Booklet, page 66)",
         "Annual information security training includes incident response, current cyber threats (e.g., phishing, spear phishing, social engineering, and mobile security), and emerging issues. (FFIEC Information Security Booklet, page 66)",
@@ -429,11 +438,12 @@ CSM_Domain1 = {
 
     "Culture 5" : [
         "The institution leads efforts to promote cybersecurity culture across the sector and to other sectors that they depend upon."
-    ],
-}   #endregion 
+    ]   
+}   #endregion
+
 
 # Domain 2: Threat Intelligence and Collaboration
-CSM_Domain2 = {
+CSM_Domain2_ThreatIntelligence = {
     #region
     "Threat Intelligence and Information 1" : [
         "The institution belongs or subscribes to a threat and vulnerability information sharing source(s) that provides information on threats (e.g., Financial Services Information Sharing and Analysis Center [FS-ISAC], U.S. Computer Emergency Readiness Team [US-CERT]). (FFIEC E-Banking Work Program, page 28)",
@@ -460,8 +470,11 @@ CSM_Domain2 = {
     "Threat Intelligence and Information 5" : [
         "A threat analysis system automatically correlates threat data to specific risks and then takes risk-based automated actions while alerting management.",
         "The institution is investing in the development of new threat intelligence and collaboration mechanisms (e.g., technologies, business processes) that will transform how information is gathered and shared."
-    ],
+    ] 
+}   #endregion
 
+CSM_Domain2_MonitoringAndAnalyzing = {
+    #region
     "Monitoring and Analyzing 1" : [
         "Audit log records and other security event logs are reviewed and retained in a secure manner. (FFIEC Information Security Booklet, page 79)",
         "Computer event logs are used for investigations once an event has occurred. (FFIEC Information Security Booklet, page 83)"
@@ -493,8 +506,11 @@ CSM_Domain2 = {
         "The institution uses multiple sources of intelligence, correlated log analysis, alerts, internal traffic flows, and geopolitical events to predict potential future attacks and attack trends.",
         "Highest risk scenarios are used to predict threats against specific business targets.",
         "IT systems automatically detect configuration weaknesses based on threat intelligence and alert management so actions can be prioritized."
-    ],
+    ]
+}   #endregion
 
+CSM_Domain2_InformationSharing = {
+    #region
     "Information Sharing 1" : [
         "Information security threats are gathered and shared with applicable internal employees. (FFIEC Information Security Booklet, page 83)",
         "Contact information for law enforcement and the regulator(s) is maintained and updated regularly. (FFIEC Business Continuity Planning Work Program, Objective I: 5-1)",
@@ -526,8 +542,9 @@ CSM_Domain2 = {
     ]
 }   #endregion
 
+
 # Domain 3: Cybersecurity Controls
-CSM_Domain3 = {
+CSM_Domain3_PreventiveControls = {
     #region
     "Infrastructure Management 1" : [
         "Network perimeter defense tools (e.g., border router and firewall) are used. (FFIEC Information Security Booklet, page 33)",
@@ -683,8 +700,11 @@ CSM_Domain3 = {
 
     "Secure Coding 5" : [
         "Software code is actively scanned by automated tools in the development environment so that security weaknesses can be resolved immediately during the design phase."
-    ],
+    ]
+}   #endregion
 
+CSM_Domain3_DetectiveControls = {
+    #region
     "Threat and Vulnerability Detection 1" : [
         "Independent testing (including penetration testing and vulnerability scanning) is conducted according to the risk assessment for external- facing systems and the internal network. (FFIEC Information Security Booklet, page 61)",
         "Antivirus and anti-malware tools are used to detect attacks. (FFIEC Information Security Booklet, page 55)",
@@ -781,8 +801,11 @@ CSM_Domain3 = {
     "Event Detection 5" : [
         "The institution is leading efforts to develop event detection systems that will correlate in real time when events are about to occur.",
         "The institution is leading the development effort to design new technologies that will detect potential insider threats and block activity in real time."
-    ],
-    
+    ]
+}   #endregion
+
+CSM_Domain3_CorrectiveControls = {
+    #region
     "Patch Management 1" : [
         "A patch management program is implemented and ensures that software and firmware patches are applied in a timely manner. (FFIEC Information Security Booklet, page 62)",
         "Patches are tested before being applied to systems and/or software. (FFIEC Operations Booklet, page 22)",
@@ -838,8 +861,9 @@ CSM_Domain3 = {
     ]
 }   #endregion
 
+
 # Domain 4: External Dependency Management
-CSM_Domain4 = {
+CSM_Domain4_Connections = {
     #region
     "Connections 1" : [
         "The critical business processes that are dependent on external connectivity have been identified. (FFIEC Information Security Booklet, page 9)",
@@ -870,8 +894,11 @@ CSM_Domain4 = {
     "Connections 5" : [
         "Diagram(s) of external connections is interactive, shows real-time changes to the network connection infrastructure, new connections, and volume fluctuations, and alerts when risks arise.",
         "The institution's connections can be segmented or severed instantaneously to prevent contagion from cyber attacks."
-    ],
+    ]
+}   #endregion
 
+CSM_Domain4_RelationshipManagement = {
+    #region
     "Due Diligence 1" : [
         "Risk-based due diligence is performed on prospective third parties before contracts are signed, including reviews of their background, reputation, financial condition, stability, and security controls. (FFIEC Information Security Booklet, page 69)",
         "A list of third-party service providers is maintained. (FFIEC Outsourcing Booklet, page 19)",
@@ -953,8 +980,9 @@ CSM_Domain4 = {
     ]
 }   #endregion
 
+
 # Domain 5: Cyber Incident Management and Resilience
-CSM_Domain5 = {
+CSM_Domain5_IncidentPlanningAndStrategy = {
     #region
     "Planning 1" : [
         "The institution has documented how it will react and respond to cyber incidents. (FFIEC Business Continuity Planning Booklet, page 4)",
@@ -1024,8 +1052,11 @@ CSM_Domain5 = {
         "The institution has validated that it is able to remediate systems damaged by zero-day attacks to maintain current recovery time objectives.",
         "The institution is leading the development of more realistic test environments.",
         "Cyber incident scenarios are used to stress test potential financial losses across the sector."
-    ],
+    ]   
+}   #endregion
 
+CSM_Domain5_DetectionResponseAndMitigation = {
+    #region
     "Detection 1" : [
         "Alert parameters are set for detecting information security incidents that prompt mitigating actions. (FFIEC Information Security Booklet, page 43)",
         "System performance reports contain information that can be used as a risk indicator to detect information security incidents. (FFIEC Information Security Booklet, page 86)",
@@ -1084,8 +1115,11 @@ CSM_Domain5 = {
     "Response and Mitigation 5" : [
         "The institution’s risk management of significant cyber incidents results in limited to no disruptions to critical services.",
         "The technology infrastructure has been engineered to limit the effects of a cyber attack on the production environment from migrating to the backup environment (e.g., air-gapped environment and processes)."
-    ],
+    ]
+}   #endregion
 
+CSM_Domain5_EscalationAndReporting = {
+    #region
     "Escalation and Reporting 1" : [
         "A process exists to contact personnel who are responsible for analyzing and responding to an incident. (FFIEC Information Security Booklet, page 83)",
         "Procedures exist to notify customers, regulators, and law enforcement as required or necessary when the institution becomes aware of an incident involving the unauthorized access to or use of sensitive customer information. (FFIEC Information Security Booklet, page 84)",
@@ -1113,28 +1147,4 @@ CSM_Domain5 = {
     "Escalation and Reporting 5" : [
         "A mechanism is in place to provide instantaneous notification of incidents to management and essential employees through multiple communication channels with tracking and verification of receipt."
     ]
-}   #endregion
-
-
-""" Assessment Factors
-    A dictionary linking each assessment factor to its relevant category of questions
-    @Key = Assessment Factor
-    @Value = List | contains the categories belonging to each assessment factor """
-CSM_Assessment_Factors = {
-    #region
-    "Domain 1 - Governance"                                : ["Oversight", "Strategy Policies", "IT Asset Management"],
-    "Domain 1 - Risk Management"                           : ["Risk Management Program", "Risk Assessment", "Audit"],
-    "Domain 1 - Resources"                                 : ["Staffing"],
-    "Domain 1 - Training and Culture"                      : ["Training", "Culture"],
-    "Domain 2 - Threat Intelligence"                       : ["Threat Intelligence and Information"],
-    "Domain 2 - Monitoring and Analyzing"                  : ["Monitoring and Analyzing"],
-    "Domain 2 - Information Sharing"                       : ["Information Sharing"],
-    "Domain 3 - Preventive Controls"                       : ["Infrastructure Management", "Access and Data Management", "Device End Point Security", "Secure Coding"],
-    "Domain 3 - Detective Controls"                        : ["Threat and Vulnerability Detection", "Anomalous Activity Detection", "Event Detection"],
-    "Domain 3 - Corrective Controls"                       : ["Patch Management", "Remediation"],
-    "Domain 4 - Connections"                               : ["Connections"],
-    "Domain 4 - Relationship Management"                   : ["Due Diligence", "Contracts", "Ongoing Monitoring"],
-    "Domain 5 - Incident Resilience Planning and Strategy" : ["Planning", "Testing"],
-    "Domain 5 - Detection, Response and Mitigation"        : ["Detection", "Response and Mitigation"],
-    "Domain 5 - Escalation and Reporting"                  : ["Escalation and Reporting"]
 }   #endregion

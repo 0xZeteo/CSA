@@ -1,63 +1,53 @@
-
-""" HERE IS THE LAYOUT OF EVERYTHING RELATED TO THE CYBERSECURITY MATURITY """
-
 import tkinter as tk
-import DATA
 import layout.layout_home as home
+import layout.layout_csm_domain1 as d1
+import layout.layout_csm_domain2 as d2
+import layout.layout_csm_domain3 as d3
+import layout.layout_csm_domain4 as d4
+import layout.layout_csm_domain5 as d5
 
 """ This class is responsible for the layout of the Cybersecurity Maturity's Main page
     Contains all the categories and links to each one """
+
 class CSM_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
+        master.title("Cybersecurity Maturity")
 
-        #start_button = tk.Button(self, text="Return to start page", command=lambda: master.switch_frame(home.Home_Page))
-        #start_button.pack()
+        home_button = tk.Button(self, text="Home", command=lambda: master.switch_frame(home.Home_Page))
+        home_button.pack()
 
-        domain1_label = tk.Label(self, text="Cyber Risk Management and Oversight")
-        domain1_label.grid(row=0, column=0)
-        factor1_button = tk.Button(self, text="Governance", command=lambda: master.switch_frame(CSM_Governance_Page))
-        factor1_button.grid(row=1, column=0)
-        factor2_button = tk.Button(self, text="Risk Management", command=lambda: master.switch_frame(CSM_Governance_Page))
-        factor2_button.grid(row=2, column=0)
-        factor3_button = tk.Button(self, text="Resources", command=lambda: master.switch_frame(CSM_Governance_Page))
-        factor3_button.grid(row=3, column=0)
-        factor4_button = tk.Button(self, text="Training and Culture", command=lambda: master.switch_frame(CSM_Governance_Page))
-        factor4_button.grid(row=4, column=0)
+        domain1_button = tk.Button(self, text="Cyber Risk Management and Oversight", command=lambda: master.switch_frame(d1.CSM_Domain1_Page))
+        domain2_button = tk.Button(self, text="Threat Intelligence and Collaboration", command=lambda: master.switch_frame(d2.CSM_Domain2_Page))
+        domain3_button = tk.Button(self, text="Cybersecurity Controls", command=lambda: master.switch_frame(d3.CSM_Domain3_Page))
+        domain4_button = tk.Button(self, text="External Dependency Management", command=lambda: master.switch_frame(d4.CSM_Domain4_Page))
+        domain5_button = tk.Button(self, text="Cyber Incident Management and Resilience", command=lambda: master.switch_frame(d5.CSM_Domain5_Page))
 
-        domain2_label = tk.Label(self, text="Threat Intelligence and Collaboration")
-        domain2_label.grid(row=0, column=1)
-        factor5_button = tk.Button(self, text="Threat Intelligence", command=lambda: master.switch_frame(CSM_Governance_Page))
-        factor5_button.grid(row=1, column=1)
-        factor6_button = tk.Button(self, text="Monitoring and Analyzing", command=lambda: master.switch_frame(CSM_Governance_Page))
-        factor6_button.grid(row=2, column=1)
-        factor7_button = tk.Button(self, text="Information Sharing", command=lambda: master.switch_frame(CSM_Governance_Page))
-        factor7_button.grid(row=3, column=1)
+        domain1_button.pack()
+        domain2_button.pack()
+        domain3_button.pack()
+        domain4_button.pack()
+        domain5_button.pack()
+        
     #endregion
 
-class CSM_Governance_Page(tk.Frame):
-    #region
-    def __init__(self, master):
-        tk.Frame.__init__(self, master)
-        master.title("Cybersecurity Maturity - Domain 1")
+def clear_pressed(values):
+    for i in range(len(values)):
+        values[i].set(0)
 
-         # Create a canvas
-        my_canvas = tk.Canvas(self)
-        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, pady=50)
+def submit_pressed(values):
+    y = y_c = n = total_selected = 0
 
-        # add a scrollbar to the canvas
-        my_scrollbar = tk.Scrollbar(master, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    for i in range(len(values)):
+        if (values[i].get() == 1):
+            y += 1
+            total_selected += 1
+        elif (values[i].get() == 2):
+            y_c += 1
+            total_selected += 1
+        elif (values[i].get() == 3):
+            n += 1
+            total_selected += 1
 
-        # configure canvas
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, width=900, height=600)
-        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
-
-        # create another frame inside the canvas
-        middle_frame = tk.Frame(my_canvas, borderwidth=3, relief="sunken")
-
-        # add that new frame to a window in the canvas
-        my_canvas.create_window((0,0), window=middle_frame, anchor="w")
-
-    #endregion
+    return [y, y_c, n, total_selected]

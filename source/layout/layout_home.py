@@ -12,8 +12,8 @@ class Home_Page(tk.Frame):
         tk.Frame.__init__(self, master)
         master.title("Cybersecurity Assessment")
 
-        irp_button = tk.Button(self, text="Go", command=lambda: master.switch_frame(irp.IRP_Page))
-        csm_button = tk.Button(self, text="Go", command=lambda: master.switch_frame(csm.CSM_Page))
+        irp_button = tk.Button(self, text="Inherent Risk Profile", command=lambda: master.switch_frame(irp.IRP_Page))
+        csm_button = tk.Button(self, text="Cybersecurity Maturity", command=lambda: master.switch_frame(csm.CSM_Page))
 
         # add 2 text fields
 

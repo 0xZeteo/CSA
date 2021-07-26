@@ -12,9 +12,10 @@ class IRP_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
+        master.title("Inherent Risk Profile")
 
-        back_button = tk.Button(self, text="Back", command=lambda: master.switch_frame(home.Home_Page))
-        back_button.pack()
+        home_button = tk.Button(self, text="Home", command=lambda: master.switch_frame(home.Home_Page))
+        home_button.grid(row=0, column=0)
 
         cat1_button = tk.Button(self, text="Technologies and Connection Types", command=lambda: master.switch_frame(IRP_Cat1_Page))
         cat2_button = tk.Button(self, text="Delivery Channels", command=lambda: master.switch_frame(IRP_Cat2_Page))
@@ -22,33 +23,33 @@ class IRP_Page(tk.Frame):
         cat4_button = tk.Button(self, text="Organizational Characteristics", command=lambda: master.switch_frame(IRP_Cat4_Page))
         cat5_button = tk.Button(self, text="External Threats", command=lambda: master.switch_frame(IRP_Cat5_Page))
 
-        cat1_button.pack(side=tk.TOP)
-        cat2_button.pack(side=tk.TOP)
-        cat3_button.pack(side=tk.TOP)
-        cat4_button.pack(side=tk.TOP)
-        cat5_button.pack(side=tk.TOP)
+        cat1_button.grid(row=1, column=1)
+        cat2_button.grid(row=2, column=1)
+        cat3_button.grid(row=3, column=1)
+        cat4_button.grid(row=4, column=1)
+        cat5_button.grid(row=5, column=1)
 
-        cat1_label = tk.Label(self, text=str(submit_pressed(IRP_Cat1_Page.values)[5]))
-        cat1_label.pack(side=tk.RIGHT)
-        cat2_label = tk.Label(self, text=str(submit_pressed(IRP_Cat2_Page.values)[5]))
-        cat2_label.pack(side=tk.RIGHT)
-        cat3_label = tk.Label(self, text=str(submit_pressed(IRP_Cat3_Page.values)[5]))
-        cat3_label.pack(side=tk.RIGHT)
-        cat4_label = tk.Label(self, text=str(submit_pressed(IRP_Cat4_Page.values)[5]))
-        cat4_label.pack(side=tk.RIGHT)
-        cat5_label = tk.Label(self, text=str(submit_pressed(IRP_Cat5_Page.values)[5]))
-        cat5_label.pack(side=tk.RIGHT)
+        cat1_label = tk.Label(self, text=str(submit_pressed(IRP_Cat1_Page.values)[5]) + "/" + str(len(DATA.IRP_Category1)))
+        cat1_label.grid(row=1, column=2)
+        cat2_label = tk.Label(self, text=str(submit_pressed(IRP_Cat2_Page.values)[5]) + "/" + str(len(DATA.IRP_Category2)))
+        cat2_label.grid(row=2, column=2)
+        cat3_label = tk.Label(self, text=str(submit_pressed(IRP_Cat3_Page.values)[5]) + "/" + str(len(DATA.IRP_Category3)))
+        cat3_label.grid(row=3, column=2)
+        cat4_label = tk.Label(self, text=str(submit_pressed(IRP_Cat4_Page.values)[5]) + "/" + str(len(DATA.IRP_Category4)))
+        cat4_label.grid(row=4, column=2)
+        cat5_label = tk.Label(self, text=str(submit_pressed(IRP_Cat5_Page.values)[5]) + "/" + str(len(DATA.IRP_Category5)))
+        cat5_label.grid(row=5, column=2)
 
         total_least_label = tk.Label(self, text="Total Least = " + str(calculate_total()[0]))
-        total_least_label.pack(side=tk.BOTTOM)
+        total_least_label.grid(row=6, column=1)
         total_minimal_label = tk.Label(self, text="Total Minimal = " + str(calculate_total()[1]))
-        total_minimal_label.pack(side=tk.BOTTOM)
+        total_minimal_label.grid(row=7, column=1)
         total_moderate_label = tk.Label(self, text="Total Moderate = " + str(calculate_total()[2]))
-        total_moderate_label.pack(side=tk.BOTTOM)
+        total_moderate_label.grid(row=8, column=1)
         total_significant_label = tk.Label(self, text="Total Significant = " + str(calculate_total()[3]))
-        total_significant_label.pack(side=tk.BOTTOM)
+        total_significant_label.grid(row=9, column=1)
         total_most_label = tk.Label(self, text="Total Most = " + str(calculate_total()[4]))
-        total_most_label.pack(side=tk.BOTTOM)
+        total_most_label.grid(row=10, column=1)
     #endregion
 
 
@@ -130,7 +131,7 @@ class IRP_Cat2_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Technologies and Connection Types")
+        master.title("Inherent Risk Profile - Delivery Channels")
 
         # Top frame contains navigation widgets and labels
         top_frame = tk.Frame(self, borderwidth=1, relief="raised")
@@ -200,7 +201,7 @@ class IRP_Cat3_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Technologies and Connection Types")
+        master.title("Inherent Risk Profile - Online/Mobile Products and Technology Services")
 
         # Top frame contains navigation widgets and labels
         top_frame = tk.Frame(self, borderwidth=1, relief="raised")
@@ -270,7 +271,7 @@ class IRP_Cat4_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Technologies and Connection Types")
+        master.title("Inherent Risk Profile - Organizational Characteristics")
 
         # Top frame contains navigation widgets and labels
         top_frame = tk.Frame(self, borderwidth=1, relief="raised")
@@ -340,7 +341,7 @@ class IRP_Cat5_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Technologies and Connection Types")
+        master.title("Inherent Risk Profile - External Threats")
 
         # Top frame contains navigation widgets and labels
         top_frame = tk.Frame(self, borderwidth=1, relief="raised")
