@@ -15,8 +15,6 @@ class Home_Page(tk.Frame):
         irp_button = tk.Button(self, text="Inherent Risk Profile", command=lambda: master.switch_frame(irp.IRP_Page))
         csm_button = tk.Button(self, text="Cybersecurity Maturity", command=lambda: master.switch_frame(csm.CSM_Page))
 
-        # add 2 text fields
-
         irp_button.pack(pady=50)
         csm_button.pack()
     #endregion

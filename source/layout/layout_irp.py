@@ -4,7 +4,7 @@
 import tkinter as tk
 import DATA
 import layout.layout_home as home
-# from ctypes import windll
+#from ctypes import windll
 
 """ This class is responsible for the layout of the Inherent Risk Profile's Main page
     Contains the 5 categories and links to each one """
@@ -13,6 +13,10 @@ class IRP_Page(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         master.title("Inherent Risk Profile")
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(2, weight=1)
 
         home_button = tk.Button(self, text="Home", command=lambda: master.switch_frame(home.Home_Page))
         home_button.grid(row=0, column=0)
@@ -23,11 +27,11 @@ class IRP_Page(tk.Frame):
         cat4_button = tk.Button(self, text="Organizational Characteristics", command=lambda: master.switch_frame(IRP_Cat4_Page))
         cat5_button = tk.Button(self, text="External Threats", command=lambda: master.switch_frame(IRP_Cat5_Page))
 
-        cat1_button.grid(row=1, column=1)
-        cat2_button.grid(row=2, column=1)
-        cat3_button.grid(row=3, column=1)
-        cat4_button.grid(row=4, column=1)
-        cat5_button.grid(row=5, column=1)
+        cat1_button.grid(row=1, column=1, sticky="NSWE")
+        cat2_button.grid(row=2, column=1, sticky="NSWE")
+        cat3_button.grid(row=3, column=1, sticky="NSWE")
+        cat4_button.grid(row=4, column=1, sticky="NSWE")
+        cat5_button.grid(row=5, column=1, sticky="NSWE")
 
         cat1_label = tk.Label(self, text=str(submit_pressed(IRP_Cat1_Page.values)[5]) + "/" + str(len(DATA.IRP_Category1)))
         cat1_label.grid(row=1, column=2)
@@ -65,7 +69,7 @@ class IRP_Cat1_Page(tk.Frame):
 
         # Top frame contains navigation widgets and labels
         top_frame = tk.Frame(self, borderwidth=1, relief="raised")
-        top_frame.pack(side=tk.TOP, fill=tk.X, anchor="w")
+        top_frame.pack(side=tk.TOP, fill=tk.BOTH, anchor="w")
         home_button = tk.Button(top_frame, text="Home", command=lambda: master.switch_frame(home.Home_Page))
         home_button.pack(side=tk.LEFT, padx=20, pady=20)
         back_button = tk.Button(top_frame, text="Back", command=lambda: master.switch_frame(IRP_Page))
@@ -80,11 +84,11 @@ class IRP_Cat1_Page(tk.Frame):
         clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
 
         # Middle frame with a scrollbar and the questions
-        my_canvas = tk.Canvas(self)
+        my_canvas = tk.Canvas(self, width=master.winfo_width()-20, height=master.winfo_height()-20)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
         my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
         my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, width=master.winfo_width(), height=master.winfo_height())
+        my_canvas.configure(yscrollcommand=my_scrollbar.set)
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")

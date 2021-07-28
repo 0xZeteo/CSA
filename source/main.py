@@ -12,8 +12,9 @@ class Main_App(tk.Tk):
         tk.Tk.__init__(self)
         self._frame = None
         self.geometry("900x700")              # window size
-        self.minsize(900, 700)                # window minimum size
-        self.maxsize(900, 700)                # window maximum size
+        #self.resizable(0,0)                   # window non-resizable
+        #self.minsize(900, 700)                # window minimum size
+        #self.maxsize(900, 700)                # window maximum size
         self.switch_frame(home.Home_Page)     # frame to display on app launch 
 
     def switch_frame(self, frame_class):
