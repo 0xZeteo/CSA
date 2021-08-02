@@ -61,6 +61,29 @@ def execute_query_data(connection, query, data):
     except Error as err:
         print(f"Error: '{err}'")
 
+
+def read_query(connection, query):
+    cursor = connection.cursor()
+    result = None
+    try:
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    except Error as err:
+        print(f"Error: '{err}'")
+
+
+def read_query_data(connection, query, data):
+    cursor = connection.cursor()
+    result = None
+    try:
+        cursor.execute(query, data)
+        result = cursor.fetchall()
+        return result
+    except Error as err:
+        print(f"Error: '{err}'")
+
+
 #server_connection = create_server_connection("localhost", "root", "TemNewPass#158")
 #create_database_query = "CREATE DATABASE CSA"
 #create_database(server_connection, create_database_query)
@@ -77,3 +100,4 @@ CREATE TABLE IF NOT EXISTS users (
 
 db_connection = create_db_connection("localhost", "root", "TemNewPass#158", "CSA")
 execute_query(db_connection, create_users_table)
+db_connection.close()
