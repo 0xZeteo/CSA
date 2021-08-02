@@ -5,6 +5,7 @@ import tkinter as tk
 import layout.layout_irp as irp
 import layout.layout_csm as csm
 import layout.layout_home as home
+import layout.layout_login as login
 
 class Main_App(tk.Tk):
     #region
@@ -15,7 +16,7 @@ class Main_App(tk.Tk):
         #self.resizable(0,0)                   # window non-resizable
         #self.minsize(900, 700)                # window minimum size
         #self.maxsize(900, 700)                # window maximum size
-        self.switch_frame(home.Home_Page)     # frame to display on app launch 
+        self.switch_frame(login.Login_Page)     # frame to display on app launch 
 
     def switch_frame(self, frame_class):
         # Destroys current frame and replaces it with a new one
