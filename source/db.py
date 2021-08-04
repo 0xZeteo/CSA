@@ -84,20 +84,24 @@ def read_query_data(connection, query, data):
         print(f"Error: '{err}'")
 
 
-#server_connection = create_server_connection("localhost", "root", "TemNewPass#158")
+#server_connection = create_server_connection("localhost", "root", "TempNewPass#158")
 #create_database_query = "CREATE DATABASE CSA"
 #create_database(server_connection, create_database_query)
 
 create_users_table = """
 CREATE TABLE IF NOT EXISTS users (
-    user_id INT PRIMARY KEY,
+    uid INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(40) NOT NULL,
     last_name VARCHAR(40) NOT NULL,
-    date_of_birth DATE,
-    phone_number VARCHAR(20)
+    date_of_birth DATE NOT NULL,
+    email VARCHAR(40) NOT NULL,
+    company VARCHAR(40) NOT NULL,
+    username VARCHAR(40) UNIQUE NOT NULL,
+    password VARCHAR(150) NOT NULL,
+    salt VARCHAR(100) NOT NULL
 );
 """
 
-db_connection = create_db_connection("localhost", "root", "TemNewPass#158", "CSA")
+db_connection = create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
 execute_query(db_connection, create_users_table)
 db_connection.close()
