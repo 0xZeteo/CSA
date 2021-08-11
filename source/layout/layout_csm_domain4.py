@@ -14,6 +14,8 @@ class CSM_Domain4_Page(tk.Frame):
         tk.Frame.__init__(self, master)
         master.title("Cybersecurity Maturity - External Dependency Management")
 
+        self.unbind_all("<MouseWheel>")
+
         home_button = tk.Button(self, text="Home", command=lambda: master.switch_frame(home.Home_Page))
         back_button = tk.Button(self, text="Back", command=lambda: master.switch_frame(csm.CSM_Page))
         home_button.grid(row=0, column=0)

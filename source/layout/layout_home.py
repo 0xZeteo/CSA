@@ -13,6 +13,9 @@ class Home_Page(tk.Frame):
         tk.Frame.__init__(self, master)
         master.title("Logged in - " + login.Login_Page.logged_in)
 
+        self.unbind_all("<MouseWheel>")
+        self.unbind_all("<Return>")
+
         logout_button = tk.Button(self, text="Logout", command=lambda: master.switch_frame(login.Login_Page))
         irp_button = tk.Button(self, text="Inherent Risk Profile", command=lambda: master.switch_frame(irp.IRP_Page))
         csm_button = tk.Button(self, text="Cybersecurity Maturity", command=lambda: master.switch_frame(csm.CSM_Page))

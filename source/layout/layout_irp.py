@@ -14,14 +14,16 @@ class IRP_Page(tk.Frame):
         tk.Frame.__init__(self, master)
         master.title("Inherent Risk Profile")
 
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
+        self.unbind_all("<MouseWheel>")
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=2)
+        self.columnconfigure(2, weight=1)
 
         home_button = tk.Button(self, text="Home", command=lambda: master.switch_frame(home.Home_Page))
         home_button.grid(row=0, column=0)
 
-        cat1_button = tk.Button(self, text="Technologies and Connection Types", command=lambda: master.switch_frame(IRP_Cat1_Page))
+        cat1_button = tk.Button(self, width=10, text="Technologies and Connection Types", command=lambda: master.switch_frame(IRP_Cat1_Page))
         cat2_button = tk.Button(self, text="Delivery Channels", command=lambda: master.switch_frame(IRP_Cat2_Page))
         cat3_button = tk.Button(self, text="Online/Mobile Products and Technology Services", command=lambda: master.switch_frame(IRP_Cat3_Page))
         cat4_button = tk.Button(self, text="Organizational Characteristics", command=lambda: master.switch_frame(IRP_Cat4_Page))
@@ -68,27 +70,29 @@ class IRP_Cat1_Page(tk.Frame):
         master.title("Inherent Risk Profile - Technologies and Connection Types")
 
         # Top frame contains navigation widgets and labels
-        top_frame = tk.Frame(self, borderwidth=1, relief="raised")
-        top_frame.pack(side=tk.TOP, fill=tk.BOTH, anchor="w")
-        home_button = tk.Button(top_frame, text="Home", command=lambda: master.switch_frame(home.Home_Page))
-        home_button.pack(side=tk.LEFT, padx=20, pady=20)
-        back_button = tk.Button(top_frame, text="Back", command=lambda: master.switch_frame(IRP_Page))
-        back_button.pack(side=tk.LEFT)
+        top_frame = tk.Frame(self, bg="light steel blue")
+        top_frame.pack(side=tk.TOP, fill=tk.X, anchor="nw")
+        home_button = tk.Button(top_frame, width=10, text="HOME", bg="white", command=lambda: master.switch_frame(home.Home_Page))
+        #home_button.pack(side=tk.LEFT, padx=50, pady=20)
+        home_button.grid(row=0, column=0, padx=30, pady=15)
+        back_button = tk.Button(top_frame, width=10, text="BACK", bg="white", command=lambda: master.switch_frame(IRP_Page))
+        #back_button.pack(side=tk.LEFT)
+        back_button.grid(row=0, column=1)
 
         # Bottom frame contains the submit and clear buttons
-        bottom_frame = tk.Frame(self, borderwidth=1, relief="raised")
-        bottom_frame.pack(side=tk.BOTTOM, fill=tk.X, anchor="e")
-        submit_button = tk.Button(bottom_frame, text='Submit', command=lambda: master.switch_frame(IRP_Page))
-        submit_button.pack(side=tk.RIGHT, padx=20)
-        clear_button = tk.Button(bottom_frame, text='Clear', command=lambda: clear_pressed(self.values))
-        clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
+        bottom_frame = tk.Frame(self, bg="light steel blue")
+        bottom_frame.pack(side=tk.BOTTOM, fill=tk.X, anchor="se")
+        submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', bg="white", command=lambda: master.switch_frame(IRP_Page))
+        submit_button.pack(side=tk.RIGHT, padx=65, pady=20)
+        clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', bg="white", command=lambda: clear_pressed(self.values))
+        clear_button.pack(side=tk.RIGHT)
 
         # Middle frame with a scrollbar and the questions
-        my_canvas = tk.Canvas(self, width=master.winfo_width()-20, height=master.winfo_height()-20)
-        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        my_canvas = tk.Canvas(self)
+        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor="center")
         my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
         my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set)
+        my_canvas.configure(yscrollcommand=my_scrollbar.set, bg="light steel blue")
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
@@ -96,31 +100,42 @@ class IRP_Cat1_Page(tk.Frame):
         my_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)                                                     # Bind mouse wheel to scrollbar
         my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))      # Bind mouse event to scrollbar
         
-        middle_frame = tk.Frame(my_canvas)
-        my_canvas.create_window((0,0), window=middle_frame, anchor="n")
+        middle_frame = tk.Frame(my_canvas, borderwidth=3, relief="sunken", bg="gray99")
+        my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        top_frame.columnconfigure(2, minsize=220)
+        top_frame.columnconfigure(4, minsize=60)
+        top_frame.columnconfigure(6, minsize=115)
+        top_frame.columnconfigure(8, minsize=105)
+        top_frame.columnconfigure(10, minsize=150)
 
         # Labels representing the risk levels
-        label1 = tk.Label(middle_frame, text="Least", borderwidth=3, relief="raised")
-        label1.grid(row=0, column=1, sticky="n")
-        label2 = tk.Label(middle_frame, text="Minimal", borderwidth=3, relief="raised")
-        label2.grid(row=0, column=2, sticky="n")
-        label3 = tk.Label(middle_frame, text="Moderate", borderwidth=3, relief="raised")
-        label3.grid(row=0, column=3, sticky="n")
-        label4 = tk.Label(middle_frame, text="Signigicant", borderwidth=3, relief="raised")
-        label4.grid(row=0, column=4, sticky="n")
-        label5 = tk.Label(middle_frame, text="Most", borderwidth=3, relief="raised")
-        label5.grid(row=0, column=5, sticky="n")
+        label1 = tk.Label(top_frame, width=15, text="Least", borderwidth=3, relief="groove")
+        #label1.grid(row=0, column=1, pady=5, sticky="n")
+        label1.grid(row=1, column=3)
+        label2 = tk.Label(top_frame, width=15, text="Minimal", borderwidth=3, relief="groove")
+        #label2.grid(row=0, column=2, pady=5, sticky="n")
+        label2.grid(row=1, column=5)
+        label3 = tk.Label(top_frame, width=15, text="Moderate", borderwidth=3, relief="groove")
+        #label3.grid(row=0, column=3, pady=5, sticky="n")
+        label3.grid(row=1, column=7)
+        label4 = tk.Label(top_frame, width=15, text="Signigicant", borderwidth=3, relief="groove")
+        #label4.grid(row=0, column=4, pady=5, sticky="n")
+        label4.grid(row=1, column=9)
+        label5 = tk.Label(top_frame, width=15, text="Most", borderwidth=3, relief="groove")
+        #label5.grid(row=0, column=5, pady=5, sticky="n")
+        label5.grid(row=1, column=11)
 
         # Get the questions from DATA and align them on screen
         i = 0
         for key, value in DATA.IRP_Category1.items():
-            question = tk.Label(middle_frame, text=key, wraplength=300, justify=tk.LEFT)       # borderwidth=3, relief="raised", width=40
-            question.grid(row=i+1, column=0, padx=10, pady=10, sticky="w")
+            question = tk.Label(middle_frame, width=45, text=key, wraplength=400, justify=tk.LEFT, borderwidth=5, relief="groove", font="bold", bg="gray99")
+            question.grid(row=i+1, column=0, pady=10, sticky="W")
             self.values.append(tk.IntVar())
             #self.values[i].set(None)
             for j in range(5):
-                answer = tk.Radiobutton(middle_frame, text=value[j], variable=self.values[i], value=j+1)
-                answer.grid(row=i+1, column=j+1, padx=10, pady=10, sticky="w")
+                answer = tk.Radiobutton(middle_frame, text=value[j], variable=self.values[i], value=j+1, justify=tk.LEFT, bg="gray99")
+                answer.grid(row=i+1, column=j+1, padx=15, pady=10, sticky="W")
             i += 1
 
         #windll.shcore.SetProcessDpiAwareness(1)
@@ -153,21 +168,8 @@ class IRP_Cat2_Page(tk.Frame):
         clear_button = tk.Button(bottom_frame, text='Clear', command=lambda: clear_pressed(self.values))
         clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
 
-        # Middle frame with a scrollbar and the questions
-        my_canvas = tk.Canvas(self)
-        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, width=master.winfo_width(), height=master.winfo_height())
-
-        def _on_mouse_wheel(event):
-            my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
-
-        my_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)                                                     # Bind mouse wheel to scrollbar
-        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))      # Bind mouse event to scrollbar
-        
-        middle_frame = tk.Frame(my_canvas)
-        my_canvas.create_window((0,0), window=middle_frame, anchor="n")
+        middle_frame = tk.Frame(self)
+        middle_frame.pack(anchor="w")
 
         # Labels representing the risk levels
         label1 = tk.Label(middle_frame, text="Least", borderwidth=3, relief="raised")
@@ -292,22 +294,9 @@ class IRP_Cat4_Page(tk.Frame):
         submit_button.pack(side=tk.RIGHT, padx=20)
         clear_button = tk.Button(bottom_frame, text='Clear', command=lambda: clear_pressed(self.values))
         clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
-
-        # Middle frame with a scrollbar and the questions
-        my_canvas = tk.Canvas(self)
-        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, width=master.winfo_width(), height=master.winfo_height())
-
-        def _on_mouse_wheel(event):
-            my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
-
-        my_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)                                                     # Bind mouse wheel to scrollbar
-        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))      # Bind mouse event to scrollbar
         
-        middle_frame = tk.Frame(my_canvas)
-        my_canvas.create_window((0,0), window=middle_frame, anchor="n")
+        middle_frame = tk.Frame(self)
+        middle_frame.pack(anchor="w")
 
         # Labels representing the risk levels
         label1 = tk.Label(middle_frame, text="Least", borderwidth=3, relief="raised")
@@ -362,22 +351,9 @@ class IRP_Cat5_Page(tk.Frame):
         submit_button.pack(side=tk.RIGHT, padx=20)
         clear_button = tk.Button(bottom_frame, text='Clear', command=lambda: clear_pressed(self.values))
         clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
-
-        # Middle frame with a scrollbar and the questions
-        my_canvas = tk.Canvas(self)
-        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, width=master.winfo_width(), height=master.winfo_height())
-
-        def _on_mouse_wheel(event):
-            my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
-
-        my_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)                                                     # Bind mouse wheel to scrollbar
-        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))      # Bind mouse event to scrollbar
         
-        middle_frame = tk.Frame(my_canvas)
-        my_canvas.create_window((0,0), window=middle_frame, anchor="n")
+        middle_frame = tk.Frame(self)
+        middle_frame.pack(anchor="w")
 
         # Labels representing the risk levels
         label1 = tk.Label(middle_frame, text="Least", borderwidth=3, relief="raised")

@@ -12,46 +12,66 @@
 IRP_Category1 = {
     #region
     "Total number of Internet service provider (ISP) connections" 
-        : ["0", "1-20", "21-100", "101-22", ">200"],
+        : ["0", "1 - 20", "21 - 100", "101 - 200", "> 200"],
 
     "Unsecured external connections, number of connections not users" 
-        : ["0", "1-5", "6-10", "11-25", ">25"],
+        : ["0", "1 - 5", "6 - 10", "11 - 25", "> 25"],
     
     "Wireless network access" 
-        : ["", "", "", "", ""], ######################
+        : ["None", 
+           "Separate for guests and corporate", 
+           "1 - 250 Users\n1 - 25 Access points", 
+           "251 - 1,000 Users\n26 - 100 Access points", 
+           "> 1,000 Users\n> 100 Access points"],
     
     "Personal devices allowed to connect to the corporate network" 
-        : ["", "", "", "", ""], ######################
+        : ["None", 
+           "One device type\n<5% of employees\nE-mail access only", 
+           "Multiple device types\n< 10% of employees and board\nE-mail access only", 
+           "Multiple device types\n< 25% of employees and board\nE-mail and some applications accessed", 
+           "Any device type\n> 25% of employees and board\nAll applications accessed"],
     
     "Third parties, including number of organizations and number of individuals from vendors and subcontractors, with access to internal systems" 
-        : ["0 / 0", "1-5 / <50", "6-10 / 50-500", "11-25 / 504-1,500", ">25 / >1,500"],
+        : ["None", 
+           "1 - 5 Third parties\n< 50 Individuals\nLow complexity access", 
+           "6 - 10 Third parties\n50 - 500 Individuals\nSome complexity access", 
+           "11 - 25 Third parties\n501 - 1,500 Individuals\nHigh complexity access", 
+           "> 25 Third parties\n> 1,500 Individuals\nHigh complexity access"],
     
     "Wholesale customers with dedicated connections" 
-        : ["0", "1-5", "6-10", "11-25", ">25"],
+        : ["0", "1 - 5", "6 - 10", "11 - 25", "> 25"],
     
     "Internally hosted and developed or modified vendor applications supporting critical activities" 
-        : ["0", "1-5", "6-10", "11-25", ">25"],
+        : ["0", "1 - 5", "6 - 10", "11 - 25", "> 25"],
     
     "Internally hosted, vendor-developed applications supporting critical activities" 
-        : ["0-5", "6-30", "31-75", "76-200", ">200"],
+        : ["0 - 5", "6 - 30", "31 - 75", "76 - 200", "> 200"],
     
     "User-developed technologies and user computing that support critical activities" 
-        : ["0", "1-100", "101-500", "501-2,500", ">2,500"],
+        : ["0", "1 - 100", "101 - 500", "501 - 2,500", "> 2,500"],
     
-    "End-of-life (EOL) systems" 
-        : ["", "", "", "", ""], ######################
+    "Systems (hardware or software) past End-of-life (EOL) or nearing EOL within 2 years and critical operations dependent on them"  #############
+        : ["None past EOL\nNone nearing EOL", 
+           "Few nearing EOL\nCritical operations (None)", 
+           "Several nearing EOL\nCritical operations (Some)", 
+           "Large number at or nearing EOL\nCritical operations (Large)", 
+           "Majority past or nearing EOL\nCritical operations (Majority)\nUnknown number past EOL"],
     
-    "Open Source Software (OSS)" 
-        : ["", "", "", "", ""], ######################
+    "Open Source Software (OSS) and critical operations dependent on them" 
+        : ["None", 
+           "Limited OSS\nCritical operations (None)", 
+           "Several OSS\nCritical operations (Several)", 
+           "Large number of OSS\nCritical operations (Large)", 
+           "Critical operations (Majority)"],
     
     "Network devices" 
-        : ["0-250", "250-1,500", "1,501–25,000", "25,001-50,000", ">50,000"],
+        : ["0 - 250", "250 - 1,500", "1,501 – 25,000", "25,001 - 50,000", "> 50,000"],
     
     "Third-party service providers storing and/or processing information that support critical activities (Do not have access to internal systems, but the institution relies on their services)" 
-        : ["0", "1-25", "26-100", "101-200 / 1+", ">200 / 1+ "], # 1+ references 1 or more foreign based
+        : ["None", "1 - 25", "26 - 100", "101 - 200\n1 or more foreign-based", "> 200\n1 or more foreign-based"],
     
     "Cloud computing services hosted externally to support critical activities" 
-        : ["0", "1-3", "4-7", "8-10", ">10"]
+        : ["None", "1 - 3\nPrivate cloud only", "4 - 7", "8 - 10\nInternational locations\nPublic cloud", "> 10\nInternational locations\nPublic cloud"]
 }   #endregion
 
 # Category 2: Delivery Channels

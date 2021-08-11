@@ -12,11 +12,10 @@ class Main_App(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self._frame = None
-        self.geometry("900x700")              # window size
-        #self.resizable(0,0)                   # window non-resizable
-        #self.minsize(900, 700)                # window minimum size
-        #self.maxsize(900, 700)                # window maximum size
-        self.switch_frame(login.Login_Page)     # frame to display on app launch 
+        # set window size and starting position relative to screen size
+        self.geometry("800x600+{}+{}".format(int(self.winfo_screenwidth()/5 + 50), int(self.winfo_screenheight()/10 + 20)))              
+        self.minsize(400, 300)                # window minimum size
+        self.switch_frame(login.Login_Page)   # frame to display on app launch 
 
     def switch_frame(self, frame_class):
         # Destroys current frame and replaces it with a new one
@@ -24,7 +23,7 @@ class Main_App(tk.Tk):
         if self._frame is not None:
             self._frame.destroy()
         self._frame = new_frame
-        self._frame.pack()
+        self._frame.pack(fill=tk.BOTH, expand=1)
     #endregion
 
 if __name__ == "__main__":

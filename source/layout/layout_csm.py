@@ -15,6 +15,8 @@ class CSM_Page(tk.Frame):
         tk.Frame.__init__(self, master)
         master.title("Cybersecurity Maturity")
 
+        self.unbind_all("<MouseWheel>")
+
         home_button = tk.Button(self, text="Home", command=lambda: master.switch_frame(home.Home_Page))
         home_button.pack()
 
