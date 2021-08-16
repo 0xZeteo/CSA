@@ -4,7 +4,7 @@
 import tkinter as tk
 import DATA
 import layout.layout_home as home
-#from ctypes import windll
+
 
 """ This class is responsible for the layout of the Inherent Risk Profile's Main page
     Contains the 5 categories and links to each one """
@@ -16,46 +16,61 @@ class IRP_Page(tk.Frame):
 
         self.unbind_all("<MouseWheel>")
 
+        self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=2)
-        self.columnconfigure(2, weight=1)
+        self.rowconfigure(8, weight=1)
+        self.columnconfigure(3, weight=1)
+        self.rowconfigure(6, minsize=50)
+        self.rowconfigure(1, minsize=50)
+        self.rowconfigure(2, minsize=50)
+        self.rowconfigure(3, minsize=50)
+        self.rowconfigure(4, minsize=50)
+        self.rowconfigure(5, minsize=50)
 
-        home_button = tk.Button(self, text="Home", command=lambda: master.switch_frame(home.Home_Page))
+        home_button = tk.Button(self, width=10, text="Home", command=lambda: master.switch_frame(home.Home_Page))
         home_button.grid(row=0, column=0)
 
-        cat1_button = tk.Button(self, width=10, text="Technologies and Connection Types", command=lambda: master.switch_frame(IRP_Cat1_Page))
-        cat2_button = tk.Button(self, text="Delivery Channels", command=lambda: master.switch_frame(IRP_Cat2_Page))
-        cat3_button = tk.Button(self, text="Online/Mobile Products and Technology Services", command=lambda: master.switch_frame(IRP_Cat3_Page))
-        cat4_button = tk.Button(self, text="Organizational Characteristics", command=lambda: master.switch_frame(IRP_Cat4_Page))
-        cat5_button = tk.Button(self, text="External Threats", command=lambda: master.switch_frame(IRP_Cat5_Page))
+        cat1_button = tk.Button(self, width=40, text="Technologies and Connection Types", command=lambda: master.switch_frame(IRP_Cat1_Page))
+        cat2_button = tk.Button(self, width=40, text="Delivery Channels", command=lambda: master.switch_frame(IRP_Cat2_Page))
+        cat3_button = tk.Button(self, width=40, text="Online/Mobile Products and Technology Services", command=lambda: master.switch_frame(IRP_Cat3_Page))
+        cat4_button = tk.Button(self, width=40, text="Organizational Characteristics", command=lambda: master.switch_frame(IRP_Cat4_Page))
+        cat5_button = tk.Button(self, width=40, text="External Threats", command=lambda: master.switch_frame(IRP_Cat5_Page))
 
-        cat1_button.grid(row=1, column=1, sticky="NSWE")
-        cat2_button.grid(row=2, column=1, sticky="NSWE")
-        cat3_button.grid(row=3, column=1, sticky="NSWE")
-        cat4_button.grid(row=4, column=1, sticky="NSWE")
-        cat5_button.grid(row=5, column=1, sticky="NSWE")
+        cat1_button.grid(row=1, column=1, sticky="NSWE", pady=10)
+        cat2_button.grid(row=2, column=1, sticky="NSWE", pady=10)
+        cat3_button.grid(row=3, column=1, sticky="NSWE", pady=10)
+        cat4_button.grid(row=4, column=1, sticky="NSWE", pady=10)
+        cat5_button.grid(row=5, column=1, sticky="NSWE", pady=10)
 
-        cat1_label = tk.Label(self, text=str(submit_pressed(IRP_Cat1_Page.values)[5]) + "/" + str(len(DATA.IRP_Category1)))
-        cat1_label.grid(row=1, column=2)
-        cat2_label = tk.Label(self, text=str(submit_pressed(IRP_Cat2_Page.values)[5]) + "/" + str(len(DATA.IRP_Category2)))
-        cat2_label.grid(row=2, column=2)
-        cat3_label = tk.Label(self, text=str(submit_pressed(IRP_Cat3_Page.values)[5]) + "/" + str(len(DATA.IRP_Category3)))
-        cat3_label.grid(row=3, column=2)
-        cat4_label = tk.Label(self, text=str(submit_pressed(IRP_Cat4_Page.values)[5]) + "/" + str(len(DATA.IRP_Category4)))
-        cat4_label.grid(row=4, column=2)
-        cat5_label = tk.Label(self, text=str(submit_pressed(IRP_Cat5_Page.values)[5]) + "/" + str(len(DATA.IRP_Category5)))
-        cat5_label.grid(row=5, column=2)
+        cat1_label = tk.Label(self, text=str(submit_pressed(IRP_Cat1_Page.values)[5]) + "/" + str(len(DATA.IRP_Category1)) + " Answered")
+        cat1_label.grid(row=1, column=2, padx=30, sticky='w')
+        cat2_label = tk.Label(self, text=str(submit_pressed(IRP_Cat2_Page.values)[5]) + "/" + str(len(DATA.IRP_Category2)) + " Answered")
+        cat2_label.grid(row=2, column=2, padx=30, sticky='w')
+        cat3_label = tk.Label(self, text=str(submit_pressed(IRP_Cat3_Page.values)[5]) + "/" + str(len(DATA.IRP_Category3)) + " Answered")
+        cat3_label.grid(row=3, column=2, padx=30, sticky='w')
+        cat4_label = tk.Label(self, text=str(submit_pressed(IRP_Cat4_Page.values)[5]) + "/" + str(len(DATA.IRP_Category4)) + " Answered")
+        cat4_label.grid(row=4, column=2, padx=30, sticky='w')
+        cat5_label = tk.Label(self, text=str(submit_pressed(IRP_Cat5_Page.values)[5]) + "/" + str(len(DATA.IRP_Category5)) + " Answered")
+        cat5_label.grid(row=5, column=2, padx=30, sticky='w')
 
-        total_least_label = tk.Label(self, text="Total Least = " + str(calculate_total()[0]))
-        total_least_label.grid(row=6, column=1)
-        total_minimal_label = tk.Label(self, text="Total Minimal = " + str(calculate_total()[1]))
-        total_minimal_label.grid(row=7, column=1)
-        total_moderate_label = tk.Label(self, text="Total Moderate = " + str(calculate_total()[2]))
-        total_moderate_label.grid(row=8, column=1)
-        total_significant_label = tk.Label(self, text="Total Significant = " + str(calculate_total()[3]))
-        total_significant_label.grid(row=9, column=1)
-        total_most_label = tk.Label(self, text="Total Most = " + str(calculate_total()[4]))
-        total_most_label.grid(row=10, column=1)
+        submit_button = tk.Button(self, width=10, text="Submit", state="disabled")
+        submit_button.grid(row=7, column=2)
+        ToolTip(widget=submit_button, text="You need to answer all the questions to proceed")
+
+        # if all the questions are answered, then enable the submit button
+        if (calculate_total()[0] + calculate_total()[1] + calculate_total()[2] + calculate_total()[3] + calculate_total()[4] == int(str(len(DATA.IRP_Category1))) + int(str(len(DATA.IRP_Category2))) + int(str(len(DATA.IRP_Category3))) + int(str(len(DATA.IRP_Category4))) + int(str(len(DATA.IRP_Category5)))):
+            submit_button['state'] = "normal"
+
+        #total_least_label = tk.Label(self, text="Total Least = " + str(calculate_total()[0]))
+        #total_least_label.grid(row=6, column=1)
+        #total_minimal_label = tk.Label(self, text="Total Minimal = " + str(calculate_total()[1]))
+        #total_minimal_label.grid(row=7, column=1)
+        #total_moderate_label = tk.Label(self, text="Total Moderate = " + str(calculate_total()[2]))
+        #total_moderate_label.grid(row=8, column=1)
+        #total_significant_label = tk.Label(self, text="Total Significant = " + str(calculate_total()[3]))
+        #total_significant_label.grid(row=9, column=1)
+        #total_most_label = tk.Label(self, text="Total Most = " + str(calculate_total()[4]))
+        #total_most_label.grid(row=10, column=1)
     #endregion
 
 
@@ -83,7 +98,7 @@ class IRP_Cat1_Page(tk.Frame):
         bottom_frame = tk.Frame(self, bg="light steel blue")
         bottom_frame.pack(side=tk.BOTTOM, fill=tk.X, anchor="se")
         submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', bg="white", command=lambda: master.switch_frame(IRP_Page))
-        submit_button.pack(side=tk.RIGHT, padx=65, pady=20)
+        submit_button.pack(side=tk.RIGHT, padx=40, pady=20)
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', bg="white", command=lambda: clear_pressed(self.values))
         clear_button.pack(side=tk.RIGHT)
 
@@ -380,6 +395,32 @@ class IRP_Cat5_Page(tk.Frame):
             i += 1
 
         #windll.shcore.SetProcessDpiAwareness(1)
+    #endregion
+
+
+class ToolTip(object):
+    #region
+    def __init__(self, widget, text):
+        self.widget = widget
+        self.text = text
+
+        def enter(event):
+            self.showTooltip()
+        def leave(event):
+            self.hideTooltip()
+        widget.bind('<Enter>', enter)
+        widget.bind('<Leave>', leave)
+
+    def showTooltip(self):
+        self.tooltipwindow = tw = tk.Toplevel(self.widget)
+        tw.wm_overrideredirect(1) # window without border and no normal means of closing
+        tw.wm_geometry("+{}+{}".format(self.widget.winfo_rootx()-10, self.widget.winfo_rooty()-15))
+        label = tk.Label(tw, text = self.text, background = "#ffffe0", relief = 'solid', borderwidth = 1).pack()
+
+    def hideTooltip(self):
+        tw = self.tooltipwindow
+        tw.destroy()
+        self.tooltipwindow = None
     #endregion
 
 

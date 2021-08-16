@@ -12,9 +12,12 @@ class Main_App(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self._frame = None
+        self.iconbitmap(default='source/resources/logo.ico') # icon 
+
         # set window size and starting position relative to screen size
-        self.geometry("800x600+{}+{}".format(int(self.winfo_screenwidth()/5 + 50), int(self.winfo_screenheight()/10 + 20)))              
-        self.minsize(400, 300)                # window minimum size
+        self.geometry("1000x700+{}+{}".format(int(self.winfo_screenwidth()/5), int(self.winfo_screenheight()/10-20)))    
+
+        self.minsize(1000, 700)                # window minimum size
         self.switch_frame(login.Login_Page)   # frame to display on app launch 
 
     def switch_frame(self, frame_class):
