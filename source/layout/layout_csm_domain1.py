@@ -15,31 +15,61 @@ class CSM_Domain1_Page(tk.Frame):
         master.title("Cybersecurity Maturity - Cyber Risk Management and Oversight")
 
         self.unbind_all("<MouseWheel>")
+        self.config(bg="ghost white")
 
-        home_button = tk.Button(self, text="Home", command=lambda: master.switch_frame(home.Home_Page))
-        back_button = tk.Button(self, text="Back", command=lambda: master.switch_frame(csm.CSM_Page))
+        # font="Calibri 14", relief='groove', borderwidth=3, bg='light gray', activebackground='light blue' (Button)
+
+        # font="Calibri 15", bg="ghost white",  (Label)
+
+        home_button = tk.Button(self, width=10, text="Home", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                command=lambda: master.switch_frame(home.Home_Page))
+
+        back_button = tk.Button(self, width=10, text="Back", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                command=lambda: master.switch_frame(csm.CSM_Page))
+
+        governance_button = tk.Button(self, text="Governance", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                      command=lambda: master.switch_frame(CSM_Domain1_Governance_Page))
+
+        risk_management_button = tk.Button(self, text="Risk Management", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                           command=lambda: master.switch_frame(CSM_Domain1_RiskManagement_Page))
+
+        resources_button = tk.Button(self, text="Resources", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                     command=lambda: master.switch_frame(CSM_Domain1_Resources_Page))
+
+        training_and_culture_button = tk.Button(self, text="Training and Culture", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                                command=lambda: master.switch_frame(CSM_Domain1_TrainingAndCulture_Page))
+
+        governance_label = tk.Label(self, font="Calibri 15", bg="ghost white", 
+                                    text=str(csm.submit_pressed(CSM_Domain1_Governance_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_Governance[i]) for i in DATA.CSM_Domain1_Governance])))
+        
+        risk_management_label = tk.Label(self, font="Calibri 15", bg="ghost white", 
+                                         text=str(csm.submit_pressed(CSM_Domain1_RiskManagement_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_RiskManagement[i]) for i in DATA.CSM_Domain1_RiskManagement])))
+        
+        resources_label = tk.Label(self, font="Calibri 15", bg="ghost white", 
+                                   text=str(csm.submit_pressed(CSM_Domain1_Resources_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_Resources[i]) for i in DATA.CSM_Domain1_Resources])))
+        
+        training_and_culture_label = tk.Label(self, font="Calibri 15", bg="ghost white", 
+                                              text=str(csm.submit_pressed(CSM_Domain1_TrainingAndCulture_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_TrainingAndCulture[i]) for i in DATA.CSM_Domain1_TrainingAndCulture])))
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(4, weight=1)
+        self.columnconfigure(2, minsize=25)
+        
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(5, weight=1)
+
         home_button.grid(row=0, column=0)
         back_button.grid(row=0, column=1)
 
-        governance_button = tk.Button(self, text="Governance", command=lambda: master.switch_frame(CSM_Domain1_Governance_Page))
-        risk_management_button = tk.Button(self, text="Risk Management", command=lambda: master.switch_frame(CSM_Domain1_RiskManagement_Page))
-        resources_button = tk.Button(self, text="Resources", command=lambda: master.switch_frame(CSM_Domain1_Resources_Page))
-        training_and_culture_button = tk.Button(self, text="Training and Culture", command=lambda: master.switch_frame(CSM_Domain1_TrainingAndCulture_Page))
+        governance_button.grid(row=1, column=3)
+        risk_management_button.grid(row=2, column=3)
+        resources_button.grid(row=3, column=3)
+        training_and_culture_button.grid(row=4, column=3)
 
-        governance_button.grid(row=1, column=2)
-        risk_management_button.grid(row=2, column=2)
-        resources_button.grid(row=3, column=2)
-        training_and_culture_button.grid(row=4, column=2)
-
-        governance_label = tk.Label(self, text=str(csm.submit_pressed(CSM_Domain1_Governance_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_Governance[i]) for i in DATA.CSM_Domain1_Governance])))
-        risk_management_label = tk.Label(self, text=str(csm.submit_pressed(CSM_Domain1_RiskManagement_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_RiskManagement[i]) for i in DATA.CSM_Domain1_RiskManagement])))
-        resources_label = tk.Label(self, text=str(csm.submit_pressed(CSM_Domain1_Resources_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_Resources[i]) for i in DATA.CSM_Domain1_Resources])))
-        training_and_culture_label = tk.Label(self, text=str(csm.submit_pressed(CSM_Domain1_TrainingAndCulture_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_TrainingAndCulture[i]) for i in DATA.CSM_Domain1_TrainingAndCulture])))
-
-        governance_label.grid(row=1, column=3)
-        risk_management_label.grid(row=2, column=3)
-        resources_label.grid(row=3, column=3)
-        training_and_culture_label.grid(row=4, column=3)
+        governance_label.grid(row=1, column=4)
+        risk_management_label.grid(row=2, column=4)
+        resources_label.grid(row=3, column=4)
+        training_and_culture_label.grid(row=4, column=4)
     #endregion
 
 
@@ -69,10 +99,10 @@ class CSM_Domain1_Governance_Page(tk.Frame):
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
-        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor='center')
         my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
         my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, width=master.winfo_width(), height=master.winfo_height())
+        my_canvas.configure(yscrollcommand=my_scrollbar.set)
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
@@ -81,13 +111,14 @@ class CSM_Domain1_Governance_Page(tk.Frame):
         my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))      # Bind mouse event to scrollbar
 
         middle_frame = tk.Frame(my_canvas)
-        my_canvas.create_window((0,0), window=middle_frame, anchor="n")
+        my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
 
         # Get the questions from DATA and align them on screen
         i=0
         for key,values in DATA.CSM_Domain1_Governance.items():               
             for j in range(len(values)):
-                question = tk.Label(middle_frame, text=values[j], wraplength=700, justify=tk.LEFT)
+
+                question = tk.Label(middle_frame, text=values[j], width=190, wraplength=1500, justify=tk.LEFT)
                 question.grid(row=i, column=0, padx=10, pady=10, sticky="w")
                 
                 self.values.append(tk.IntVar())

@@ -19,7 +19,7 @@ IRP_Category1 = {
     
     "Wireless network access" 
         : ["None", 
-           "Separate for guests and corporate", 
+           "Separate for guests and\ncorporate", 
            "1 - 250 Users\n1 - 25 Access points", 
            "251 - 1,000 Users\n26 - 100 Access points", 
            "> 1,000 Users\n> 100 Access points"],
@@ -50,7 +50,7 @@ IRP_Category1 = {
     "User-developed technologies and user computing that support critical activities" 
         : ["0", "1 - 100", "101 - 500", "501 - 2,500", "> 2,500"],
     
-    "Systems (hardware or software) past End-of-life (EOL) or nearing EOL within 2 years and critical operations dependent on them"  #############
+    "Systems (hardware or software) past End-of-life (EOL) or nearing EOL within 2 years and critical operations dependent on them"
         : ["None past EOL\nNone nearing EOL", 
            "Few nearing EOL\nCritical operations (None)", 
            "Several nearing EOL\nCritical operations (Some)", 
@@ -78,91 +78,171 @@ IRP_Category1 = {
 IRP_Category2 = {
     #region
     "Online presence (customer)" 
-        : ["", "", "", "", ""], ######################
+        : ["No Web-facing applications\n\nNo social media presence",
+           "Serves as an informational\nWeb site or Social media page\n(e.g., provides branch and ATM\nlocations and marketing materials)",
+           "Serves as a delivery channel\nfor retail online banking\n\nMay communicate to customers\nthrough social media",
+           "Serves as a delivery channel\nfor wholesale customers\n\nMay include retail account\norigination",
+           "Internet applications serve\nas a channel to wholesale\ncustomers to manage large\nvalue assets"],
 
     "Mobile presence" 
-        : ["", "", "", "", ""], ######################
+        : ["None",
+           "SMS text alerts or notices only\n\nBrowser-based access", 
+           "Mobile banking application\nfor retail customers\n(e.g., bill payment, mobile check\ncapture, internal transfers only)", 
+           "Mobile banking application\nincludes external transfers\n(e.g., for corporate clients,\nrecurring external transactions)", 
+           "Full functionality,\nincluding originating new\ntransactions\n(e.g., ACH, wire)"],
     
-    "Automated Teller Machines (ATM) (Operation)" 
-        : ["", "", "", "", ""]  ######################
+    "**Automated Teller Machines (ATM) (Operation)**" 
+        : ["No ATM services", 
+           "ATM services offered\n\nNo owned machines", 
+           "ATM services managed by a\nthird party\n\nATMs at local and regional\nbranches\n\nCash reload services outsourced", 
+           "ATM services managed internally\n\nATMs at U.S. branches and retail\nlocations\n\nCash reload services outsourced", 
+           "ATM services managed internally\nand provided to other financial\ninstitutions\n\nATMs at domestic and international\nbranches and retail locations\n\nCash reload services managed\ninternally"]
 }   #endregion
 
 # Category 3: Online/Mobile Products and Technology Services
 IRP_Category3 = {
     #region
     "Issue debit or credit cards" 
-        : ["0", "<10,000", "10,000-50,000", "50,000-100,000", ">100,000"],
+        : ["None", 
+           "Through a third party\n\n< 10,000 cards outstanding", 
+           "Through a third party\n\n10,000 - 50,000 outstanding", 
+           "Directly\n\n50,000 - 100,000 outstanding", 
+           "Directly\n\nIssue cards on behalf of\nother financial institutions\n\n> 100,000 outstanding"],
 
     "Prepaid cards" 
-        : ["0", "<5,000", "5,000-10,000", "10,001-20,000", ">20,000"],
+        : ["None", 
+           "Through a third party\n\n< 5,000 cards outstanding", 
+           "Through a third party\n\n5,000 - 10,000 outstanding", 
+           "Through a third party\n\n10,001 - 20,000 outstanding", 
+           "Issued internally, through\na third party or on behalf\nof other financial institutions\n\n> 20,000 outstanding"],
     
     "Emerging payments technologies (e.g., digital wallets, mobile wallets)" 
-        : ["", "", "", "", ""], ######################
+        : ["Not accepted", 
+           "Indirect acceptance or use\n(customer use may affect\ndeposit or credit account)", 
+           "Direct acceptance or use\n\nPartner or co-brand with\nnon-bank providers\n\nLimited transaction volume", 
+           "Direct acceptance or use\n\nSmall transaction volume\n\nNo foreign payments", 
+           "Direct acceptance\n\nModerate transaction volume\nand/or foreign payments"],
     
     "Person-to-person payments (P2P)" 
-        : ["0", "<1,000 / <50,000", "1,000-5,000 / 50,000-100,000", "5,001–10,000 / 100,001–1 million", ">10,000 / >1 million"],
+        : ["Not offered", 
+           "Customers allowed to\noriginate payments\n\n< 1,000 Customers\n               or\n< 50,000 monthly\ntransactions", 
+           "Customers allowed to\noriginate payments\n\n1,000 - 5,000 Customers\n               or\n50,000 - 100,000 monthly\ntransactions", 
+           "Customers allowed to\noriginate payments\n\n5,001 – 10,000 Customers\n               or\n100,001 – 1 million monthly\ntransactions", 
+           "Customers allowed to\nrequest payment or to\noriginate payment\n\n> 10,000 Customers\n               or\n> 1 million monthly\ntransactions"],
     
     "Originating ACH payments" 
-        : ["", "", "", "", ""], ######################
+        : ["No ACH origination", 
+           "Originate ACH credits\n\nDaily volume < 3%\nof total assets", 
+           "Originate ACH debits\nand credits\n\nDaily volume is 3% – 5%\nof total assets", 
+           "Sponsor third-party payment\nprocessor\n\nOriginate ACH debits\nand credits\n\nDaily volume is 6% – 25%\nof total assets", 
+           "Sponsor nested third-party\npayment processors\n\nOriginate debits and credits\n\nDaily volume > 25%\nof total assets"],
     
     "Originating wholesale payments" 
-        : ["0", "<3 % total assets", "3% - 5%", "6% - 25%", ">25%"],
+        : ["None", 
+           "Daily volume < 3%\nof total assets", 
+           "Daily volume is 3% - 5%\nof total assets", 
+           "Daily volume is 6% - 25%\nof total assets", 
+           "Daily volume > 25%\nof total assets"],
     
     "Wire transfers" 
-        : ["", "", "", "", ""], ######################
+        : ["Not offered", 
+           "In person wire requests\nonly\n\nDomestic wires only\n\nDaily wire volume < 3%\nof total assets", 
+           "In person, phone, and\nfax wire requests\n\nDomestic daily wire volume\nis 3% – 5% of total assets\n\nInternational daily wire volume\n< 3% of total assets", 
+           "Multiple request channels\n(e.g., online, text, e-mail,\nfax, and phone)\n\nDaily domestic wire volume\n6% – 25% of total assets\n\nDaily international wire volume\n3% – 10% of total assets", 
+           "Multiple request channels\n(e.g., online, text, e-mail,\nfax, and phone)\n\nDaily domestic wire volume\n> 25% of total assets\n\nDaily international wire\nvolume > 10% of total\nassets"],
     
     "Merchant remote deposit capture (RDC)" 
-        : ["0", "<100 / <3 % total assets", "100–500 / 3% - 5%", "501–1,000 / 6% - 25%", ">1,000 / >25%"],
+        : ["Not offered", 
+           "< 100 merchant clients\n\nDaily volume of transactions\nis < 3% of total assets", 
+           "100 – 500 merchant clients\n\nDaily volume is 3% - 5%\nof total assets", 
+           "501 – 1,000 merchant clients\n\nDaily volume is 6% - 25%\nof total assets", 
+           "> 1,000 merchant clients\n\nDaily volume is > 25%\nof total assets"],
     
     "Global remittances" 
-        : ["0", "< 3%", "3% - 5%", "6% - 25%", ">25%"],
+        : ["Not offered", 
+           "Gross daily transaction\nvolume is < 3% of total\nassets", 
+           "Volume is 3% - 5%\nof total assets", 
+           "Volume is 6% - 25%\nof total assets", 
+           "Volume > 25% of\ntotal assets"],
     
     "Treasury services and clients" 
-        : ["", "", "", "", ""], ######################
+        : ["Not offered", 
+           "Limited services\n\n< 1,000 clients", 
+           "Services offered include\nlockbox, ACH origination, and\nremote deposit capture\n\n1,000 – 10,000 clients", 
+           "Services offered include\naccounts receivable solutions\nand liquidity management\n\n10,001 – 20,000 clients", 
+           "Multiple services offered\nincluding currency services,\nonline investing, and\ninvestment sweep accounts\n\n> 20,000 clients"],
     
     "Trust services" 
-        : ["", "", "", "", ""], ######################
+        : ["Not offered", 
+           "Offered through a third-party\nprovider\n\n< $500 million assets\nunder management", 
+           "Provided directly\n\n$500 million – $999 million\nassets under management", 
+           "Provided directly\n\n$1 billion – $10 billion\nassets under management", 
+           "Provided directly\n\n> $10 billion\nassets under management"],
     
     "Act as a correspondent bank (Interbank transfers)" 
-        : ["0", "<100", "100–250", "251–500", ">500"],
+        : ["None", "< 100 institutions", "100 – 250 institutions", "251 – 500 institutions", "> 500 institutions"],
     
     "Merchant acquirer (sponsor merchants or card processor activity into the payment system)" 
-        : ["0", "<1,000", "1,000-10,000", "10,001–100,000", ">100,000"],
+        : ["None", 
+           "Act as a merchant acquirer\n\n< 1,000 merchants", 
+           "Act as a merchant acquirer\n\nOutsource card payment processing\n\n1,000 - 10,000 merchants", 
+           "Act as a merchant acquirer\nand card payment processor\n\n10,001 – 100,000 merchants", 
+           "Act as a merchant acquirer\nand card payment process\n\n> 100,000 merchants"],
     
     "Host IT services for other organizations (either through joint systems or administrative support)" 
-        : ["0", "Only Affiliated Organizations", "Up to 25 Unaffiliated Organizations", "26–50", ">50"]
+        : ["None", "Affiliated organizations only", "< 25 Unaffiliated Organizations", "26 – 50 Unaffiliated Organizations", "> 50 Unaffiliated Organizations"]
 }   #endregion
 
 # Category 4: Organizational Characteristics
 IRP_Category4 = {
     #region
     "Mergers and acquisitions (including divestitures and joint ventures)" 
-        : ["", "", "", "", ""], ######################
+        : ["None planned", 
+           "Open to initiating discussions\nor actively seeking a merger\nor acquisition", 
+           "In discussions with\nat least 1 party", 
+           "A sale or acquisition\nhas been publicly announced\nwithin the past year\n\nIn negotiations with\n1 or more parties", 
+           "Multiple ongoing integrations\nof acquisitions are in process"],
 
-    "Direct employees (including information technology and cybersecurity contractors)" 
-        : ["<50", "50-2,000", "2,001–10,000", "10,001–50,000", ">50,000"],
+    "Number of direct employees (including information technology and cybersecurity contractors)" 
+        : ["< 50", "50 - 2,000", "2,001 – 10,000", "10,001 – 50,000", "> 50,000"],
     
     "Changes in IT and information security staffing" 
-        : ["", "", "", "", ""], ######################
+        : ["Key positions filled\n\nLow or no turnover\nof personnel", 
+           "Staff vacancies exist\nfor non-critical roles", 
+           "Some turnover in key\nor senior positions", 
+           "Frequent turnover in\nkey staff or senior\npositions", 
+           "Vacancies in senior or\nkey positions for long periods\n\nHigh level of employee turnover\nin IT or information security"],
 
     "Privileged access (Administrators, network, database, applications, systems, etc.)" 
-        : ["", "", "", "", ""], ######################
+        : ["Limited number of\nadministrators\n\nLimited or no external\nadministrators", 
+           "Level of turnover in\nadministrators does not affect\noperations or activities\n\nMay utilize some external\nadministrators", 
+           "Level of turnover in\nadministrators affects operations\n\nNumber of administrators\nfor individual systems or\napplications exceeds what is\nnecessary", 
+           "High reliance on\nexternal administrators\n\nNumber of administrators\nis not sufficient to support\nlevel or pace of change", 
+           "High employee turnover\nin network administrators\n\nMany or most administrators\nare external (contractors or\nvendors)\n\nExperience in network\nadministration is limited"],
 
     "Changes in IT environment (e.g., network, infrastructure, critical applications, technologies supporting new products or services)" 
-        : ["", "", "", "", ""], ######################
+        : ["Stable IT environment", 
+           "Infrequent or minimal\nchanges in the IT environment", 
+           "Frequent adoption of\nnew technologies", 
+           "Volume of significant\nchanges is high", 
+           "Substantial change in\noutsourced provider(s) of\ncritical IT services\n\nLarge and complex changes\nto the environment occur\nfrequently"],
 
     "Locations of branches/business presence"
-        : ["1 State", "1 Region", "1 Country", "1–20 Countries", ">20 Countries"],
+        : ["1 State", "1 Region", "1 Country", "1 – 20 Countries", "> 20 Countries"],
 
     "Locations of operations/data centers"
-        : ["1 state", "1 region", "1 country", "1–10 countries", ">10 countries"]
+        : ["1 state", "1 region", "1 country", "1 – 10 countries", "> 10 countries"]
 }   #endregion
 
 # Category 5: External Threats
 IRP_Category5 = {
     #region
     "Attempted cyber attacks" 
-        : ["", "", "", "", ""] ######################
+        : ["No attempted attacks\nor reconnaissance", 
+           "Few attempts monthly (< 100)\n\nMay have had generic phishing\ncampaigns received by\nemployees and customers", 
+           "Several attempts monthly\n(100 – 500)\n\nPhishing campaigns targeting\nemployees or customers at the\ninstitution or third parties\nsupporting critical activities\n\nMay have experienced an\nattempted Distributed Denial\nof Service (DDoS) attack\nwithin the last year", 
+           "Significant number of attempts\nmonthly (501 – 100,000)\n\nSpear phishing campaigns\ntargeting high net worth customers\nand employees at the institution\nor third parties supporting\ncritical activities\n\nInstitution is specifically\nnamed in threat reports\n\nMay have experienced multiple\nattempted DDoS attacks\nwithin the last year", 
+           "Substantial number of attempts\nmonthly (> 100,000)\n\nPersistent attempts to attack\nsenior management and/or\nnetwork administrators\n\nFrequently targeted by DDoS\nattacks"]
 }   #endregion
 
 

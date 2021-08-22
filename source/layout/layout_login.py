@@ -13,32 +13,40 @@ class Login_Page(tk.Frame):
         tk.Frame.__init__(self, master)
         master.title("Login")
 
-        user_label = tk.Label(self, text="Username", font="Times 15")
-        password_label = tk.Label(self, text="Password", font="Times 15")
+        self.config(bg='ghost white')
 
-        user_entry = tk.Entry(self, font="Times 11")
-        password_entry = tk.Entry(self, show="*", font="Times 11")
+        user_label = tk.Label       (self, text="Username", font="Calibri 20", bg='ghost white')
+        password_label = tk.Label   (self, text="Password", font="Calibri 20", bg='ghost white')
 
-        register_button = tk.Button(self, text="Register", width=10, font="Times 12", command=lambda: master.switch_frame(Register_Page))
-        login_button = tk.Button(self, text="Login", width=10, font="Times 12", command=lambda: verify_login(master, user_entry.get(), password_entry.get()))
+        user_entry = tk.Entry       (self, font="Calirbi 15", relief='groove', borderwidth=3, bg='SlateGray4', 
+                                     fg='white', insertbackground='white', cursor='top_left_arrow')
+
+        password_entry = tk.Entry   (self, font="Calirbi 15", relief='groove', borderwidth=3, bg='SlateGray4', 
+                                     fg='white', insertbackground='white', cursor='top_left_arrow', show="*") 
+
+        register_button = tk.Button (self, text="Register", width=10, font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                     command=lambda: master.switch_frame(Register_Page))
+
+        login_button = tk.Button    (self, text="Login", width=10, font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                     command=lambda: verify_login(master, user_entry.get(), password_entry.get()))
 
         # Configure the empty rows and columns on each corner to make them scalable when the window is resized
         # Keeps all the widgets in the middle of the screen
 
-        self.columnconfigure(0, weight=1) # empty first column that scales
-        self.columnconfigure(3, weight=1) # empty last column that scales
+        self.columnconfigure(0, weight=1) # empty first column that scales 
+        self.columnconfigure(3, weight=1) # empty last column that scales 
 
         self.rowconfigure(0, weight=1)    # empty first row that scales
         self.rowconfigure(4, weight=1)    # empty last row that scales
 
-        user_label.grid         (row=1, column=1, padx=15, pady=20, sticky='E') 
-        password_label.grid     (row=2, column=1, padx=15, pady=20, sticky='E')
+        user_label.grid         (row=1, column=1, padx=15, pady=20, sticky='nsew') 
+        password_label.grid     (row=2, column=1, padx=15, pady=20, sticky='nsew')
 
-        user_entry.grid         (row=1, column=2, padx=15, pady=20, sticky='W')
-        password_entry.grid     (row=2, column=2, padx=15, pady=20, sticky='W')
+        user_entry.grid         (row=1, column=2, padx=15, pady=20, sticky='w')
+        password_entry.grid     (row=2, column=2, padx=15, pady=20, sticky='w')
 
-        register_button.grid    (row=3, column=1, pady=30, sticky='E')
-        login_button.grid       (row=3, column=2, padx=15, pady=30, sticky='E')
+        register_button.grid    (row=3, column=1, pady=30, sticky='e')
+        login_button.grid       (row=3, column=2, padx=15, pady=30, sticky='n')
 
         # bind enter key to the verify_login function === Login button pressed
         self.bind_all('<Return>', lambda e: verify_login(master, user_entry.get(), password_entry.get()))
@@ -54,6 +62,8 @@ class Register_Page(tk.Frame):
         tk.Frame.__init__(self, master)
         master.title("Registration")
 
+        self.config(bg='ghost white')
+
         # Bind enter key to the registration function === Submit button pressed
         self.bind_all('<Return>', lambda e: registration(master, username_entry.get(), password_entry.get(), confirm_password_entry.get(), 
                                         firstname_entry.get(), lastname_entry.get(), email_entry.get(), company_entry.get(), 
@@ -65,30 +75,45 @@ class Register_Page(tk.Frame):
 
         validation = self.register(only_characters) # register the function
 
-        username_label = tk.Label(self, text="Username", font="Times 14")
-        password_label = tk.Label(self, text="Password", font="Times 14")
-        confirm_password_label = tk.Label(self, text="Confirm Password", font="Times 14")
-        firstname_label = tk.Label(self, text="First Name", font="Times 14")
-        lastname_label = tk.Label(self, text="Last Name", font="Times 14")
-        email_label = tk.Label(self, text="Email", font="Times 14")
-        company_label = tk.Label(self, text="Company", font="Times 14")
-        dob_label = tk.Label(self, text="Date of Birth", font="Times 14")
+        username_label = tk.Label           (self, text="Username", font="Calibri 12", bg='ghost white')
+        password_label = tk.Label           (self, text="Password", font="Calibri 12", bg='ghost white')
+        confirm_password_label = tk.Label   (self, text="Confirm Password", font="Calibri 12", bg='ghost white')
+        firstname_label = tk.Label          (self, text="First Name", font="Calibri 12", bg='ghost white')
+        lastname_label = tk.Label           (self, text="Last Name", font="Calibri 12", bg='ghost white')
+        email_label = tk.Label              (self, text="Email", font="Calibri 12", bg='ghost white')
+        company_label = tk.Label            (self, text="Company", font="Calibri 12", bg='ghost white')
+        dob_label = tk.Label                (self, text="Date of Birth", font="Calibri 12", bg='ghost white')
         
-        username_entry = tk.Entry(self, font="Times 11")
-        password_entry = tk.Entry(self, show="*", font="Times 11")
-        confirm_password_entry = tk.Entry(self, show="*", font="Times 11")
-        firstname_entry = tk.Entry(self, width=25, font="Times 11", validate="key", validatecommand=(validation, '%S'))
-        lastname_entry = tk.Entry(self, width=25, font="Times 11", validate="key", validatecommand=(validation, '%S'))
-        email_entry = tk.Entry(self, width=25, font="Times 11")
-        company_entry = tk.Entry(self, font="Times 11")
-        dob_entry = DateEntry(self, font="Times 11", width=17, background='darkblue', foreground='white', borderwidth=2)
+        username_entry = tk.Entry           (self, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
+                                             fg='white', insertbackground='white', cursor='top_left_arrow')
 
-        cancel_button = tk.Button(self, width=10, text="Cancel", font="Times 12", command=lambda: master.switch_frame(Login_Page))
+        password_entry = tk.Entry           (self, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', show='*')
 
-        register_button = tk.Button(self, width=10, text="Register", font="Times 12", command=lambda: 
-                                    registration(master, username_entry.get(), password_entry.get(), confirm_password_entry.get(), 
-                                        firstname_entry.get(), lastname_entry.get(), email_entry.get(), company_entry.get(), 
-                                        dob_entry.get_date()))
+        confirm_password_entry = tk.Entry   (self, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', show='*')
+
+        firstname_entry = tk.Entry          (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(validation, '%S'))
+
+        lastname_entry = tk.Entry           (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(validation, '%S'))
+
+        email_entry = tk.Entry              (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
+                                             fg='white', insertbackground='white', cursor='top_left_arrow')
+
+        company_entry = tk.Entry            (self, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
+                                             fg='white', insertbackground='white', cursor='top_left_arrow')
+
+        dob_entry = DateEntry               (self, width=17, font="Calirbi 11", relief='groove', borderwidth=3, bg='SlateGray4')
+
+        cancel_button = tk.Button(self, width=10, text="Cancel", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue', 
+                                  command=lambda: master.switch_frame(Login_Page))
+
+        register_button = tk.Button(self, width=10, text="Register", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue', 
+                                    command=lambda: registration(master, username_entry.get(), password_entry.get(), confirm_password_entry.get(), 
+                                        firstname_entry.get(), lastname_entry.get(), email_entry.get(), company_entry.get(), dob_entry.get_date()))
+
 
         # Configure empty rows and columns in every corner as well as in the middle making the windgets scalable when the window is resized
         # Keeps all the widgets relatively centered 
@@ -166,12 +191,11 @@ def verify_login(frame, user_name, password):
     # get from db queries
     get_username_query = """ SELECT username FROM users WHERE username=%s; """
     get_password_query = """ SELECT password FROM users WHERE username=%s; """
-    u_values = [user_name]
-    p_values = [user_name]
+    u_value = [user_name]
 
     db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
-    user = db.read_query_data(db_connection, get_username_query, u_values)                 # get username from db
-    hash = db.read_query_data(db_connection, get_password_query, p_values)                 # get hash from db
+    user = db.read_query_data(db_connection, get_username_query, u_value)                 # get username from db
+    hash = db.read_query_data(db_connection, get_password_query, u_value)                 # get hash from db
     db_connection.close()                                                                  # close connection
 
     # if there's an empty field

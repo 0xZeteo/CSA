@@ -12,7 +12,9 @@ class Home_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        #master.title("Logged in - " + login.Login_Page.logged_in)
+        master.title("Logged in - " + login.Login_Page.logged_in)
+
+        self.config(bg='ghost white')
 
         #style = ThemedStyle(self)
         #style.set_theme("plastik")
@@ -20,13 +22,16 @@ class Home_Page(tk.Frame):
         self.unbind_all("<MouseWheel>")
         self.unbind_all("<Return>")
 
-        logout_button = tk.Button(self, width=10, text="Logout", command=lambda: master.switch_frame(login.Login_Page))
+        #width=10, font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+
+        logout_button = tk.Button(self, width=10, text="Logout", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                  command=lambda: master.switch_frame(login.Login_Page))
 
         irp_text = "The Inherent Risk Profile identifies the institution’s inherent risk before implementing controls"
         csm_text = "The Cybersecurity Maturity includes domains, assessment factors, components, and individual declarative statements across five maturity levels to identify specific controls and practices that are in place"
 
-        irp_textbox = tk.Text(self, height=5, width=60, wrap="word")
-        csm_textbox = tk.Text(self, height=5, width=60, wrap="word")
+        irp_textbox = tk.Text(self, height=5, width=60, wrap="word", font="Calibri 15", relief='groove', borderwidth=3, bg='ghost white')
+        csm_textbox = tk.Text(self, height=5, width=60, wrap="word", font="Calibri 15", relief='groove', borderwidth=3, bg='ghost white')
 
         irp_textbox.insert(tk.END, irp_text)
         csm_textbox.insert(tk.END, csm_text)
@@ -34,8 +39,11 @@ class Home_Page(tk.Frame):
         irp_textbox.config(state="disabled")
         csm_textbox.config(state="disabled")
 
-        irp_button = tk.Button(self, width=12, text="Assess Risk", command=lambda: master.switch_frame(irp.IRP_Page))
-        csm_button = tk.Button(self, width=12, text="Assess Maturity", command=lambda: master.switch_frame(csm.CSM_Page))
+        irp_button = tk.Button(self, width=13, text="Assess Risk", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                               command=lambda: master.switch_frame(irp.IRP_Page))
+
+        csm_button = tk.Button(self, width=13, text="Assess Maturity", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                               command=lambda: master.switch_frame(csm.CSM_Page))
 
         self.rowconfigure(0, weight=1)
         self.rowconfigure(2, minsize=50)
