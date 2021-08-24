@@ -80,8 +80,8 @@ class IRP_Page(tk.Frame):
         cat4_label.grid(row=4, column=2, padx=30, sticky='nsew')
         cat5_label.grid(row=5, column=2, padx=30, sticky='nsew')
 
-        submit_button = tk.Button(self, width=10, text="Submit", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', 
-                                  activebackground='light blue', state="disabled")
+        submit_button = tk.Button(self, width=10, text="Final Score", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', 
+                                  activebackground='light blue', command=lambda: master.switch_frame(IRP_Final), state="normal") ##### state=disabled
 
         submit_button.grid(row=7, column=2)
 
@@ -90,17 +90,64 @@ class IRP_Page(tk.Frame):
         # if all the questions are answered, then enable the submit button
         if (calculate_total()[0] + calculate_total()[1] + calculate_total()[2] + calculate_total()[3] + calculate_total()[4] == int(str(len(DATA.IRP_Category1))) + int(str(len(DATA.IRP_Category2))) + int(str(len(DATA.IRP_Category3))) + int(str(len(DATA.IRP_Category4))) + int(str(len(DATA.IRP_Category5)))):
             submit_button['state'] = "normal"
+    #endregion
 
-        #total_least_label = tk.Label(self, text="Total Least = " + str(calculate_total()[0]))
-        #total_least_label.grid(row=6, column=1)
-        #total_minimal_label = tk.Label(self, text="Total Minimal = " + str(calculate_total()[1]))
-        #total_minimal_label.grid(row=7, column=1)
-        #total_moderate_label = tk.Label(self, text="Total Moderate = " + str(calculate_total()[2]))
-        #total_moderate_label.grid(row=8, column=1)
-        #total_significant_label = tk.Label(self, text="Total Significant = " + str(calculate_total()[3]))
-        #total_significant_label.grid(row=9, column=1)
-        #total_most_label = tk.Label(self, text="Total Most = " + str(calculate_total()[4]))
-        #total_most_label.grid(row=10, column=1)
+
+class IRP_Final(tk.Frame):
+    #region
+    def __init__(self, master):
+        tk.Frame.__init__(self, master)
+        master.title("Inherent Risk Profile - Final Score")
+
+        home_button = tk.Button(self, text='HOME', width=10)
+        back_button = tk.Button(self, text='BACK', width=10, command=lambda: master.switch_frame(IRP_Page))
+
+        least_total_label = tk.Label(self, text='Least: ' + str(calculate_total()[0]) + ' Point(s)')
+        minimal_total_label = tk.Label(self, text='Minimal: ' + str(calculate_total()[1]) + ' Point(s)')
+        moderate_total_label = tk.Label(self, text='Moderate: ' + str(calculate_total()[2]) + ' Point(s)')
+        significant_total_label = tk.Label(self, text='Significant: ' + str(calculate_total()[3]) + ' Point(s)')
+        most_total_label = tk.Label(self, text='Most: ' + str(calculate_total()[4]) + ' Point(s)')
+        final_score_label = tk.Label(self, text='Final Score: ' + IRP_Final.find_max())
+
+        save_results_button = tk.Button(self, text='SAVE', width=10)
+
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(2, minsize=25)
+        self.rowconfigure(10, minsize=200)
+        self.rowconfigure(11, weight=1)
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(3, minsize=150)
+        self.columnconfigure(6, minsize=400)
+        self.columnconfigure(7, weight=1)
+
+        home_button.grid(row=1, column=1)
+        back_button.grid(row=1, column=2)
+
+        least_total_label.grid(row=3, column=4)
+        minimal_total_label.grid(row=4, column=4)
+        moderate_total_label.grid(row=5, column=4)
+        significant_total_label.grid(row=6, column=4)
+        most_total_label.grid(row=7, column=4)
+        final_score_label.grid(row=8, column=4, pady=20)
+
+        save_results_button.grid(row=9, column=5)
+
+    def find_max():
+        max_value = max(calculate_total())
+        indexes = [i for i, j in enumerate(calculate_total()) if j == max_value]
+        if max_value == 0:
+            return ''
+        elif 4 in indexes:
+            return 'Most Risk'
+        elif 3 in indexes:
+            return 'Significant Risk'
+        elif 2 in indexes:
+            return 'Moderate Risk'
+        elif 1 in indexes:
+            return 'Minimal Risk'
+        elif 0 in indexes:
+            return 'Least Risk'
     #endregion
 
 
@@ -557,7 +604,8 @@ class ToolTip(object):
 
     def hideTooltip(self):
         tw = self.tooltipwindow
-        tw.destroy()
+        if tw is not None:
+            tw.destroy()
         self.tooltipwindow = None
     #endregion
 

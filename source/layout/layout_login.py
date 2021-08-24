@@ -4,6 +4,7 @@ from tkinter import messagebox
 import db
 import bcrypt
 import layout.layout_home as home
+import re
 
 
 """ This class handles the layout of the Login page (Grid Layout) """
@@ -66,14 +67,18 @@ class Register_Page(tk.Frame):
 
         # Bind enter key to the registration function === Submit button pressed
         self.bind_all('<Return>', lambda e: registration(master, username_entry.get(), password_entry.get(), confirm_password_entry.get(), 
-                                        firstname_entry.get(), lastname_entry.get(), email_entry.get(), company_entry.get(), 
-                                        dob_entry.get_date()))
+                                        firstname_entry.get(), lastname_entry.get(), email_entry.get(), company_entry.get(), dob_entry.get_date()))
 
-        # limit entry to characters only
-        def only_characters(char):
+        # limit entry to alphabetical characters only
+        def only_alpha(char):
             return char.isalpha()
 
-        validation = self.register(only_characters) # register the function
+        # limit entry to alphanumeric characters only
+        def only_alphanumeric(char):
+            return char.isalnum()
+
+        char_validation = self.register(only_alpha)
+        char_num_validation = self.register(only_alphanumeric)
 
         username_label = tk.Label           (self, text="Username", font="Calibri 12", bg='ghost white')
         password_label = tk.Label           (self, text="Password", font="Calibri 12", bg='ghost white')
@@ -85,7 +90,7 @@ class Register_Page(tk.Frame):
         dob_label = tk.Label                (self, text="Date of Birth", font="Calibri 12", bg='ghost white')
         
         username_entry = tk.Entry           (self, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
-                                             fg='white', insertbackground='white', cursor='top_left_arrow')
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(char_num_validation, '%S'))
 
         password_entry = tk.Entry           (self, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
                                              fg='white', insertbackground='white', cursor='top_left_arrow', show='*')
@@ -94,10 +99,10 @@ class Register_Page(tk.Frame):
                                              fg='white', insertbackground='white', cursor='top_left_arrow', show='*')
 
         firstname_entry = tk.Entry          (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
-                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(validation, '%S'))
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(char_validation, '%S'))
 
         lastname_entry = tk.Entry           (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
-                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(validation, '%S'))
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(char_validation, '%S'))
 
         email_entry = tk.Entry              (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
                                              fg='white', insertbackground='white', cursor='top_left_arrow')
@@ -114,6 +119,7 @@ class Register_Page(tk.Frame):
                                     command=lambda: registration(master, username_entry.get(), password_entry.get(), confirm_password_entry.get(), 
                                         firstname_entry.get(), lastname_entry.get(), email_entry.get(), company_entry.get(), dob_entry.get_date()))
 
+        ToolTip(widget=password_entry, text="Password must be at least 9 characters long, with 1+ uppercase, 1+ numeric and 1+ special characters ($,@,#,%)")
 
         # Configure empty rows and columns in every corner as well as in the middle making the windgets scalable when the window is resized
         # Keeps all the widgets relatively centered 
@@ -155,14 +161,53 @@ class Register_Page(tk.Frame):
     #endregion
 
 
+""" This class handles the display of the tooltip """
+class ToolTip(object):
+    #region
+    def __init__(self, widget, text):
+        self.widget = widget
+        self.text = text
+
+        def enter(event):
+            self.showTooltip()
+        def leave(event):
+            self.hideTooltip()
+        widget.bind('<Enter>', enter)
+        widget.bind('<Leave>', leave)
+
+    def showTooltip(self):
+        self.tooltipwindow = tw = tk.Toplevel(self.widget)
+        tw.wm_overrideredirect(1) # window without border and no normal means of closing
+        tw.wm_geometry("+{}+{}".format(self.widget.winfo_rootx()-10, self.widget.winfo_rooty()-15))
+        label = tk.Label(tw, text = self.text, background = "#ffffe0", relief = 'solid', borderwidth = 1).pack()
+
+    def hideTooltip(self):
+        tw = self.tooltipwindow
+        if tw is not None:
+            tw.destroy()
+        self.tooltipwindow = None
+    #endregion
+
+
 """ This function handles the registration of the user when the Register button is pressed
     @Arg frame - represents the parent frame (master) to be switched
     @Args - the remaining arguments represent all the entries in the registration page that the user can fill """    
 def registration(frame, user_name, password, confirm_password, first_name, last_name, email, company, dob):
 
+        SpecialChar = ['$', '@', '#', '%']
+        user_name = user_name.lower()
+        email = email.lower()
+
         # Generate salt and a hash code from the user's entered password
         salt = bcrypt.gensalt(rounds=12)
         hashed = bcrypt.hashpw(password.encode('utf8'), salt)
+
+        # Get username query
+        get_username_query = """ SELECT username FROM users WHERE username=%s; """
+        u_value = [user_name]
+        db_con = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+        username = db.read_query_data(db_con, get_username_query, u_value)
+        db_con.close()
 
         # Insert into DB query
         insert_users_query = """ 
@@ -173,9 +218,17 @@ def registration(frame, user_name, password, confirm_password, first_name, last_
         # if there's an empty field
         if (user_name == "") or (password == "") or (confirm_password == "") or (first_name == "") or (last_name == "") or (email == "") or (company == ""):
             messagebox.showwarning("Warning", "All fields must be filled")
+        # Check if username exists
+        elif username:
+            messagebox.showwarning("Warning", "Username already exists")
         # if passwords do not match
         elif (password != confirm_password):
             messagebox.showwarning("Warning", "Password mismatch")
+        elif (len(password) < 9 or not any(char.isdigit() for char in password) or not any(char.isupper() for char in password) or not any(char in SpecialChar for char in password)):
+            messagebox.showwarning("Warning", "Password must be 9 characters long with at least 1 numeric, 1 uppercase and 1 special character ($,@,#,%)")
+        # check if email is valid
+        elif (not re.match(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email)):
+            messagebox.showwarning("Warning", "Invalid email")
         else:
             db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
             db.execute_query_data(db_connection, insert_users_query, values)                       # insert values into db
@@ -194,8 +247,8 @@ def verify_login(frame, user_name, password):
     u_value = [user_name]
 
     db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
-    user = db.read_query_data(db_connection, get_username_query, u_value)                 # get username from db
-    hash = db.read_query_data(db_connection, get_password_query, u_value)                 # get hash from db
+    user = db.read_query_data(db_connection, get_username_query, u_value)                  # get username from db
+    hash = db.read_query_data(db_connection, get_password_query, u_value)                  # get hash from db
     db_connection.close()                                                                  # close connection
 
     # if there's an empty field

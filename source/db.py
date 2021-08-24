@@ -84,9 +84,10 @@ def read_query_data(connection, query, data):
         print(f"Error: '{err}'")
 
 
-#server_connection = create_server_connection("localhost", "root", "TempNewPass#158")
-#create_database_query = "CREATE DATABASE CSA"
-#create_database(server_connection, create_database_query)
+server_connection = create_server_connection("localhost", "root", "TempNewPass#158")
+create_database_query = "CREATE DATABASE IF NOT EXISTS CSA"
+create_database(server_connection, create_database_query)
+server_connection.close()
 
 create_users_table = """
 CREATE TABLE IF NOT EXISTS users (
