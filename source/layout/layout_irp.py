@@ -2,8 +2,12 @@
 """ HERE IS THE LAYOUT OF EVERYTHING RELATED TO THE INHERENT RISK PROFILE """
 
 import tkinter as tk
+from tkinter import messagebox
 import DATA
 import layout.layout_home as home
+import layout.layout_login as login
+import db
+from datetime import datetime
 
 
 """ This class is responsible for the layout of the Inherent Risk Profile's Main page
@@ -17,27 +21,27 @@ class IRP_Page(tk.Frame):
         self.config(bg="ghost white")
         self.unbind_all("<MouseWheel>")
 
-        home_button = tk.Button(self, width=10, text="Home", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+        home_button = tk.Button(self, width=10, text="HOME", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(home.Home_Page))
 
         cat1_button = tk.Button(self, text="Technologies and Connection Types", 
-                                font="Calibri 14", relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                font="Calibri 14", relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                 command=lambda: master.switch_frame(IRP_Cat1_Page))
 
         cat2_button = tk.Button(self, text="Delivery Channels",  
-                                font="Calibri 14", relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                font="Calibri 14", relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                 command=lambda: master.switch_frame(IRP_Cat2_Page))
 
         cat3_button = tk.Button(self, text="Online/Mobile Products and Technology Services",  
-                                font="Calibri 14", relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                font="Calibri 14", relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                 command=lambda: master.switch_frame(IRP_Cat3_Page))
 
         cat4_button = tk.Button(self, text="Organizational Characteristics",  
-                                font="Calibri 14", relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                font="Calibri 14", relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                 command=lambda: master.switch_frame(IRP_Cat4_Page))
 
         cat5_button = tk.Button(self, text="External Threats",  
-                                font="Calibri 14", relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+                                font="Calibri 14", relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                 command=lambda: master.switch_frame(IRP_Cat5_Page))
 
         
@@ -80,74 +84,28 @@ class IRP_Page(tk.Frame):
         cat4_label.grid(row=4, column=2, padx=30, sticky='nsew')
         cat5_label.grid(row=5, column=2, padx=30, sticky='nsew')
 
-        submit_button = tk.Button(self, width=10, text="Final Score", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', 
-                                  activebackground='light blue', command=lambda: master.switch_frame(IRP_Final), state="normal") ##### state=disabled
+        reset_button = tk.Button(self, width=10, text='RESET', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                 command=lambda: IRP_Page.reset(master))
 
-        submit_button.grid(row=7, column=2)
+        final_score_button = tk.Button(self, width=10, text="Final Score", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', 
+                                  activebackground='light blue', command=lambda: master.switch_frame(IRP_Final), state="disabled")
 
-        ToolTip(widget=submit_button, text="Answer all the questions to proceed")
+        reset_button.grid(row=7, column=1)
+        final_score_button.grid(row=7, column=2)
+
+        ToolTip(widget=final_score_button, text="Answer all the questions to proceed")
 
         # if all the questions are answered, then enable the submit button
         if (calculate_total()[0] + calculate_total()[1] + calculate_total()[2] + calculate_total()[3] + calculate_total()[4] == int(str(len(DATA.IRP_Category1))) + int(str(len(DATA.IRP_Category2))) + int(str(len(DATA.IRP_Category3))) + int(str(len(DATA.IRP_Category4))) + int(str(len(DATA.IRP_Category5)))):
-            submit_button['state'] = "normal"
-    #endregion
-
-
-class IRP_Final(tk.Frame):
-    #region
-    def __init__(self, master):
-        tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Final Score")
-
-        home_button = tk.Button(self, text='HOME', width=10)
-        back_button = tk.Button(self, text='BACK', width=10, command=lambda: master.switch_frame(IRP_Page))
-
-        least_total_label = tk.Label(self, text='Least: ' + str(calculate_total()[0]) + ' Point(s)')
-        minimal_total_label = tk.Label(self, text='Minimal: ' + str(calculate_total()[1]) + ' Point(s)')
-        moderate_total_label = tk.Label(self, text='Moderate: ' + str(calculate_total()[2]) + ' Point(s)')
-        significant_total_label = tk.Label(self, text='Significant: ' + str(calculate_total()[3]) + ' Point(s)')
-        most_total_label = tk.Label(self, text='Most: ' + str(calculate_total()[4]) + ' Point(s)')
-        final_score_label = tk.Label(self, text='Final Score: ' + IRP_Final.find_max())
-
-        save_results_button = tk.Button(self, text='SAVE', width=10)
-
-        self.rowconfigure(0, weight=1)
-        self.rowconfigure(2, minsize=25)
-        self.rowconfigure(10, minsize=200)
-        self.rowconfigure(11, weight=1)
-
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(3, minsize=150)
-        self.columnconfigure(6, minsize=400)
-        self.columnconfigure(7, weight=1)
-
-        home_button.grid(row=1, column=1)
-        back_button.grid(row=1, column=2)
-
-        least_total_label.grid(row=3, column=4)
-        minimal_total_label.grid(row=4, column=4)
-        moderate_total_label.grid(row=5, column=4)
-        significant_total_label.grid(row=6, column=4)
-        most_total_label.grid(row=7, column=4)
-        final_score_label.grid(row=8, column=4, pady=20)
-
-        save_results_button.grid(row=9, column=5)
-
-    def find_max():
-        max_value = max(calculate_total())
-        indexes = [i for i, j in enumerate(calculate_total()) if j == max_value]
-        if max_value == 0:
-            return ''
-        elif 4 in indexes:
-            return 'Most Risk'
-        elif 3 in indexes:
-            return 'Significant Risk'
-        elif 2 in indexes:
-            return 'Moderate Risk'
-        elif 1 in indexes:
-            return 'Minimal Risk'
-        elif 0 in indexes:
-            return 'Least Risk'
+            final_score_button['state'] = "normal"
+    
+    def reset(frame):
+        clear_pressed(IRP_Cat1_Page.values)
+        clear_pressed(IRP_Cat2_Page.values)
+        clear_pressed(IRP_Cat3_Page.values)
+        clear_pressed(IRP_Cat4_Page.values)
+        clear_pressed(IRP_Cat5_Page.values)
+        frame.switch_frame(IRP_Page)
     #endregion
 
 
@@ -579,6 +537,98 @@ class IRP_Cat5_Page(tk.Frame):
                 answer.grid(row=i+1, column=j+1, padx=15, pady=150, sticky="W")
 
             i += 1
+    #endregion
+
+
+class IRP_Final(tk.Frame):
+    #region
+    def __init__(self, master):
+        tk.Frame.__init__(self, master)
+        master.title("Inherent Risk Profile - Final Score")
+        self.config(bg="ghost white")
+
+        # limit entry to alphanumeric characters only
+        def only_alphanumeric(char):
+            return char.isalnum()
+
+        alpha_num_validation = self.register(only_alphanumeric)
+
+        home_button = tk.Button(self, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue', 
+                                text='HOME', width=10, command=lambda: master.switch_frame(home.Home_Page))
+
+        back_button = tk.Button(self, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                text='BACK', width=10, command=lambda: master.switch_frame(IRP_Page))
+
+        least_total_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Least: ' + str(calculate_total()[0]) + ' Point(s)')
+        minimal_total_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Minimal: ' + str(calculate_total()[1]) + ' Point(s)')
+        moderate_total_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Moderate: ' + str(calculate_total()[2]) + ' Point(s)')
+        significant_total_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Significant: ' + str(calculate_total()[3]) + ' Point(s)')
+        most_total_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Most: ' + str(calculate_total()[4]) + ' Point(s)')
+        final_score_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Risk Level: ' + IRP_Final.find_max())                      
+        
+        assessment_name_entry = tk.Entry(self, font="Calirbi 11 bold", relief='groove', borderwidth=3, fg='white', insertbackground='white', cursor='top_left_arrow',
+                                         bg='SlateGray4', width=20, validate='key', validatecommand=(alpha_num_validation, '%S'))
+
+        ToolTip(widget=assessment_name_entry, text="Enter a unique name for the assessment")
+        
+        save_results_button = tk.Button(self, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                        text='SAVE', width=10, command=lambda: IRP_Final.save(master, assessment_name_entry.get()))
+
+        home_button.place(relx=0.1, rely=0.1, anchor='nw')
+        back_button.place(relx=0.25, rely=0.1, anchor='nw')
+
+        least_total_label.place(relx=0.51, rely=0.3, anchor='center')
+        minimal_total_label.place(relx=0.51, rely=0.36, anchor='center')
+        moderate_total_label.place(relx=0.51, rely=0.42, anchor='center')
+        significant_total_label.place(relx=0.51, rely=0.48, anchor='center')
+        most_total_label.place(relx=0.51, rely=0.54, anchor='center')
+        final_score_label.place(relx=0.51, rely=0.66, anchor='center')
+
+        assessment_name_entry.place(relx=0.51, rely=0.8, anchor='center')
+        save_results_button.place(relx=0.68, rely=0.8, anchor='center')
+
+
+    def find_max():
+        max_value = max(calculate_total())
+        indexes = [i for i, j in enumerate(calculate_total()) if j == max_value]
+        if max_value == 0:
+            return ''
+        elif 4 in indexes:
+            return 'Most'
+        elif 3 in indexes:
+            return 'Significant'
+        elif 2 in indexes:
+            return 'Moderate'
+        elif 1 in indexes:
+            return 'Minimal'
+        elif 0 in indexes:
+            return 'Least'
+
+    def save(frame, name):
+        get_userInfo_query = """ SELECT uid,company FROM users WHERE username=%s; """
+        u_value = [login.Login_Page.logged_in]
+
+        db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
+        uInfo = db.read_query_data(db_connection, get_userInfo_query, u_value)
+
+        insert_irp_query = """ 
+        INSERT INTO irp (name, date, user, company, least, minimal, moderate, significant, most, risk_level) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s); 
+        """
+        values = [name, datetime.now(), uInfo[0][0], uInfo[0][1], calculate_total()[0], calculate_total()[1], calculate_total()[2], calculate_total()[3], calculate_total()[4], IRP_Final.find_max()]
+        
+        get_assessment_name_query = """ SELECT name FROM irp WHERE name=%s; """
+        name_value = [name]
+        assessment_name = db.read_query_data(db_connection, get_assessment_name_query, name_value)
+
+        if name == "":
+            messagebox.showwarning("Warning", "You need to enter a name for the assessment")
+        elif assessment_name:
+            messagebox.showwarning("Warning", "An assessment with this name already exists")
+        else:
+            db.execute_query_data(db_connection, insert_irp_query, values)
+            frame.switch_frame(home.Home_Page)
+
+        db_connection.close()
     #endregion
 
 

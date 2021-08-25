@@ -17,26 +17,22 @@ class CSM_Domain1_Page(tk.Frame):
         self.unbind_all("<MouseWheel>")
         self.config(bg="ghost white")
 
-        # font="Calibri 14", relief='groove', borderwidth=3, bg='light gray', activebackground='light blue' (Button)
-
-        # font="Calibri 15", bg="ghost white",  (Label)
-
-        home_button = tk.Button(self, width=10, text="Home", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        home_button = tk.Button(self, width=10, text="HOME", font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(home.Home_Page))
 
-        back_button = tk.Button(self, width=10, text="Back", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        back_button = tk.Button(self, width=10, text="BACK", font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(csm.CSM_Page))
 
-        governance_button = tk.Button(self, text="Governance", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        governance_button = tk.Button(self, text="Governance", font='Calibri 14', relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                       command=lambda: master.switch_frame(CSM_Domain1_Governance_Page))
 
-        risk_management_button = tk.Button(self, text="Risk Management", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        risk_management_button = tk.Button(self, text="Risk Management", font='Calibri 14', relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                            command=lambda: master.switch_frame(CSM_Domain1_RiskManagement_Page))
 
-        resources_button = tk.Button(self, text="Resources", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        resources_button = tk.Button(self, text="Resources", font='Calibri 14', relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                      command=lambda: master.switch_frame(CSM_Domain1_Resources_Page))
 
-        training_and_culture_button = tk.Button(self, text="Training and Culture", font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        training_and_culture_button = tk.Button(self, text="Training and Culture", font='Calibri 14', relief='groove', borderwidth=2, bg='light gray', activebackground='light blue',
                                                 command=lambda: master.switch_frame(CSM_Domain1_TrainingAndCulture_Page))
 
         governance_label = tk.Label(self, font="Calibri 15", bg="ghost white", 
@@ -51,27 +47,30 @@ class CSM_Domain1_Page(tk.Frame):
         training_and_culture_label = tk.Label(self, font="Calibri 15", bg="ghost white", 
                                               text=str(csm.submit_pressed(CSM_Domain1_TrainingAndCulture_Page.values)[3]) + "/" + str(sum([len(DATA.CSM_Domain1_TrainingAndCulture[i]) for i in DATA.CSM_Domain1_TrainingAndCulture])) + " Answered")
 
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(6, minsize=500)
-        self.columnconfigure(7, weight=1)
-        self.columnconfigure(3, minsize=180)
-        
-        self.rowconfigure(0, weight=1)
-        self.rowconfigure(2, minsize=150)
-        self.rowconfigure(7, weight=3)
+        reset_button = tk.Button(self, text='RESET', width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                 command=lambda: CSM_Domain1_Page.reset(master))
 
-        home_button.grid(row=1, column=1, padx=50)
-        back_button.grid(row=1, column=2)
+        home_button.place(relx=0.1, rely=0.1)
+        back_button.place(relx=0.25, rely=0.1)
 
-        governance_button.grid(row=3, column=4, pady=10)
-        risk_management_button.grid(row=4, column=4, pady=10)
-        resources_button.grid(row=5, column=4, pady=10)
-        training_and_culture_button.grid(row=6, column=4, pady=10)
+        governance_button.place(relx=0.5, rely=0.3, anchor='center')
+        risk_management_button.place(relx=0.5, rely=0.4, anchor='center')
+        resources_button.place(relx=0.5, rely=0.5, anchor='center')
+        training_and_culture_button.place(relx=0.5, rely=0.6, anchor='center')
 
-        governance_label.grid(row=3, column=5, padx=20)
-        risk_management_label.grid(row=4, column=5)
-        resources_label.grid(row=5, column=5)
-        training_and_culture_label.grid(row=6, column=5)
+        governance_label.place(relx=0.67, rely=0.3, anchor='center')
+        risk_management_label.place(relx=0.67, rely=0.4, anchor='center')
+        resources_label.place(relx=0.67, rely=0.5, anchor='center')
+        training_and_culture_label.place(relx=0.67, rely=0.6, anchor='center')
+
+        reset_button.place(relx=0.5, rely=0.8, anchor='center')
+
+    def reset(frame):
+        csm.clear_pressed(CSM_Domain1_Governance_Page.values)
+        csm.clear_pressed(CSM_Domain1_RiskManagement_Page.values)
+        csm.clear_pressed(CSM_Domain1_Resources_Page.values)
+        csm.clear_pressed(CSM_Domain1_TrainingAndCulture_Page.values)
+        frame.switch_frame(CSM_Domain1_Page)
     #endregion
 
 
@@ -88,12 +87,12 @@ class CSM_Domain1_Governance_Page(tk.Frame):
         top_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
         top_frame.pack(side=tk.TOP, fill=tk.X, anchor="w")
 
-        home_button = tk.Button(top_frame, text="Home", width=10, font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        home_button = tk.Button(top_frame, text="HOME", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(home.Home_Page))
 
         home_button.pack(side=tk.LEFT, padx=20, pady=20)
 
-        back_button = tk.Button(top_frame, text="Back", width=10, font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        back_button = tk.Button(top_frame, text="BACK", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(CSM_Domain1_Page))
         back_button.pack(side=tk.LEFT)
 
@@ -101,13 +100,13 @@ class CSM_Domain1_Governance_Page(tk.Frame):
         bottom_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
         bottom_frame.pack(side=tk.BOTTOM, fill=tk.X, anchor="e")
 
-        submit_button = tk.Button(bottom_frame, width=10, text='Submit', font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
         submit_button.pack(side=tk.RIGHT, padx=20)
 
-        clear_button = tk.Button(bottom_frame, width=10, text='Clear', font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
-                                 command=lambda: csm.clear_pressed(self.values)) #############
+        clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                 command=lambda: csm.clear_pressed(self.values))
 
         clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
 
@@ -140,6 +139,7 @@ class CSM_Domain1_Governance_Page(tk.Frame):
                 yes_answer = tk.Radiobutton(middle_frame, text="Y", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=1)
                 yes_c_answer = tk.Radiobutton(middle_frame, text="Y(C)", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=2)
                 no_answer = tk.Radiobutton(middle_frame, text="N", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=3)
+
                 yes_answer.grid(row=i, column=1, padx=20)
                 yes_c_answer.grid(row=i, column=2, padx=10)
                 no_answer.grid(row=i, column=3, padx=15)
@@ -161,12 +161,12 @@ class CSM_Domain1_RiskManagement_Page(tk.Frame):
         top_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
         top_frame.pack(side=tk.TOP, fill=tk.X, anchor="w")
 
-        home_button = tk.Button(top_frame, text="Home", width=10, font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        home_button = tk.Button(top_frame, text="HOME", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(home.Home_Page))
 
         home_button.pack(side=tk.LEFT, padx=20, pady=20)
 
-        back_button = tk.Button(top_frame, text="Back", width=10, font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        back_button = tk.Button(top_frame, text="BACK", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(CSM_Domain1_Page))
         back_button.pack(side=tk.LEFT)
 
@@ -174,12 +174,12 @@ class CSM_Domain1_RiskManagement_Page(tk.Frame):
         bottom_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
         bottom_frame.pack(side=tk.BOTTOM, fill=tk.X, anchor="e")
 
-        submit_button = tk.Button(bottom_frame, width=10, text='Submit', font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
         submit_button.pack(side=tk.RIGHT, padx=20)
 
-        clear_button = tk.Button(bottom_frame, width=10, text='Clear', font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values)) #############
 
         clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
@@ -231,34 +231,34 @@ class CSM_Domain1_Resources_Page(tk.Frame):
         self.config(bg='ghost white')
 
         # Top frame contains navigation widgets and labels
-        top_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
+        top_frame = tk.Frame(self, bg='ghost white')
         top_frame.pack(side=tk.TOP, fill=tk.X, anchor="w")
 
-        home_button = tk.Button(top_frame, text="Home", width=10, font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        home_button = tk.Button(top_frame, text="HOME", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(home.Home_Page))
 
         home_button.pack(side=tk.LEFT, padx=20, pady=20)
 
-        back_button = tk.Button(top_frame, text="Back", width=10, font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        back_button = tk.Button(top_frame, text="BACK", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(CSM_Domain1_Page))
         back_button.pack(side=tk.LEFT)
 
         # Bottom frame contains the submit and clear buttons
-        bottom_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
+        bottom_frame = tk.Frame(self, bg='ghost white')
         bottom_frame.pack(side=tk.BOTTOM, fill=tk.X, anchor="e")
 
-        submit_button = tk.Button(bottom_frame, width=10, text='Submit', font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
         submit_button.pack(side=tk.RIGHT, padx=20)
 
-        clear_button = tk.Button(bottom_frame, width=10, text='Clear', font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values)) #############
 
         clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
 
         # Middle frame
-        middle_frame = tk.Frame(self, bg='white')
+        middle_frame = tk.Frame(self, bg='white', relief='groove', borderwidth=3)
         middle_frame.pack(anchor='nw', fill='x')
 
         # Get the questions from DATA and align them on screen
@@ -295,12 +295,12 @@ class CSM_Domain1_TrainingAndCulture_Page(tk.Frame):
         top_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
         top_frame.pack(side=tk.TOP, fill=tk.X, anchor="w")
 
-        home_button = tk.Button(top_frame, text="Home", width=10, font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        home_button = tk.Button(top_frame, text="HOME", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(home.Home_Page))
 
         home_button.pack(side=tk.LEFT, padx=20, pady=20)
 
-        back_button = tk.Button(top_frame, text="Back", width=10, font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        back_button = tk.Button(top_frame, text="BACK", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(CSM_Domain1_Page))
         back_button.pack(side=tk.LEFT)
 
@@ -308,12 +308,12 @@ class CSM_Domain1_TrainingAndCulture_Page(tk.Frame):
         bottom_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
         bottom_frame.pack(side=tk.BOTTOM, fill=tk.X, anchor="e")
 
-        submit_button = tk.Button(bottom_frame, width=10, text='Submit', font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
         submit_button.pack(side=tk.RIGHT, padx=20)
 
-        clear_button = tk.Button(bottom_frame, width=10, text='Clear', font='Calibri 14', relief='groove', borderwidth=3, bg='light gray', activebackground='light blue',
+        clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values)) #############
 
         clear_button.pack(side=tk.RIGHT, padx=10, pady=20)

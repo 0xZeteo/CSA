@@ -1,9 +1,17 @@
+import layout.layout_home as home
+import layout.layout_irp as irp
+import layout.layout_csm as csm
+import layout.layout_csm_domain1 as d1
+import layout.layout_csm_domain2 as d2
+import layout.layout_csm_domain3 as d3
+import layout.layout_csm_domain4 as d4
+import layout.layout_csm_domain5 as d5
+
 import tkinter as tk
 from tkcalendar import DateEntry
 from tkinter import messagebox
 import db
 import bcrypt
-import layout.layout_home as home
 import re
 
 
@@ -25,10 +33,10 @@ class Login_Page(tk.Frame):
         password_entry = tk.Entry   (self, font="Calirbi 15", relief='groove', borderwidth=3, bg='SlateGray4', 
                                      fg='white', insertbackground='white', cursor='top_left_arrow', show="*") 
 
-        register_button = tk.Button (self, text="Register", width=10, font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+        register_button = tk.Button (self, text="REGISTER", width=10, font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                      command=lambda: master.switch_frame(Register_Page))
 
-        login_button = tk.Button    (self, text="Login", width=10, font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+        login_button = tk.Button    (self, text="LOGIN", width=10, font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                      command=lambda: verify_login(master, user_entry.get(), password_entry.get()))
 
         # Configure the empty rows and columns on each corner to make them scalable when the window is resized
@@ -77,8 +85,8 @@ class Register_Page(tk.Frame):
         def only_alphanumeric(char):
             return char.isalnum()
 
-        char_validation = self.register(only_alpha)
-        char_num_validation = self.register(only_alphanumeric)
+        alpha_validation = self.register(only_alpha)
+        alpha_num_validation = self.register(only_alphanumeric)
 
         username_label = tk.Label           (self, text="Username", font="Calibri 12", bg='ghost white')
         password_label = tk.Label           (self, text="Password", font="Calibri 12", bg='ghost white')
@@ -90,7 +98,7 @@ class Register_Page(tk.Frame):
         dob_label = tk.Label                (self, text="Date of Birth", font="Calibri 12", bg='ghost white')
         
         username_entry = tk.Entry           (self, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
-                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(char_num_validation, '%S'))
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(alpha_num_validation, '%S'))
 
         password_entry = tk.Entry           (self, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
                                              fg='white', insertbackground='white', cursor='top_left_arrow', show='*')
@@ -99,10 +107,10 @@ class Register_Page(tk.Frame):
                                              fg='white', insertbackground='white', cursor='top_left_arrow', show='*')
 
         firstname_entry = tk.Entry          (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
-                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(char_validation, '%S'))
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(alpha_validation, '%S'))
 
         lastname_entry = tk.Entry           (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
-                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(char_validation, '%S'))
+                                             fg='white', insertbackground='white', cursor='top_left_arrow', validate="key", validatecommand=(alpha_validation, '%S'))
 
         email_entry = tk.Entry              (self, width=25, font="Calirbi 11 bold", relief='groove', borderwidth=3, bg='SlateGray4',
                                              fg='white', insertbackground='white', cursor='top_left_arrow')
@@ -112,10 +120,10 @@ class Register_Page(tk.Frame):
 
         dob_entry = DateEntry               (self, width=17, font="Calirbi 11", relief='groove', borderwidth=3, bg='SlateGray4')
 
-        cancel_button = tk.Button(self, width=10, text="Cancel", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue', 
+        cancel_button = tk.Button(self, width=10, text="CANCEL", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue', 
                                   command=lambda: master.switch_frame(Login_Page))
 
-        register_button = tk.Button(self, width=10, text="Register", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue', 
+        register_button = tk.Button(self, width=10, text="REGISTER", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue', 
                                     command=lambda: registration(master, username_entry.get(), password_entry.get(), confirm_password_entry.get(), 
                                         firstname_entry.get(), lastname_entry.get(), email_entry.get(), company_entry.get(), dob_entry.get_date()))
 
@@ -194,46 +202,46 @@ class ToolTip(object):
     @Args - the remaining arguments represent all the entries in the registration page that the user can fill """    
 def registration(frame, user_name, password, confirm_password, first_name, last_name, email, company, dob):
 
-        SpecialChar = ['$', '@', '#', '%']
-        user_name = user_name.lower()
-        email = email.lower()
+    SpecialChar = ['$', '@', '#', '%']
+    user_name = user_name.lower()
+    email = email.lower()
 
-        # Generate salt and a hash code from the user's entered password
-        salt = bcrypt.gensalt(rounds=12)
-        hashed = bcrypt.hashpw(password.encode('utf8'), salt)
+    # Generate salt and a hash code from the user's entered password
+    salt = bcrypt.gensalt(rounds=12)
+    hashed = bcrypt.hashpw(password.encode('utf8'), salt)
 
-        # Get username query
-        get_username_query = """ SELECT username FROM users WHERE username=%s; """
-        u_value = [user_name]
-        db_con = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
-        username = db.read_query_data(db_con, get_username_query, u_value)
-        db_con.close()
+    # Get username query
+    get_username_query = """ SELECT username FROM users WHERE username=%s; """
+    u_value = [user_name]
+    db_con = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+    username = db.read_query_data(db_con, get_username_query, u_value)
+    db_con.close()
 
-        # Insert into DB query
-        insert_users_query = """ 
-        INSERT INTO users (first_name, last_name, date_of_birth, email, company, username, password, salt) VALUES (%s, %s, %s, %s, %s, %s, %s, %s); 
-        """
-        values = [first_name, last_name, dob, email, company, user_name, hashed, salt]
+    # Insert into DB query
+    insert_users_query = """ 
+    INSERT INTO users (first_name, last_name, date_of_birth, email, company, username, password, salt) VALUES (%s, %s, %s, %s, %s, %s, %s, %s); 
+    """
+    values = [first_name, last_name, dob, email, company, user_name, hashed, salt]
 
-        # if there's an empty field
-        if (user_name == "") or (password == "") or (confirm_password == "") or (first_name == "") or (last_name == "") or (email == "") or (company == ""):
-            messagebox.showwarning("Warning", "All fields must be filled")
-        # Check if username exists
-        elif username:
-            messagebox.showwarning("Warning", "Username already exists")
-        # if passwords do not match
-        elif (password != confirm_password):
-            messagebox.showwarning("Warning", "Password mismatch")
-        elif (len(password) < 9 or not any(char.isdigit() for char in password) or not any(char.isupper() for char in password) or not any(char in SpecialChar for char in password)):
-            messagebox.showwarning("Warning", "Password must be 9 characters long with at least 1 numeric, 1 uppercase and 1 special character ($,@,#,%)")
-        # check if email is valid
-        elif (not re.match(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email)):
-            messagebox.showwarning("Warning", "Invalid email")
-        else:
-            db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
-            db.execute_query_data(db_connection, insert_users_query, values)                       # insert values into db
-            db_connection.close()                                                                  # close connection
-            frame.switch_frame(Login_Page)                                                         # switch frame to Login page
+    # if there's an empty field
+    if (user_name == "") or (password == "") or (confirm_password == "") or (first_name == "") or (last_name == "") or (email == "") or (company == ""):
+        messagebox.showwarning("Warning", "All fields must be filled")
+    # Check if username exists
+    elif username:
+        messagebox.showwarning("Warning", "Username already exists")
+    # if passwords do not match
+    elif (password != confirm_password):
+        messagebox.showwarning("Warning", "Password mismatch")
+    elif (len(password) < 9 or not any(char.isdigit() for char in password) or not any(char.isupper() for char in password) or not any(char in SpecialChar for char in password)):
+        messagebox.showwarning("Warning", "Password must be 9 characters long with at least 1 numeric, 1 uppercase and 1 special character ($,@,#,%)")
+    # check if email is valid
+    elif (not re.match(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email)):
+        messagebox.showwarning("Warning", "Invalid email")
+    else:
+        db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
+        db.execute_query_data(db_connection, insert_users_query, values)                       # insert values into db
+        db_connection.close()                                                                  # close connection
+        frame.switch_frame(Login_Page)                                                         # switch frame to Login page
 
 
 """ This function handles the verification of the username and password when the user presses Login
@@ -262,6 +270,29 @@ def verify_login(frame, user_name, password):
         messagebox.showwarning("Warning", "Wrong Password")
     else:
         Login_Page.logged_in = user_name     # This variable holds the name of the logged in username
+        reset_all()
         frame.switch_frame(home.Home_Page)   # switch frame to Home page
 
+
+def reset_all():
+    irp.clear_pressed(irp.IRP_Cat1_Page.values)
+    irp.clear_pressed(irp.IRP_Cat2_Page.values)
+    irp.clear_pressed(irp.IRP_Cat3_Page.values)
+    irp.clear_pressed(irp.IRP_Cat4_Page.values)
+    irp.clear_pressed(irp.IRP_Cat5_Page.values)
+    csm.clear_pressed(d1.CSM_Domain1_Governance_Page.values)
+    csm.clear_pressed(d1.CSM_Domain1_RiskManagement_Page.values)
+    csm.clear_pressed(d1.CSM_Domain1_Resources_Page.values)
+    csm.clear_pressed(d1.CSM_Domain1_TrainingAndCulture_Page.values)
+    csm.clear_pressed(d2.CSM_Domain2_ThreatIntelligence_Page.values)
+    csm.clear_pressed(d2.CSM_Domain2_MonitoringAndAnalyzing_Page.values)
+    csm.clear_pressed(d2.CSM_Domain2_InformationSharing_Page.values)  
+    csm.clear_pressed(d3.CSM_Domain3_PreventiveControls_Page.values)
+    csm.clear_pressed(d3.CSM_Domain3_DetectiveControls_Page.values)
+    csm.clear_pressed(d3.CSM_Domain3_CorrectiveControls_Page.values) 
+    csm.clear_pressed(d4.CSM_Domain4_Connections_Page.values)
+    csm.clear_pressed(d4.CSM_Domain4_RelationshipManagement_Page.values)
+    csm.clear_pressed(d5.CSM_Domain5_IncidentPlanningAndStrategy_Page.values)
+    csm.clear_pressed(d5.CSM_Domain5_DetectionResponseAndMitigation_Page.values)
+    csm.clear_pressed(d5.CSM_Domain5_EscalationAndReporting_Page.values)
     

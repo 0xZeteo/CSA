@@ -3,9 +3,6 @@ import layout.layout_irp as irp
 import layout.layout_csm as csm
 import layout.layout_login as login
 
-#from tkinter import ttk
-#from ttkthemes import ThemedStyle
-
 
 """ This class handles the the layout of the Home page as in the first page after logging in """
 class Home_Page(tk.Frame):
@@ -16,15 +13,10 @@ class Home_Page(tk.Frame):
 
         self.config(bg='ghost white')
 
-        #style = ThemedStyle(self)
-        #style.set_theme("plastik")
-
         self.unbind_all("<MouseWheel>")
         self.unbind_all("<Return>")
 
-        #width=10, font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-
-        logout_button = tk.Button(self, width=10, text="Logout", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+        logout_button = tk.Button(self, width=10, text="LOGOUT", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(login.Login_Page))
 
         irp_text = "The Inherent Risk Profile identifies the institution’s inherent risk before implementing controls"
@@ -52,7 +44,7 @@ class Home_Page(tk.Frame):
         self.columnconfigure(1, minsize=50)
         self.columnconfigure(4, weight=1)
 
-        logout_button.grid(row=0, column=0)
+        logout_button.grid(row=0, column=1)
 
         irp_textbox.grid(row=1, column=2)
         csm_textbox.grid(row=3, column=2)

@@ -103,6 +103,24 @@ CREATE TABLE IF NOT EXISTS users (
 );
 """
 
+create_irp_table = """
+CREATE TABLE IF NOT EXISTS irp (
+    iid INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(40) UNIQUE NOT NULL,
+    date DATETIME NOT NULL,
+    user INT NOT NULL,
+    company VARCHAR(40) NOT NULL,
+    least INT NOT NULL,
+    minimal INT NOT NULL,
+    moderate INT NOT NULL,
+    significant INT NOT NULL,
+    most INT NOT NULL,
+    risk_level VARCHAR(20) NOT NULL,
+    FOREIGN KEY (user) REFERENCES users(uid)
+)
+"""
+
 db_connection = create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
 execute_query(db_connection, create_users_table)
+execute_query(db_connection, create_irp_table)
 db_connection.close()
