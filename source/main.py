@@ -14,7 +14,7 @@ class Main_App(tk.Tk):
         tk.Tk.__init__(self)
 
         self._frame = None
-        self.iconbitmap(default='source/resources/logo.ico') # icon 
+        self.iconbitmap(default='resources/logo.ico') # icon 
 
         # set window size and starting position relative to screen size
         self.geometry("1000x700+{}+{}".format(int(self.winfo_screenwidth()/5), int(self.winfo_screenheight()/10-20)))    
