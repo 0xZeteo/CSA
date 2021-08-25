@@ -117,6 +117,7 @@ class CSM_Page(tk.Frame):
         reset_button.place(relx=0.5, rely=0.85, anchor='center')
         final_score_button.place(relx=0.75, rely=0.85, anchor='center')
 
+
     def reset(frame):
         clear_pressed(d1.CSM_Domain1_Governance_Page.values)
         clear_pressed(d1.CSM_Domain1_RiskManagement_Page.values)
@@ -156,9 +157,20 @@ class CSM_Final(tk.Frame):
         back_button = tk.Button(self, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 text='BACK', width=10, command=lambda: master.switch_frame(CSM_Page))
 
-        yes_total_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Yes: ' + str(calculate_total()[0]) + ' Point(s)')
-        yes_compensating_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Yes (Compensating): ' + str(calculate_total()[1]) + ' Point(s)')
-        no_total_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='No: ' + str(calculate_total()[2]) + ' Point(s)')
+        baseline_label = tk.Label(self, font='Calibri 15', bg='ghost white', 
+                                  text='Baseline:          Yes ({})  -  Compensating ({})  -  No ({})'.format(maturity_total()[0][0], maturity_total()[1][0], maturity_total()[2][0]))
+        
+        evolving_label = tk.Label(self, font='Calibri 15', bg='ghost white', 
+                                  text='Evolving:          Yes ({})  -  Compensating ({})  -  No ({})'.format(maturity_total()[0][1], maturity_total()[1][1], maturity_total()[2][1]))
+        
+        intermediate_label = tk.Label(self, font='Calibri 15', bg='ghost white', 
+                                  text='Intermediate:   Yes ({})  -  Compensating ({})  -  No ({})'.format(maturity_total()[0][2], maturity_total()[1][2], maturity_total()[2][2]))
+        
+        advanced_label = tk.Label(self, font='Calibri 15', bg='ghost white', 
+                                  text='Advanced:         Yes ({})  -  Compensating ({})  -  No ({})'.format(maturity_total()[0][3], maturity_total()[1][3], maturity_total()[2][3]))
+        
+        innovative_label = tk.Label(self, font='Calibri 15', bg='ghost white', 
+                                  text='Innovative:        Yes ({})  -  Compensating ({})  -  No ({})'.format(maturity_total()[0][4], maturity_total()[1][4], maturity_total()[2][4]))
 
         final_score_label = tk.Label(self, font='Calibri 15', bg='ghost white', text='Maturity Level: ' + CSM_Final.find_max())                      
         
@@ -173,26 +185,36 @@ class CSM_Final(tk.Frame):
         home_button.place(relx=0.1, rely=0.1, anchor='nw')
         back_button.place(relx=0.25, rely=0.1, anchor='nw')
 
-        yes_total_label.place(relx=0.51, rely=0.3, anchor='center')
-        yes_compensating_label.place(relx=0.51, rely=0.36, anchor='center')
-        no_total_label.place(relx=0.51, rely=0.42, anchor='center')
+        baseline_label.place(relx=0.51, rely=0.3, anchor='center')
+        evolving_label.place(relx=0.51, rely=0.36, anchor='center')
+        intermediate_label.place(relx=0.51, rely=0.42, anchor='center')
+        advanced_label.place(relx=0.51, rely=0.48, anchor='center')
+        innovative_label.place(relx=0.51, rely=0.54, anchor='center')
 
-        final_score_label.place(relx=0.51, rely=0.66, anchor='center')
+        final_score_label.place(relx=0.51, rely=0.7, anchor='center')
 
         assessment_name_entry.place(relx=0.51, rely=0.8, anchor='center')
         save_results_button.place(relx=0.68, rely=0.8, anchor='center')
 
+
     def find_max():
-        max_value = max(calculate_total())
-        indexes = [i for i, j in enumerate(calculate_total()) if j == max_value]
-        if max_value == 0:
+        yes_max = max(maturity_total()[0])
+        #yes_c_max = max(maturity_total()[1])
+        #no_max = max(maturity_total()[2])
+
+        yes_indexes = [i for i, j in enumerate(maturity_total()[0]) if j == yes_max]
+        if yes_max == 0:
             return ''
-        elif 2 in indexes:
-            return 'No'
-        elif 1 in indexes:
-            return 'Yes (Compensating)'
-        elif 0 in indexes:
-            return 'Yes'
+        elif 0 in yes_indexes:
+            return 'Baseline'
+        elif 1 in yes_indexes:
+            return 'Evolving'
+        elif 2 in yes_indexes:
+            return 'Intermediate'
+        elif 3 in yes_indexes:
+            return 'Advanced'
+        elif 4 in yes_indexes:
+            return 'Innovative'
 
     def save(frame, name):
         get_userInfo_query = """ SELECT uid,company FROM users WHERE username=%s; """
@@ -201,12 +223,14 @@ class CSM_Final(tk.Frame):
         db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
         uInfo = db.read_query_data(db_connection, get_userInfo_query, u_value)
 
-        insert_irp_query = """ 
+        ###########
+        insert_csm_query = """ 
         INSERT INTO csm (name, date, user, company, yes, yes (compensating), no, maturity_level) VALUES (%s,%s,%s,%s,%s,%s,%s,%s); 
         """
         values = [name, datetime.now(), uInfo[0][0], uInfo[0][1], calculate_total()[0], calculate_total()[1], calculate_total()[2], CSM_Final.find_max()]
-        
-        get_assessment_name_query = """ SELECT name FROM irp WHERE name=%s; """
+        ############
+
+        get_assessment_name_query = """ SELECT name FROM csm WHERE name=%s; """
         name_value = [name]
         assessment_name = db.read_query_data(db_connection, get_assessment_name_query, name_value)
 
@@ -215,7 +239,7 @@ class CSM_Final(tk.Frame):
         elif assessment_name:
             messagebox.showwarning("Warning", "An assessment with this name already exists")
         else:
-            db.execute_query_data(db_connection, insert_irp_query, values)
+            db.execute_query_data(db_connection, insert_csm_query, values)
             frame.switch_frame(home.Home_Page)
 
         db_connection.close()
@@ -258,13 +282,13 @@ def submit_pressed(values):
     y = y_c = n = total_selected = 0
 
     for i in range(len(values)):
-        if (values[i].get() == 1):
+        if (str(values[i].get()).startswith('1')):
             y += 1
             total_selected += 1
-        elif (values[i].get() == 2):
+        elif (str(values[i].get()).startswith('2')):
             y_c += 1
             total_selected += 1
-        elif (values[i].get() == 3):
+        elif (str(values[i].get()).startswith('3')):
             n += 1
             total_selected += 1
 
@@ -304,4 +328,75 @@ def calculate_total():
 
     return [yes_total, yes_compensating_total, no_total]
 
-    
+# 1: Baseline, 2: Evolving, 3: Intermediate, 4: Advanced, 5: Innovative
+def maturity_total():
+
+    pages = [d1.CSM_Domain1_Governance_Page, d1.CSM_Domain1_RiskManagement_Page, d1.CSM_Domain1_Resources_Page, d1.CSM_Domain1_TrainingAndCulture_Page,
+         d2.CSM_Domain2_ThreatIntelligence_Page, d2.CSM_Domain2_MonitoringAndAnalyzing_Page, d2.CSM_Domain2_InformationSharing_Page,
+         d3.CSM_Domain3_PreventiveControls_Page, d3.CSM_Domain3_DetectiveControls_Page, d3.CSM_Domain3_CorrectiveControls_Page,
+         d4.CSM_Domain4_Connections_Page, d4.CSM_Domain4_RelationshipManagement_Page,
+         d5.CSM_Domain5_IncidentPlanningAndStrategy_Page, d5.CSM_Domain5_DetectionResponseAndMitigation_Page, d5.CSM_Domain5_EscalationAndReporting_Page]
+
+    baseline_yes = evolving_yes = intermediate_yes = advanced_yes = innovative_yes = 0
+    baseline_yes_c = evolving_yes_c = intermediate_yes_c = advanced_yes_c = innovative_yes_c = 0
+    baseline_no = evolving_no = intermediate_no = advanced_no = innovative_no = 0
+
+    for j in range(len(pages)):
+
+        for i in range(len(pages[j].values)):
+
+            if str(pages[j].values[i].get()).startswith('1'):    # yes answers
+
+                if str(pages[j].values[i].get()).endswith('1'):  # baseline
+                    baseline_yes += 1
+                if str(pages[j].values[i].get()).endswith('2'):  # evolving
+                    evolving_yes += 1
+                if str(pages[j].values[i].get()).endswith('3'):  # intermediate
+                    intermediate_yes += 1
+                if str(pages[j].values[i].get()).endswith('4'):  # advanced
+                    advanced_yes += 1
+                if str(pages[j].values[i].get()).endswith('5'):  # innovative
+                    innovative_yes += 1
+
+            if str(pages[j].values[i].get()).startswith('2'):    # yes_c answers
+
+                if str(pages[j].values[i].get()).endswith('1'):  # baseline
+                    baseline_yes_c += 1
+                if str(pages[j].values[i].get()).endswith('2'):  # evolving
+                    evolving_yes_c += 1
+                if str(pages[j].values[i].get()).endswith('3'):  # intermediate
+                    intermediate_yes_c += 1
+                if str(pages[j].values[i].get()).endswith('4'):  # advanced
+                    advanced_yes_c += 1
+                if str(pages[j].values[i].get()).endswith('5'):  # innovative
+                    innovative_yes_c += 1
+
+            if str(pages[j].values[i].get()).startswith('3'):    # no answers
+
+                if str(pages[j].values[i].get()).endswith('1'):  # baseline
+                    baseline_no += 1
+                if str(pages[j].values[i].get()).endswith('2'):  # evolving
+                    evolving_no += 1
+                if str(pages[j].values[i].get()).endswith('3'):  # intermediate
+                    intermediate_no += 1
+                if str(pages[j].values[i].get()).endswith('4'):  # advanced
+                    advanced_no += 1
+                if str(pages[j].values[i].get()).endswith('5'):  # innovative
+                    innovative_no += 1
+
+    return [    
+            [baseline_yes, evolving_yes, intermediate_yes, advanced_yes, innovative_yes],
+            [baseline_yes_c, evolving_yes_c, intermediate_yes_c, advanced_yes_c, innovative_yes_c],
+            [baseline_no, evolving_no, intermediate_no, advanced_no, innovative_no]
+           ]
+
+
+                        
+           
+           
+           
+
+           
+
+           
+           

@@ -118,9 +118,35 @@ class CSM_Domain4_Connections_Page(tk.Frame):
                 
                 self.values.append(tk.IntVar())
 
-                yes_answer = tk.Radiobutton(middle_frame, text="Y", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=1)
-                yes_c_answer = tk.Radiobutton(middle_frame, text="Y(C)", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=2)
-                no_answer = tk.Radiobutton(middle_frame, text="N", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=3)
+                yes_answer = tk.Radiobutton(middle_frame, text="Y", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
+                yes_c_answer = tk.Radiobutton(middle_frame, text="Y(C)", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
+                no_answer = tk.Radiobutton(middle_frame, text="N", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
+                
+                if key.endswith('1'):
+                    yes_answer['value'] = 11
+                    yes_c_answer['value'] = 21
+                    no_answer['value'] = 31
+
+                if key.endswith('2'):
+                    yes_answer['value'] = 12
+                    yes_c_answer['value'] = 22
+                    no_answer['value'] = 32
+
+                if key.endswith('3'):
+                    yes_answer['value'] = 13
+                    yes_c_answer['value'] = 23
+                    no_answer['value'] = 33
+
+                if key.endswith('4'):
+                    yes_answer['value'] = 14
+                    yes_c_answer['value'] = 24
+                    no_answer['value'] = 34
+
+                if key.endswith('5'):
+                    yes_answer['value'] = 15
+                    yes_c_answer['value'] = 25
+                    no_answer['value'] = 35
+                
                 yes_answer.grid(row=i, column=1, padx=20)
                 yes_c_answer.grid(row=i, column=2, padx=10)
                 no_answer.grid(row=i, column=3, padx=15)
@@ -191,9 +217,35 @@ class CSM_Domain4_RelationshipManagement_Page(tk.Frame):
                 
                 self.values.append(tk.IntVar())
 
-                yes_answer = tk.Radiobutton(middle_frame, text="Y", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=1)
-                yes_c_answer = tk.Radiobutton(middle_frame, text="Y(C)", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=2)
-                no_answer = tk.Radiobutton(middle_frame, text="N", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i], value=3)
+                yes_answer = tk.Radiobutton(middle_frame, text="Y", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
+                yes_c_answer = tk.Radiobutton(middle_frame, text="Y(C)", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
+                no_answer = tk.Radiobutton(middle_frame, text="N", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
+                
+                if key.endswith('1'):
+                    yes_answer['value'] = 11
+                    yes_c_answer['value'] = 21
+                    no_answer['value'] = 31
+
+                if key.endswith('2'):
+                    yes_answer['value'] = 12
+                    yes_c_answer['value'] = 22
+                    no_answer['value'] = 32
+
+                if key.endswith('3'):
+                    yes_answer['value'] = 13
+                    yes_c_answer['value'] = 23
+                    no_answer['value'] = 33
+
+                if key.endswith('4'):
+                    yes_answer['value'] = 14
+                    yes_c_answer['value'] = 24
+                    no_answer['value'] = 34
+
+                if key.endswith('5'):
+                    yes_answer['value'] = 15
+                    yes_c_answer['value'] = 25
+                    no_answer['value'] = 35
+                
                 yes_answer.grid(row=i, column=1, padx=20)
                 yes_c_answer.grid(row=i, column=2, padx=10)
                 no_answer.grid(row=i, column=3, padx=15)

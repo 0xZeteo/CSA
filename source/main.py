@@ -20,7 +20,7 @@ class Main_App(tk.Tk):
         self.geometry("1000x700+{}+{}".format(int(self.winfo_screenwidth()/5), int(self.winfo_screenheight()/10-20)))    
 
         self.minsize(1000, 700)                # window minimum size
-        self.switch_frame(login.Login_Page)    # frame to display on app launch 
+        self.switch_frame(csm.CSM_Page)    # frame to display on app launch 
 
     def switch_frame(self, frame_class):
         # Destroys current frame and replaces it with a new one
