@@ -1,11 +1,4 @@
 import layout.layout_home as home
-import layout.layout_irp as irp
-import layout.layout_csm as csm
-import layout.layout_csm_domain1 as d1
-import layout.layout_csm_domain2 as d2
-import layout.layout_csm_domain3 as d3
-import layout.layout_csm_domain4 as d4
-import layout.layout_csm_domain5 as d5
 
 import tkinter as tk
 from tkcalendar import DateEntry
@@ -270,29 +263,5 @@ def verify_login(frame, user_name, password):
         messagebox.showwarning("Warning", "Wrong Password")
     else:
         Login_Page.logged_in = user_name     # This variable holds the name of the logged in username
-        reset_all()
         frame.switch_frame(home.Home_Page)   # switch frame to Home page
-
-
-def reset_all():
-    irp.clear_pressed(irp.IRP_Cat1_Page.values)
-    irp.clear_pressed(irp.IRP_Cat2_Page.values)
-    irp.clear_pressed(irp.IRP_Cat3_Page.values)
-    irp.clear_pressed(irp.IRP_Cat4_Page.values)
-    irp.clear_pressed(irp.IRP_Cat5_Page.values)
-    csm.clear_pressed(d1.CSM_Domain1_Governance_Page.values)
-    csm.clear_pressed(d1.CSM_Domain1_RiskManagement_Page.values)
-    csm.clear_pressed(d1.CSM_Domain1_Resources_Page.values)
-    csm.clear_pressed(d1.CSM_Domain1_TrainingAndCulture_Page.values)
-    csm.clear_pressed(d2.CSM_Domain2_ThreatIntelligence_Page.values)
-    csm.clear_pressed(d2.CSM_Domain2_MonitoringAndAnalyzing_Page.values)
-    csm.clear_pressed(d2.CSM_Domain2_InformationSharing_Page.values)  
-    csm.clear_pressed(d3.CSM_Domain3_PreventiveControls_Page.values)
-    csm.clear_pressed(d3.CSM_Domain3_DetectiveControls_Page.values)
-    csm.clear_pressed(d3.CSM_Domain3_CorrectiveControls_Page.values) 
-    csm.clear_pressed(d4.CSM_Domain4_Connections_Page.values)
-    csm.clear_pressed(d4.CSM_Domain4_RelationshipManagement_Page.values)
-    csm.clear_pressed(d5.CSM_Domain5_IncidentPlanningAndStrategy_Page.values)
-    csm.clear_pressed(d5.CSM_Domain5_DetectionResponseAndMitigation_Page.values)
-    csm.clear_pressed(d5.CSM_Domain5_EscalationAndReporting_Page.values)
-    
+ 

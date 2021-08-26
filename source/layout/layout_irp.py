@@ -85,7 +85,7 @@ class IRP_Page(tk.Frame):
         cat5_label.grid(row=5, column=2, padx=30, sticky='nsew')
 
         reset_button = tk.Button(self, width=10, text='RESET', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: IRP_Page.reset(master))
+                                 command=lambda: IRP_Page.reset_switch_irp(master))
 
         final_score_button = tk.Button(self, width=10, text="Final Score", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', 
                                   activebackground='light blue', command=lambda: master.switch_frame(IRP_Final), state="disabled")
@@ -99,12 +99,8 @@ class IRP_Page(tk.Frame):
         if (calculate_total()[0] + calculate_total()[1] + calculate_total()[2] + calculate_total()[3] + calculate_total()[4] == int(str(len(DATA.IRP_Category1))) + int(str(len(DATA.IRP_Category2))) + int(str(len(DATA.IRP_Category3))) + int(str(len(DATA.IRP_Category4))) + int(str(len(DATA.IRP_Category5)))):
             final_score_button['state'] = "normal"
     
-    def reset(frame):
-        clear_pressed(IRP_Cat1_Page.values)
-        clear_pressed(IRP_Cat2_Page.values)
-        clear_pressed(IRP_Cat3_Page.values)
-        clear_pressed(IRP_Cat4_Page.values)
-        clear_pressed(IRP_Cat5_Page.values)
+    def reset_switch_irp(frame):
+        reset_irp()
         frame.switch_frame(IRP_Page)
     #endregion
 
@@ -626,6 +622,7 @@ class IRP_Final(tk.Frame):
             messagebox.showwarning("Warning", "An assessment with this name already exists")
         else:
             db.execute_query_data(db_connection, insert_irp_query, values)
+            reset_irp()
             frame.switch_frame(home.Home_Page)
 
         db_connection.close()
@@ -658,6 +655,14 @@ class ToolTip(object):
             tw.destroy()
         self.tooltipwindow = None
     #endregion
+
+
+def reset_irp():
+    clear_pressed(IRP_Cat1_Page.values)
+    clear_pressed(IRP_Cat2_Page.values)
+    clear_pressed(IRP_Cat3_Page.values)
+    clear_pressed(IRP_Cat4_Page.values)
+    clear_pressed(IRP_Cat5_Page.values)
 
 
 """ This function clears the selection of radio buttons 

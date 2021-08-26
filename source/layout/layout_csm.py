@@ -93,10 +93,10 @@ class CSM_Page(tk.Frame):
                                           + " Answered")
 
         reset_button = tk.Button(self, width=10, text="RESET", font="Calibri 14", relief="raised", borderwidth=2, bg="azure3", activebackground='light blue',
-                                 command=lambda: CSM_Page.reset(master))
+                                 command=lambda: CSM_Page.reset_switch_csm(master))
 
         final_score_button = tk.Button(self, width=10, text="Final Score", font="Calibri 14", relief="raised", borderwidth=2, bg="azure3", activebackground='light blue',
-                                       command=lambda: master.switch_frame(CSM_Final), state='normal') # state = disabled
+                                       command=lambda: master.switch_frame(CSM_Final), state='disabled')
         
         ToolTip(widget=final_score_button, text="Answer all the questions to proceed")
 
@@ -118,22 +118,8 @@ class CSM_Page(tk.Frame):
         final_score_button.place(relx=0.75, rely=0.85, anchor='center')
 
 
-    def reset(frame):
-        clear_pressed(d1.CSM_Domain1_Governance_Page.values)
-        clear_pressed(d1.CSM_Domain1_RiskManagement_Page.values)
-        clear_pressed(d1.CSM_Domain1_Resources_Page.values)
-        clear_pressed(d1.CSM_Domain1_TrainingAndCulture_Page.values)
-        clear_pressed(d2.CSM_Domain2_ThreatIntelligence_Page.values)
-        clear_pressed(d2.CSM_Domain2_MonitoringAndAnalyzing_Page.values)
-        clear_pressed(d2.CSM_Domain2_InformationSharing_Page.values)  
-        clear_pressed(d3.CSM_Domain3_PreventiveControls_Page.values)
-        clear_pressed(d3.CSM_Domain3_DetectiveControls_Page.values)
-        clear_pressed(d3.CSM_Domain3_CorrectiveControls_Page.values) 
-        clear_pressed(d4.CSM_Domain4_Connections_Page.values)
-        clear_pressed(d4.CSM_Domain4_RelationshipManagement_Page.values)
-        clear_pressed(d5.CSM_Domain5_IncidentPlanningAndStrategy_Page.values)
-        clear_pressed(d5.CSM_Domain5_DetectionResponseAndMitigation_Page.values)
-        clear_pressed(d5.CSM_Domain5_EscalationAndReporting_Page.values)
+    def reset_switch_csm(frame):
+        reset_csm()
         frame.switch_frame(CSM_Page) 
     #endregion
 
@@ -196,7 +182,6 @@ class CSM_Final(tk.Frame):
         assessment_name_entry.place(relx=0.51, rely=0.8, anchor='center')
         save_results_button.place(relx=0.68, rely=0.8, anchor='center')
 
-
     def find_max():
         yes_max = max(maturity_total()[0])
         #yes_c_max = max(maturity_total()[1])
@@ -223,12 +208,16 @@ class CSM_Final(tk.Frame):
         db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
         uInfo = db.read_query_data(db_connection, get_userInfo_query, u_value)
 
-        ###########
         insert_csm_query = """ 
-        INSERT INTO csm (name, date, user, company, yes, yes (compensating), no, maturity_level) VALUES (%s,%s,%s,%s,%s,%s,%s,%s); 
+        INSERT INTO csm (name, date, user, company, baseline_yes, baseline_compensating, baseline_no, 
+                         evolving_yes, evolving_compensating, evolving_no, intermediate_yes, intermediate_compensating, intermediate_no, 
+                         advanced_yes, advanced_compensating, advanced_no, innovative_yes, innovative_compensating, innovative_no, maturity_level) 
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s); 
         """
-        values = [name, datetime.now(), uInfo[0][0], uInfo[0][1], calculate_total()[0], calculate_total()[1], calculate_total()[2], CSM_Final.find_max()]
-        ############
+        values = [name, datetime.now(), uInfo[0][0], uInfo[0][1], maturity_total()[0][0], maturity_total()[1][0], maturity_total()[2][0], 
+                  maturity_total()[0][1], maturity_total()[1][1], maturity_total()[2][1], maturity_total()[0][2], maturity_total()[1][2], maturity_total()[2][2], 
+                  maturity_total()[0][3], maturity_total()[1][3], maturity_total()[2][3], maturity_total()[0][4], maturity_total()[1][4], maturity_total()[2][4], 
+                  CSM_Final.find_max()]
 
         get_assessment_name_query = """ SELECT name FROM csm WHERE name=%s; """
         name_value = [name]
@@ -240,6 +229,7 @@ class CSM_Final(tk.Frame):
             messagebox.showwarning("Warning", "An assessment with this name already exists")
         else:
             db.execute_query_data(db_connection, insert_csm_query, values)
+            reset_csm()
             frame.switch_frame(home.Home_Page)
 
         db_connection.close()
@@ -293,6 +283,24 @@ def submit_pressed(values):
             total_selected += 1
 
     return [y, y_c, n, total_selected]
+
+
+def reset_csm():
+    clear_pressed(d1.CSM_Domain1_Governance_Page.values)
+    clear_pressed(d1.CSM_Domain1_RiskManagement_Page.values)
+    clear_pressed(d1.CSM_Domain1_Resources_Page.values)
+    clear_pressed(d1.CSM_Domain1_TrainingAndCulture_Page.values)
+    clear_pressed(d2.CSM_Domain2_ThreatIntelligence_Page.values)
+    clear_pressed(d2.CSM_Domain2_MonitoringAndAnalyzing_Page.values)
+    clear_pressed(d2.CSM_Domain2_InformationSharing_Page.values)  
+    clear_pressed(d3.CSM_Domain3_PreventiveControls_Page.values)
+    clear_pressed(d3.CSM_Domain3_DetectiveControls_Page.values)
+    clear_pressed(d3.CSM_Domain3_CorrectiveControls_Page.values) 
+    clear_pressed(d4.CSM_Domain4_Connections_Page.values)
+    clear_pressed(d4.CSM_Domain4_RelationshipManagement_Page.values)
+    clear_pressed(d5.CSM_Domain5_IncidentPlanningAndStrategy_Page.values)
+    clear_pressed(d5.CSM_Domain5_DetectionResponseAndMitigation_Page.values)
+    clear_pressed(d5.CSM_Domain5_EscalationAndReporting_Page.values)
 
 
 def calculate_total():

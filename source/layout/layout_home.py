@@ -17,7 +17,7 @@ class Home_Page(tk.Frame):
         self.unbind_all("<Return>")
 
         logout_button = tk.Button(self, width=10, text="LOGOUT", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                  command=lambda: master.switch_frame(login.Login_Page))
+                                  command=lambda: reset_and_logout(master))
 
         irp_text = "The Inherent Risk Profile identifies the institution’s inherent risk before implementing controls"
         csm_text = "The Cybersecurity Maturity includes domains, assessment factors, components, and individual declarative statements across five maturity levels to identify specific controls and practices that are in place"
@@ -51,3 +51,19 @@ class Home_Page(tk.Frame):
 
         irp_button.grid(row=1, column=3, padx=50)
         csm_button.grid(row=3, column=3, padx=50)
+
+
+class Display(tk.Frame):
+    #region
+    def __init__(self, master):
+        tk.Frame.__init__(self, master)
+        master.title('Display Results')
+
+        
+    #endregion
+
+
+def reset_and_logout(frame):
+    csm.reset_csm()
+    irp.reset_irp()
+    frame.switch_frame(login.Login_Page)

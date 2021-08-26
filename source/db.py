@@ -84,11 +84,6 @@ def read_query_data(connection, query, data):
         print(f"Error: '{err}'")
 
 
-server_connection = create_server_connection("localhost", "root", "TempNewPass#158")
-create_database_query = "CREATE DATABASE IF NOT EXISTS CSA"
-create_database(server_connection, create_database_query)
-server_connection.close()
-
 create_users_table = """
 CREATE TABLE IF NOT EXISTS users (
     uid INT AUTO_INCREMENT PRIMARY KEY,
@@ -102,6 +97,8 @@ CREATE TABLE IF NOT EXISTS users (
     salt VARCHAR(100) NOT NULL
 );
 """
+
+create_database_query = "CREATE DATABASE IF NOT EXISTS CSA"
 
 create_irp_table = """
 CREATE TABLE IF NOT EXISTS irp (
@@ -120,7 +117,39 @@ CREATE TABLE IF NOT EXISTS irp (
 )
 """
 
+create_csm_table = """
+CREATE TABLE IF NOT EXISTS csm (
+    cid INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(40) UNIQUE NOT NULL,
+    date DATETIME NOT NULL,
+    user INT NOT NULL,
+    company VARCHAR(40) NOT NULL,
+    baseline_yes INT NOT NULL,
+    baseline_compensating INT NOT NULL,
+    baseline_no INT NOT NULL,
+    evolving_yes INT NOT NULL,
+    evolving_compensating INT NOT NULL,
+    evolving_no INT NOT NULL,
+    intermediate_yes INT NOT NULL,
+    intermediate_compensating INT NOT NULL,
+    intermediate_no INT NOT NULL,
+    advanced_yes INT NOT NULL,
+    advanced_compensating INT NOT NULL,
+    advanced_no INT NOT NULL,
+    innovative_yes INT NOT NULL,
+    innovative_compensating INT NOT NULL,
+    innovative_no INT NOT NULL,
+    maturity_level VARCHAR(20) NOT NULL,
+    FOREIGN KEY (user) REFERENCES users(uid)
+)
+"""
+
+server_connection = create_server_connection("localhost", "root", "TempNewPass#158")
+create_database(server_connection, create_database_query)
+server_connection.close()
+
 db_connection = create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
 execute_query(db_connection, create_users_table)
 execute_query(db_connection, create_irp_table)
+execute_query(db_connection, create_csm_table)
 db_connection.close()
