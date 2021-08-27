@@ -94,12 +94,12 @@ class CSM_Domain2_ThreatIntelligence_Page(tk.Frame):
         submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain2_Page))
 
-        submit_button.pack(side=tk.RIGHT, padx=20)
-
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values))
 
-        clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
@@ -116,6 +116,10 @@ class CSM_Domain2_ThreatIntelligence_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -193,12 +197,12 @@ class CSM_Domain2_MonitoringAndAnalyzing_Page(tk.Frame):
         submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain2_Page))
 
-        submit_button.pack(side=tk.RIGHT, padx=20)
-
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values))
 
-        clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
@@ -215,6 +219,10 @@ class CSM_Domain2_MonitoringAndAnalyzing_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -292,12 +300,12 @@ class CSM_Domain2_InformationSharing_Page(tk.Frame):
         submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain2_Page))
 
-        submit_button.pack(side=tk.RIGHT, padx=20)
-
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values))
 
-        clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
@@ -314,6 +322,10 @@ class CSM_Domain2_InformationSharing_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0

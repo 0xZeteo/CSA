@@ -141,44 +141,43 @@ class IRP_Cat1_Page(tk.Frame):
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: clear_pressed(self.values))
 
-        submit_button.pack(side=tk.RIGHT, padx=40, pady=20)
-        clear_button.pack(side=tk.RIGHT)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor="center")
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, bg="white")
+        vertical_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
+        vertical_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, bg="white")
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
 
         my_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)                                                     # Bind mouse wheel to scrollbar
-        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))      # Bind mouse event to scrollbar
+        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))      # Bind scroll region to scrollbar
         
         middle_frame = tk.Frame(my_canvas, bg="white")
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
 
-        # empty columns that keep the labels separated by a fixed size
-        top_frame.columnconfigure(2, minsize=200)
-        top_frame.columnconfigure(4, minsize=50)
-        top_frame.columnconfigure(6, minsize=70)
-        top_frame.columnconfigure(8, minsize=110)
-        top_frame.columnconfigure(10, minsize=160)
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Labels representing the risk levels
-        label1 = tk.Label(top_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
-        label2 = tk.Label(top_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
-        label3 = tk.Label(top_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
-        label4 = tk.Label(top_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
-        label5 = tk.Label(top_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
+        label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
+        label2 = tk.Label(middle_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
+        label3 = tk.Label(middle_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
+        label4 = tk.Label(middle_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
+        label5 = tk.Label(middle_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
 
-        label1.grid(row=1, column=3)
-        label2.grid(row=1, column=5)
-        label3.grid(row=1, column=7)
-        label4.grid(row=1, column=9)
-        label5.grid(row=1, column=11)
+        label1.grid(row=0, column=1)
+        label2.grid(row=0, column=2)
+        label3.grid(row=0, column=3, sticky='w', padx=30)
+        label4.grid(row=0, column=4, sticky='w', padx=30)
+        label5.grid(row=0, column=5, sticky='w', padx=30)
 
         # Get the questions from DATA and align them on screen
         i = 0
@@ -232,32 +231,36 @@ class IRP_Cat2_Page(tk.Frame):
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: clear_pressed(self.values))
 
-        submit_button.pack(side=tk.RIGHT, padx=40, pady=20)
-        clear_button.pack(side=tk.RIGHT)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
 
-        # Middle frame 
-        middle_frame = tk.Frame(self, bg="white")
-        middle_frame.pack(anchor='nw', fill='x')
+        bottom_frame.columnconfigure(1, weight=1)
 
-        # empty columns that keep the labels separated by a fixed size
-        top_frame.columnconfigure(2, minsize=130)
-        top_frame.columnconfigure(4, minsize=100)
-        top_frame.columnconfigure(6, minsize=130)
-        top_frame.columnconfigure(8, minsize=120)
-        top_frame.columnconfigure(10, minsize=130)
+        # Middle frame with a scrollbar and the questions
+        my_canvas = tk.Canvas(self)
+        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor="center")
+                                                   
+        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
+        
+        middle_frame = tk.Frame(my_canvas, bg="white")
+        my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set, bg='white')
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Labels representing the risk levels
-        label1 = tk.Label(top_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
-        label2 = tk.Label(top_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
-        label3 = tk.Label(top_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
-        label4 = tk.Label(top_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
-        label5 = tk.Label(top_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
+        label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
+        label2 = tk.Label(middle_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
+        label3 = tk.Label(middle_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
+        label4 = tk.Label(middle_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
+        label5 = tk.Label(middle_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
 
-        label1.grid(row=1, column=3)
-        label2.grid(row=1, column=5)
-        label3.grid(row=1, column=7)
-        label4.grid(row=1, column=9)
-        label5.grid(row=1, column=11)
+        label1.grid(row=0, column=1)
+        label2.grid(row=0, column=2)
+        label3.grid(row=0, column=3, sticky='w', padx=30)
+        label4.grid(row=0, column=4, sticky='w', padx=30)
+        label5.grid(row=0, column=5, sticky='w', padx=30)
 
         # Get the questions from DATA and align them on screen
         i = 0
@@ -311,8 +314,10 @@ class IRP_Cat3_Page(tk.Frame):
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: clear_pressed(self.values))
 
-        submit_button.pack(side=tk.RIGHT, padx=40, pady=20)
-        clear_button.pack(side=tk.RIGHT)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
@@ -330,25 +335,22 @@ class IRP_Cat3_Page(tk.Frame):
         middle_frame = tk.Frame(my_canvas, bg="white")
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
 
-        # empty columns that keep the labels separated by a fixed size
-        top_frame.columnconfigure(2, minsize=200)
-        top_frame.columnconfigure(4, minsize=60)
-        top_frame.columnconfigure(6, minsize=95)
-        top_frame.columnconfigure(8, minsize=140)
-        top_frame.columnconfigure(10, minsize=150)
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Labels representing the risk levels
-        label1 = tk.Label(top_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
-        label2 = tk.Label(top_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
-        label3 = tk.Label(top_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
-        label4 = tk.Label(top_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
-        label5 = tk.Label(top_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
+        label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
+        label2 = tk.Label(middle_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
+        label3 = tk.Label(middle_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
+        label4 = tk.Label(middle_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
+        label5 = tk.Label(middle_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
 
-        label1.grid(row=1, column=3)
-        label2.grid(row=1, column=5)
-        label3.grid(row=1, column=7)
-        label4.grid(row=1, column=9)
-        label5.grid(row=1, column=11)
+        label1.grid(row=0, column=1)
+        label2.grid(row=0, column=2)
+        label3.grid(row=0, column=3, sticky='w', padx=30)
+        label4.grid(row=0, column=4, sticky='w', padx=30)
+        label5.grid(row=0, column=5, sticky='w', padx=30)
 
         # Get the questions from DATA and align them on screen
         i = 0
@@ -402,8 +404,10 @@ class IRP_Cat4_Page(tk.Frame):
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: clear_pressed(self.values))
 
-        submit_button.pack(side=tk.RIGHT, padx=40, pady=20)
-        clear_button.pack(side=tk.RIGHT)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
@@ -421,25 +425,22 @@ class IRP_Cat4_Page(tk.Frame):
         middle_frame = tk.Frame(my_canvas, bg="white")
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
 
-        # empty columns that keep the labels separated by a fixed size
-        top_frame.columnconfigure(2, minsize=200)
-        top_frame.columnconfigure(4, minsize=60)
-        top_frame.columnconfigure(6, minsize=115)
-        top_frame.columnconfigure(8, minsize=140)
-        top_frame.columnconfigure(10, minsize=110)
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Labels representing the risk levels
-        label1 = tk.Label(top_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
-        label2 = tk.Label(top_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
-        label3 = tk.Label(top_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
-        label4 = tk.Label(top_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
-        label5 = tk.Label(top_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
+        label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
+        label2 = tk.Label(middle_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
+        label3 = tk.Label(middle_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
+        label4 = tk.Label(middle_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
+        label5 = tk.Label(middle_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
 
-        label1.grid(row=1, column=3)
-        label2.grid(row=1, column=5)
-        label3.grid(row=1, column=7)
-        label4.grid(row=1, column=9)
-        label5.grid(row=1, column=11)
+        label1.grid(row=0, column=1)
+        label2.grid(row=0, column=2)
+        label3.grid(row=0, column=3, sticky='w', padx=30)
+        label4.grid(row=0, column=4, sticky='w', padx=30)
+        label5.grid(row=0, column=5, sticky='w', padx=30)
 
         # Get the questions from DATA and align them on screen
         i = 0
@@ -493,32 +494,36 @@ class IRP_Cat5_Page(tk.Frame):
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: clear_pressed(self.values))
 
-        submit_button.pack(side=tk.RIGHT, padx=40, pady=20)
-        clear_button.pack(side=tk.RIGHT)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
 
-        # Middle frame
-        middle_frame = tk.Frame(self, bg="white")
-        middle_frame.pack(anchor='nw', fill='x')
+        bottom_frame.columnconfigure(1, weight=1)
 
-        # empty columns that keep the labels separated by a fixed size
-        top_frame.columnconfigure(2, minsize=200)
-        top_frame.columnconfigure(4, minsize=80)
-        top_frame.columnconfigure(6, minsize=115)
-        top_frame.columnconfigure(8, minsize=110)
-        top_frame.columnconfigure(10, minsize=140)
+        # Middle frame with a scrollbar and the questions
+        my_canvas = tk.Canvas(self)
+        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor="center")
+                                                   
+        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
+        
+        middle_frame = tk.Frame(my_canvas, bg="white")
+        my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set, bg='white')
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Labels representing the risk levels
-        label1 = tk.Label(top_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
-        label2 = tk.Label(top_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
-        label3 = tk.Label(top_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
-        label4 = tk.Label(top_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
-        label5 = tk.Label(top_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
+        label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
+        label2 = tk.Label(middle_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
+        label3 = tk.Label(middle_frame, width=15, text="Moderate", font='Calibri 10', borderwidth=3, relief="groove")
+        label4 = tk.Label(middle_frame, width=15, text="Signigicant", font='Calibri 10', borderwidth=3, relief="groove")
+        label5 = tk.Label(middle_frame, width=15, text="Most", font='Calibri 10', borderwidth=3, relief="groove")
 
-        label1.grid(row=1, column=3)
-        label2.grid(row=1, column=5)
-        label3.grid(row=1, column=7)
-        label4.grid(row=1, column=9)
-        label5.grid(row=1, column=11)
+        label1.grid(row=0, column=1)
+        label2.grid(row=0, column=2)
+        label3.grid(row=0, column=3, sticky='w', padx=30)
+        label4.grid(row=0, column=4, sticky='w', padx=30)
+        label5.grid(row=0, column=5, sticky='w', padx=30)
 
         # Get the questions from DATA and align them on screen
         i = 0

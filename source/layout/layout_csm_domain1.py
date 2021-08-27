@@ -103,19 +103,20 @@ class CSM_Domain1_Governance_Page(tk.Frame):
         submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
-        submit_button.pack(side=tk.RIGHT, padx=20)
-
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values))
 
-        clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor='center')
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, bg='white')
+        vertical_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
+        vertical_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, bg='white')
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
@@ -125,6 +126,10 @@ class CSM_Domain1_Governance_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -202,12 +207,12 @@ class CSM_Domain1_RiskManagement_Page(tk.Frame):
         submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
-        submit_button.pack(side=tk.RIGHT, padx=20)
-
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values)) #############
 
-        clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
@@ -224,6 +229,10 @@ class CSM_Domain1_RiskManagement_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -282,7 +291,7 @@ class CSM_Domain1_Resources_Page(tk.Frame):
         self.config(bg='ghost white')
 
         # Top frame contains navigation widgets and labels
-        top_frame = tk.Frame(self, bg='ghost white')
+        top_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
         top_frame.pack(side=tk.TOP, fill=tk.X, anchor="w")
 
         home_button = tk.Button(top_frame, text="HOME", width=10, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
@@ -295,22 +304,30 @@ class CSM_Domain1_Resources_Page(tk.Frame):
         back_button.pack(side=tk.LEFT)
 
         # Bottom frame contains the submit and clear buttons
-        bottom_frame = tk.Frame(self, bg='ghost white')
+        bottom_frame = tk.Frame(self, relief="groove", borderwidth=3, bg='ghost white')
         bottom_frame.pack(side=tk.BOTTOM, fill=tk.X, anchor="e")
 
         submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
-        submit_button.pack(side=tk.RIGHT, padx=20)
-
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: csm.clear_pressed(self.values)) #############
+                                 command=lambda: csm.clear_pressed(self.values))
 
-        clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame
-        middle_frame = tk.Frame(self, bg='white', relief='groove', borderwidth=3)
-        middle_frame.pack(anchor='nw', fill='x')
+        my_canvas = tk.Canvas(self)
+        my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor='center')
+        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
+
+        middle_frame = tk.Frame(my_canvas, bg='white')
+        my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set, bg='white')
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -388,12 +405,12 @@ class CSM_Domain1_TrainingAndCulture_Page(tk.Frame):
         submit_button = tk.Button(bottom_frame, width=10, text='SUBMIT', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
-        submit_button.pack(side=tk.RIGHT, padx=20)
-
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: csm.clear_pressed(self.values)) #############
 
-        clear_button.pack(side=tk.RIGHT, padx=10, pady=20)
+        submit_button.grid(row=1, column=3, padx=20, pady=10)
+        clear_button.grid(row=1, column=2)
+        bottom_frame.columnconfigure(1, weight=1)
 
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
@@ -410,6 +427,10 @@ class CSM_Domain1_TrainingAndCulture_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -456,5 +477,3 @@ class CSM_Domain1_TrainingAndCulture_Page(tk.Frame):
 
                 i += 1
     #endregion
-
-
