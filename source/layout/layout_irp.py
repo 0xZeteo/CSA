@@ -16,7 +16,7 @@ class IRP_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile")
+        master.title(login.Login_Page.logged_in.upper() + " - Inherent Risk Profile")
 
         self.config(bg="ghost white")
         self.unbind_all("<MouseWheel>")
@@ -96,12 +96,15 @@ class IRP_Page(tk.Frame):
         ToolTip(widget=final_score_button, text="Answer all the questions to proceed")
 
         # if all the questions are answered, then enable the submit button
-        if (calculate_total()[0] + calculate_total()[1] + calculate_total()[2] + calculate_total()[3] + calculate_total()[4] == int(str(len(DATA.IRP_Category1))) + int(str(len(DATA.IRP_Category2))) + int(str(len(DATA.IRP_Category3))) + int(str(len(DATA.IRP_Category4))) + int(str(len(DATA.IRP_Category5)))):
+        if (calculate_total()[0] + calculate_total()[1] + calculate_total()[2] + calculate_total()[3] + calculate_total()[4] == len(DATA.IRP_Category1) + len(DATA.IRP_Category2) + len(DATA.IRP_Category3) + len(DATA.IRP_Category4) + len(DATA.IRP_Category5)):
             final_score_button['state'] = "normal"
-    
+
+
     def reset_switch_irp(frame):
-        reset_irp()
-        frame.switch_frame(IRP_Page)
+        confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
+        if confirm:
+            reset_irp()
+            frame.switch_frame(IRP_Page)
     #endregion
 
 
@@ -114,7 +117,7 @@ class IRP_Cat1_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Technologies and Connection Types")
+        master.title(login.Login_Page.logged_in.upper() + " - Technologies and Connection Types")
 
         self.config(bg="ghost white")
 
@@ -139,7 +142,7 @@ class IRP_Cat1_Page(tk.Frame):
                                   command=lambda: master.switch_frame(IRP_Page))
         
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: clear_pressed(self.values))
+                                 command=lambda: clear_category(self.values))
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -204,7 +207,7 @@ class IRP_Cat2_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Delivery Channels")
+        master.title(login.Login_Page.logged_in.upper() + " - Delivery Channels")
 
         self.config(bg="white")
 
@@ -229,7 +232,7 @@ class IRP_Cat2_Page(tk.Frame):
                                   command=lambda: master.switch_frame(IRP_Page))
         
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: clear_pressed(self.values))
+                                 command=lambda: clear_category(self.values))
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -287,7 +290,7 @@ class IRP_Cat3_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Online/Mobile Products and Technology Services")
+        master.title(login.Login_Page.logged_in.upper() + " - Online/Mobile Products and Technology Services")
 
         self.config(bg="ghost white")
 
@@ -312,7 +315,7 @@ class IRP_Cat3_Page(tk.Frame):
                                   command=lambda: master.switch_frame(IRP_Page))
         
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: clear_pressed(self.values))
+                                 command=lambda: clear_category(self.values))
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -377,7 +380,7 @@ class IRP_Cat4_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Organizational Characteristics")
+        master.title(login.Login_Page.logged_in.upper() + " - Organizational Characteristics")
 
         self.config(bg="ghost white")
 
@@ -402,7 +405,7 @@ class IRP_Cat4_Page(tk.Frame):
                                   command=lambda: master.switch_frame(IRP_Page))
         
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: clear_pressed(self.values))
+                                 command=lambda: clear_category(self.values))
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -467,7 +470,7 @@ class IRP_Cat5_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - External Threats")
+        master.title(login.Login_Page.logged_in.upper() + " - External Threats")
 
         self.config(bg="white")
 
@@ -492,7 +495,7 @@ class IRP_Cat5_Page(tk.Frame):
                                   command=lambda: master.switch_frame(IRP_Page))
         
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font="Calibri 11", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: clear_pressed(self.values))
+                                 command=lambda: clear_category(self.values))
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -545,7 +548,7 @@ class IRP_Final(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Inherent Risk Profile - Final Score")
+        master.title(login.Login_Page.logged_in.upper() + " - Inherent Risk Profile - Score")
         self.config(bg="ghost white")
 
         # limit entry to alphanumeric characters only
@@ -621,14 +624,17 @@ class IRP_Final(tk.Frame):
         name_value = [name]
         assessment_name = db.read_query_data(db_connection, get_assessment_name_query, name_value)
 
-        if name == "":
-            messagebox.showwarning("Warning", "You need to enter a name for the assessment")
-        elif assessment_name:
-            messagebox.showwarning("Warning", "An assessment with this name already exists")
-        else:
-            db.execute_query_data(db_connection, insert_irp_query, values)
-            reset_irp()
-            frame.switch_frame(home.Home_Page)
+        confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to save your results ?')
+
+        if confirm:
+            if name == "":
+                messagebox.showwarning("Warning", "You need to enter a name for the assessment")
+            elif assessment_name:
+                messagebox.showwarning("Warning", "An assessment with this name already exists")
+            else:
+                db.execute_query_data(db_connection, insert_irp_query, values)
+                reset_irp()
+                frame.switch_frame(home.Home_Page)
 
         db_connection.close()
     #endregion
@@ -668,6 +674,12 @@ def reset_irp():
     clear_pressed(IRP_Cat3_Page.values)
     clear_pressed(IRP_Cat4_Page.values)
     clear_pressed(IRP_Cat5_Page.values)
+
+
+def clear_category(values):
+    confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
+    if confirm:
+        clear_pressed(values)
 
 
 """ This function clears the selection of radio buttons 

@@ -2,10 +2,12 @@ import layout.layout_home as home
 
 import tkinter as tk
 from tkcalendar import DateEntry
-from tkinter import messagebox
+from tkinter import Toplevel, messagebox
 import db
 import bcrypt
 import re
+from PIL import Image, ImageTk
+import webbrowser
 
 
 """ This class handles the layout of the Login page (Grid Layout) """
@@ -39,21 +41,32 @@ class Login_Page(tk.Frame):
         self.columnconfigure(3, weight=1) # empty last column that scales 
 
         self.rowconfigure(0, weight=1)    # empty first row that scales
-        self.rowconfigure(4, weight=1)    # empty last row that scales
+        self.rowconfigure(1, minsize=100)
+        self.rowconfigure(5, weight=1)    # empty last row that scales
 
-        user_label.grid         (row=1, column=1, padx=15, pady=20, sticky='nsew') 
-        password_label.grid     (row=2, column=1, padx=15, pady=20, sticky='nsew')
+        user_label.grid         (row=2, column=1, padx=15, pady=20, sticky='nsew') 
+        password_label.grid     (row=3, column=1, padx=15, pady=20, sticky='nsew')
 
-        user_entry.grid         (row=1, column=2, padx=15, pady=20, sticky='w')
-        password_entry.grid     (row=2, column=2, padx=15, pady=20, sticky='w')
+        user_entry.grid         (row=2, column=2, padx=15, pady=20, sticky='w')
+        password_entry.grid     (row=3, column=2, padx=15, pady=20, sticky='w')
 
-        register_button.grid    (row=3, column=1, pady=30, sticky='e')
-        login_button.grid       (row=3, column=2, padx=15, pady=30, sticky='n')
+        register_button.grid    (row=4, column=1, pady=30, sticky='e')
+        login_button.grid       (row=4, column=2, padx=15, pady=30, sticky='n')
 
         # bind enter key to the verify_login function === Login button pressed
         self.bind_all('<Return>', lambda e: verify_login(master, user_entry.get(), password_entry.get()))
         
         user_entry.focus() # Set the focus to the username entry
+
+        image = Image.open("resources/imt.png")
+        photo_image = ImageTk.PhotoImage(image)
+        image_label = tk.Label(self, image=photo_image)
+        image_label.image = photo_image
+        image_label.place(relx=0.5, rely=0.2, anchor='center')
+
+        about_label = tk.Label(self, text='About', font="Calibri 15 underline", bg='ghost white', fg='blue')
+        about_label.place(relx=0.5, rely=0.9, anchor='center')
+        about_label.bind("<Button-1>", lambda e: top_level(self, about_label))
     #endregion
 
 
@@ -62,7 +75,7 @@ class Register_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Registration")
+        master.title("Register")
 
         self.config(bg='ghost white')
 
@@ -136,7 +149,7 @@ class Register_Page(tk.Frame):
         # columns
         self.columnconfigure(0, weight=1)
         self.columnconfigure(3, minsize=25)
-        self.columnconfigure(6, minsize=25)
+        self.columnconfigure(6, minsize=15)
         self.columnconfigure(9, weight=1)
 
         username_label.grid             (row=1, column=1, padx=10, pady=20)
@@ -188,6 +201,27 @@ class ToolTip(object):
             tw.destroy()
         self.tooltipwindow = None
     #endregion
+
+
+def top_level(frame, widget):
+    top = tk.Toplevel(frame, background = "#ffffe0", relief = 'solid')
+    top.geometry("+{}+{}".format(widget.winfo_rootx()-250, widget.winfo_rooty()-50))
+    top.wm_overrideredirect(1)
+
+    info_label = tk.Label(top, background = "#ffffe0", font='Calibri 10', text='This project is powered by python.\nIt was made for the university of IMT Mines Ales and is completely open-source at their request.\nFeel free to contribute to the project via its github repository below.\nIf you have any concerns, requests or recommendations, you can reach me at miles.muollas@gmail.com')
+    git_label = tk.Label(top, background = "#ffffe0", fg='blue', font='Calibri 10 underline', text='https://github.com/Dynamic-Void/Cybersecurity-Assessment-Tool')
+    
+    git_label.bind('<Button-1>', lambda e: open_url('https://github.com/Dynamic-Void/Cybersecurity-Assessment-Tool'))
+
+    info_label.pack()
+    git_label.pack()
+    top.focus()
+
+    top.bind('<Escape>', lambda e: hide())
+    top.bind('<FocusOut>', lambda e: hide())
+
+    def hide():
+        top.destroy()
 
 
 """ This function handles the registration of the user when the Register button is pressed
@@ -265,3 +299,6 @@ def verify_login(frame, user_name, password):
         Login_Page.logged_in = user_name     # This variable holds the name of the logged in username
         frame.switch_frame(home.Home_Page)   # switch frame to Home page
  
+
+def open_url(url):
+    webbrowser.open_new(url)

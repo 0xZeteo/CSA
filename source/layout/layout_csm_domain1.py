@@ -5,6 +5,8 @@ import tkinter as tk
 import DATA
 import layout.layout_home as home
 import layout.layout_csm as csm
+import layout.layout_login as login
+from tkinter import messagebox
 
 """ This file is responsible for the layout of the Cybersecurity Maturity's Domain 1 page and everything within it """
 
@@ -12,7 +14,7 @@ class CSM_Domain1_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Cybersecurity Maturity - Cyber Risk Management and Oversight")
+        master.title(login.Login_Page.logged_in.upper() + " - Cyber Risk Management and Oversight")
 
         self.unbind_all("<MouseWheel>")
         self.config(bg="ghost white")
@@ -66,11 +68,13 @@ class CSM_Domain1_Page(tk.Frame):
         reset_button.place(relx=0.5, rely=0.8, anchor='center')
 
     def reset(frame):
-        csm.clear_pressed(CSM_Domain1_Governance_Page.values)
-        csm.clear_pressed(CSM_Domain1_RiskManagement_Page.values)
-        csm.clear_pressed(CSM_Domain1_Resources_Page.values)
-        csm.clear_pressed(CSM_Domain1_TrainingAndCulture_Page.values)
-        frame.switch_frame(CSM_Domain1_Page)
+        confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
+        if confirm:
+            csm.clear_pressed(CSM_Domain1_Governance_Page.values)
+            csm.clear_pressed(CSM_Domain1_RiskManagement_Page.values)
+            csm.clear_pressed(CSM_Domain1_Resources_Page.values)
+            csm.clear_pressed(CSM_Domain1_TrainingAndCulture_Page.values)
+            frame.switch_frame(CSM_Domain1_Page)
     #endregion
 
 
@@ -80,7 +84,7 @@ class CSM_Domain1_Governance_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Cyber Risk Management and Oversight - Governance")
+        master.title(login.Login_Page.logged_in.upper() + " - Governance")
         self.config(bg='ghost white')
 
         # Top frame contains navigation widgets and labels
@@ -104,7 +108,7 @@ class CSM_Domain1_Governance_Page(tk.Frame):
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: csm.clear_pressed(self.values))
+                                 command=lambda: csm.clear_category(self.values))
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -184,7 +188,7 @@ class CSM_Domain1_RiskManagement_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Cyber Risk Management and Oversight - Governance")
+        master.title(login.Login_Page.logged_in.upper() + " - Risk Management")
         self.config(bg='ghost white')
 
         # Top frame contains navigation widgets and labels
@@ -208,7 +212,7 @@ class CSM_Domain1_RiskManagement_Page(tk.Frame):
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: csm.clear_pressed(self.values)) #############
+                                 command=lambda: csm.clear_category(self.values)) #############
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -287,7 +291,7 @@ class CSM_Domain1_Resources_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Cyber Risk Management and Oversight - Governance")
+        master.title(login.Login_Page.logged_in.upper() + " - Resources")
         self.config(bg='ghost white')
 
         # Top frame contains navigation widgets and labels
@@ -311,7 +315,7 @@ class CSM_Domain1_Resources_Page(tk.Frame):
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: csm.clear_pressed(self.values))
+                                 command=lambda: csm.clear_category(self.values))
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -382,7 +386,7 @@ class CSM_Domain1_TrainingAndCulture_Page(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Cyber Risk Management and Oversight - Governance")
+        master.title(login.Login_Page.logged_in.upper() + " - Training and Culture")
         self.config(bg='ghost white')
 
         # Top frame contains navigation widgets and labels
@@ -406,7 +410,7 @@ class CSM_Domain1_TrainingAndCulture_Page(tk.Frame):
                                   command=lambda: master.switch_frame(CSM_Domain1_Page))
 
         clear_button = tk.Button(bottom_frame, width=10, text='CLEAR', font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                 command=lambda: csm.clear_pressed(self.values)) #############
+                                 command=lambda: csm.clear_category(self.values)) #############
 
         submit_button.grid(row=1, column=3, padx=20, pady=10)
         clear_button.grid(row=1, column=2)
@@ -467,7 +471,7 @@ class CSM_Domain1_TrainingAndCulture_Page(tk.Frame):
                     no_answer['value'] = 34
 
                 if key.endswith('5'):
-                    yes_answer['value'] = 15
+                    yes_answer['value'] = 15                  
                     yes_c_answer['value'] = 25
                     no_answer['value'] = 35
                 

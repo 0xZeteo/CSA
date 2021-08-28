@@ -18,7 +18,7 @@ class CSM_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Cybersecurity Maturity")
+        master.title(login.Login_Page.logged_in.upper() + " - Cybersecurity Maturity")
 
         self.config(bg="ghost white")
 
@@ -117,10 +117,27 @@ class CSM_Page(tk.Frame):
         reset_button.place(relx=0.5, rely=0.85, anchor='center')
         final_score_button.place(relx=0.75, rely=0.85, anchor='center')
 
+        dicts = [DATA.CSM_Domain1_Governance, DATA.CSM_Domain1_RiskManagement, DATA.CSM_Domain1_Resources, DATA.CSM_Domain1_TrainingAndCulture,
+                 DATA.CSM_Domain2_ThreatIntelligence, DATA.CSM_Domain2_MonitoringAndAnalyzing, DATA.CSM_Domain2_InformationSharing,
+                 DATA.CSM_Domain3_PreventiveControls, DATA.CSM_Domain3_DetectiveControls, DATA.CSM_Domain3_CorrectiveControls,
+                 DATA.CSM_Domain4_Connections, DATA.CSM_Domain4_RelationshipManagement,
+                 DATA.CSM_Domain5_IncidentPlanningAndStrategy, DATA.CSM_Domain5_DetectionResponseAndMitigation, DATA.CSM_Domain5_EscalationAndReporting]
+
+        count = 0
+        for i in range(len(dicts)):
+            for list in dicts[i].values():
+                count += len(list)
+
+        # if all answers are filled, enable the final score button
+        if (calculate_total()[0] + calculate_total()[1] + calculate_total()[2] == count):
+            final_score_button['state'] = 'normal'
+
 
     def reset_switch_csm(frame):
-        reset_csm()
-        frame.switch_frame(CSM_Page) 
+        confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
+        if confirm:
+            reset_csm()
+            frame.switch_frame(CSM_Page) 
     #endregion
 
 
@@ -128,7 +145,7 @@ class CSM_Final(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Cybersecurity Maturity - Final Score")
+        master.title(login.Login_Page.logged_in.upper() + " - Cybersecurity Maturity - Score")
         self.config(bg="ghost white")
 
         # limit entry to alphanumeric characters only
@@ -223,14 +240,17 @@ class CSM_Final(tk.Frame):
         name_value = [name]
         assessment_name = db.read_query_data(db_connection, get_assessment_name_query, name_value)
 
-        if name == "":
-            messagebox.showwarning("Warning", "You need to enter a name for the assessment")
-        elif assessment_name:
-            messagebox.showwarning("Warning", "An assessment with this name already exists")
-        else:
-            db.execute_query_data(db_connection, insert_csm_query, values)
-            reset_csm()
-            frame.switch_frame(home.Home_Page)
+        confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to save your results ?')
+
+        if confirm:
+            if name == "":
+                messagebox.showwarning("Warning", "You need to enter a name for the assessment")
+            elif assessment_name:
+                messagebox.showwarning("Warning", "An assessment with this name already exists")
+            else:
+                db.execute_query_data(db_connection, insert_csm_query, values)
+                reset_csm()
+                frame.switch_frame(home.Home_Page)
 
         db_connection.close()
     #endregion
@@ -264,9 +284,16 @@ class ToolTip(object):
     #endregion
 
 
+def clear_category(values):
+    confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
+    if confirm:
+        clear_pressed(values)
+
+
 def clear_pressed(values):
     for i in range(len(values)):
         values[i].set(0)
+
 
 def submit_pressed(values):
     y = y_c = n = total_selected = 0
