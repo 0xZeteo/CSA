@@ -1,12 +1,16 @@
-import tkinter as tk
+"""" Here is everything related to the home page after logging in """
+
 import layout.layout_irp as irp
 import layout.layout_csm as csm
 import layout.layout_login as login
-import bcrypt
 import db
-from tkinter import messagebox
 
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+from tkinter.font import nametofont
 import matplotlib.pyplot as plt
+import bcrypt
 
 
 """ This class handles the the layout of the Home page as in the first page after logging in """
@@ -21,7 +25,7 @@ class Home_Page(tk.Frame):
         self.unbind_all("<MouseWheel>")
         self.unbind_all("<Return>")
 
-        logout_button = tk.Button(self, width=10, text="LOGOUT", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+        logout_button = tk.Button(self, width=15, text="Logout", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                   command=lambda: reset_and_logout(master))
 
         change_pass_button = tk.Button(self, width=15, text="Change Password", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
@@ -45,15 +49,18 @@ class Home_Page(tk.Frame):
         csm_button = tk.Button(self, width=13, text="Assess Maturity", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                command=lambda: master.switch_frame(csm.CSM_Page))
 
-        past_results_button = tk.Button(self, width=13, text="Past Results", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                           command=lambda: display_graph())
+        display_irp_button = tk.Button(self, width=15, text="Risk Results", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                           command=lambda: display_irp(master))
+
+        display_csm_button = tk.Button(self, width=15, text="Maturity Results", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                           command=lambda: display_csm(master))
 
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, minsize=50)
         self.rowconfigure(3, minsize=50)
         self.rowconfigure(5, weight=1)
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, minsize=50)
+        self.columnconfigure(1, minsize=100)
         self.columnconfigure(5, weight=1)
 
         irp_textbox.grid(row=2, column=2)
@@ -62,12 +69,14 @@ class Home_Page(tk.Frame):
         irp_button.grid(row=2, column=3, padx=50)
         csm_button.grid(row=4, column=3, padx=50)
 
-        logout_button.place(relx=0.25, rely=0.1, anchor='center')
-        past_results_button.place(relx=0.40, rely=0.1, anchor='center')
-        change_pass_button.place(relx=0.55, rely=0.1, anchor='center')
+        logout_button.place(relx=0.1, rely=0.1, anchor='center')
+        display_irp_button.place(relx=0.1, rely=0.3, anchor='center')
+        display_csm_button.place(relx=0.1, rely=0.4, anchor='center')
+        change_pass_button.place(relx=0.1, rely=0.2, anchor='center')
     #endregion
 
 
+""" This class handles the layout of the change password page """
 class Change_Password_Page(tk.Frame):
     #region
     def __init__(self, master):
@@ -77,7 +86,7 @@ class Change_Password_Page(tk.Frame):
 
         old_password_label = tk.Label(self, text="Current Password", font="Calibri 20", bg='ghost white')
         new_password_label = tk.Label(self, text="New Password", font="Calibri 20", bg='ghost white')
-        confirm_new_password_label = tk.Label(self, text="Confirm New Password", font="Calibri 20", bg='ghost white')
+        confirm_new_password_label = tk.Label(self, text="Confirm Password", font="Calibri 20", bg='ghost white')
 
         old_password_entry = tk.Entry(self, font="Calirbi 15", relief='groove', borderwidth=3, bg='SlateGray4', 
                                      fg='white', insertbackground='white', cursor='top_left_arrow', show="*")
@@ -105,10 +114,16 @@ class Change_Password_Page(tk.Frame):
         cancel_button.place(relx=0.4, rely=0.7, anchor='center')
         confirm_button.place(relx=0.6, rely=0.7, anchor='center')
 
+        # add tooltips to the new password and confirm password entry fields
         ToolTip(widget=new_password_entry, text='Password must be at least 9 characters long, with 1+ uppercase, 1+ numeric and 1+ special characters ($,@,#,%)')
         ToolTip(widget=confirm_new_password_entry, text='Password must be at least 9 characters long, with 1+ uppercase, 1+ numeric and 1+ special characters ($,@,#,%)')
 
     
+    """ This function handles all the verifications and the changing of the password
+        @arg frame - parent frame (master) to switch
+        @arg old_pass - references the user's old password
+        @arg new_pass - references the user's new password
+        @arg confirm_new_pass - references the password confirmation """
     def change_password(frame, old_pass, new_pass, confirm_new_pass):
         SpecialChar = ['$', '@', '#', '%']
 
@@ -127,12 +142,16 @@ class Change_Password_Page(tk.Frame):
 
         confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your password ?')
         if confirm:
+            # if empty fields
             if (old_pass == "") or (new_pass == "") or (confirm_new_pass == ""):
                 messagebox.showwarning("Warning", "All fields must be filled")
+            # if wrong old password entered
             elif not bcrypt.checkpw(old_pass.encode('utf8'), old_hash[0][0].encode('utf8')): # check password against a hashed value
                 messagebox.showwarning("Warning", "Wrong password")
+            # if new password does not match the confirm new password 
             elif new_pass != confirm_new_pass:
                 messagebox.showwarning("Warning", "Password mismatch")
+            # if new password does not conform to the required format 
             elif (len(new_pass) < 9 or not any(char.isdigit() for char in new_pass) or not any(char.isupper() for char in new_pass) or not any(char in SpecialChar for char in new_pass)):
                 messagebox.showwarning("Warning", "Password must be 9 characters long with at least 1 numeric, 1 uppercase and 1 special character ($,@,#,%)")
             else:
@@ -171,26 +190,256 @@ class ToolTip(object):
     #endregion
 
 
-def display_graph():
-    get_assessment_name = """ SELECT name FROM irp WHERE iid=8; """
-    get_irp_test = """ SELECT least, minimal, moderate, significant, most FROM irp WHERE iid=8; """
 
+""" This class handles the layout of the IRP results page """
+class Display_IRP(tk.Frame):
+    #region
+    def __init__(self, master):
+        tk.Frame.__init__(self, master) 
+        master.title(login.Login_Page.logged_in.upper() + ' - Inherent Risk Profile Results')
+        self.config(bg='ghost white')
+
+        cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+
+        get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
+        username = [login.Login_Page.logged_in]
+        uid = db.read_query_data(cnx, get_user_id_query, username)
+
+        get_irp_query = """ SELECT date, name, least, minimal, moderate, significant, most, risk_level FROM irp WHERE user=%s ORDER BY date DESC; """
+        user = [uid[0][0]]
+        results = db.read_query_data(cnx, get_irp_query, user)
+
+        cnx.close()
+
+        # top frame
+        top_frame = tk.Frame(self, bg='ghost white')
+        top_frame.pack(side=tk.TOP, fill='x')
+
+        back_button = tk.Button(top_frame, text='BACK', width=10, font="Calibri 10", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                command=lambda: master.switch_frame(Home_Page))
+
+        graph_button = tk.Button(top_frame, text='Graph Display', width=12, relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                 command=lambda: Display_IRP.graph(table.item(table.focus())))
+
+        back_button.pack(side=tk.LEFT, padx=50, pady=10)
+        graph_button.place(relx=0.5, rely=0.5, anchor='center')
+
+        # bottom frame
+        bottom_frame = tk.Frame(self, borderwidth=3)
+        bottom_frame.pack(side=tk.BOTTOM, expand='yes', fill='both')
+
+        # columns of the display table
+        cols = ('Date','Name','Least','Minimal','Moderate','Significant','Most','Risk Level')
+        table = ttk.Treeview(bottom_frame, columns=cols, show='headings')
+
+        scrollbar = ttk.Scrollbar(bottom_frame, orient='vertical', command=table.yview)
+        scrollbar.pack(side=tk.RIGHT, fill='y')
+
+        table.configure(yscrollcommand=scrollbar.set)
+
+        # display table column names and width
+        for col in cols:
+            table.heading(col, text=col)
+            table.column(col, width=50, anchor='center')
+
+        # insert data rows into display table
+        for result in results:
+            table.insert("", "end", values=(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7]))
+        
+        nametofont("TkHeadingFont").configure(weight='bold')    # headings font bold
+        table.pack(side=tk.LEFT, expand='yes', fill='both')
+
+     # this function handles the display of a single row from the table as a bar graph
+    def graph(row):
+        values = row.get('values')
+        
+        if not values:
+            messagebox.showwarning('Warning', 'Select an assessment to visualize')
+        else:
+            cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+            get_irp_query = """ SELECT least, minimal, moderate, significant, most FROM irp WHERE name=%s; """
+            name_value = [values[1]]
+            result = db.read_query_data(cnx, get_irp_query, name_value)
+            cnx.close()
+
+            # labels on the x-axis
+            x_axis = ['Least', 'Minimal', 'Moderate', 'Significant', 'Most']
+
+            plt.bar(x_axis, result[0])                          # create the bars
+            plt.title('Assessment: {}'.format(values[1]))       # assessment name as the title for the graph
+            plt.show()                                          # show graph
+    #endregion
+
+
+""" This class handles the layout of the CSM results page """
+class Display_CSM(tk.Frame):
+    #region
+    def __init__(self, master):
+        tk.Frame.__init__(self, master) 
+        master.title(login.Login_Page.logged_in.upper() + ' - Cybersecurity Maturity Results')
+        self.config(bg='ghost white')
+
+        cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+
+        get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
+        username = [login.Login_Page.logged_in]
+        uid = db.read_query_data(cnx, get_user_id_query, username)
+        
+        get_csm_query = """ 
+        SELECT date, name, 
+        baseline_yes, evolving_yes, intermediate_yes, innovative_yes, advanced_yes, 
+        baseline_compensating, evolving_compensating, intermediate_compensating, advanced_compensating, innovative_compensating,
+        baseline_no, evolving_no, intermediate_no, advanced_no, innovative_no,
+        maturity_level FROM csm WHERE user=%s ORDER BY date DESC; """
+        user = [uid[0][0]]
+        results = db.read_query_data(cnx, get_csm_query, user)
+
+        cnx.close()
+
+        # top frame
+        top_frame = tk.Frame(self, bg='ghost white')
+        top_frame.pack(side=tk.TOP, fill='x')
+
+        back_button = tk.Button(top_frame, text='BACK', width=10, font="Calibri 10", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                command=lambda: master.switch_frame(Home_Page))
+
+        graph_button = tk.Button(top_frame, text='Graph Display', width=12, relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
+                                 command=lambda: Display_CSM.graph(table.item(table.focus())))
+
+        back_button.pack(side=tk.LEFT, padx=50, pady=10)
+        graph_button.place(relx=0.5, rely=0.5, anchor='center')
+
+        # bottom frame
+        bottom_frame = tk.Frame(self, borderwidth=3)
+        bottom_frame.pack(side=tk.BOTTOM, expand='yes', fill='both')
+
+        # columns of the display table
+        cols = ('Date','Name',
+        'B (Y)', 'E (Y)', 'Inter (Y)', 'A (Y)', 'Inno (Y)',
+        'B (C)', 'E (C)', 'Inter (C)', 'A (C)', 'Inno (C)',
+        'B (N)', 'E (N)', 'Inter (N)', 'A (N)', 'Inno (N)',
+        'Maturity Level')
+
+        table = ttk.Treeview(bottom_frame, columns=cols, show='headings')
+
+        # scrollbar
+        scrollbar = ttk.Scrollbar(bottom_frame, orient='vertical', command=table.yview)
+        scrollbar.pack(side=tk.RIGHT, fill='y')
+
+        table.configure(yscrollcommand=scrollbar.set)
+
+        # Display table column names and width
+        for col in cols:
+            table.heading(col, text=col)
+            if col == 'Date' or col == 'Name':
+                table.column(col, width=70, anchor='center')
+            elif col == 'Maturity Level':
+                table.column(col, width=45, anchor='center')
+            else:
+                table.column(col, width=15, anchor='center')
+
+        # insert values into display table
+        for result in results:
+            table.insert("", "end", values=(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15], result[16], result[17]))
+        
+        nametofont("TkHeadingFont").configure(weight='bold') # make headings bold
+        table.pack(side=tk.LEFT, expand='yes', fill='both')
+
+        # hint label that displays information about the symbols found on this page
+        hint_label = tk.Label(top_frame, text='Hint', font="Calibri 10 underline", bg='ghost white', fg='blue')
+        hint_label.place(relx=0.9, rely=0.5, anchor='center')
+        hint_label.bind("<Button-1>", lambda e: top_level(self, hint_label))
+
+    # this function handles the display of a single row from the table as a bar graph
+    def graph(row):
+        values = row.get('values')
+        
+        if not values:
+            messagebox.showwarning('Warning', 'Select an assessment to visualize')
+        else:
+            cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+            get_csm_query = """ SELECT 
+            baseline_yes, evolving_yes, intermediate_yes, innovative_yes, advanced_yes, 
+            baseline_compensating, evolving_compensating, intermediate_compensating, advanced_compensating, innovative_compensating,
+            baseline_no, evolving_no, intermediate_no, advanced_no, innovative_no 
+            FROM csm WHERE name=%s; """
+            name_value = [values[1]]
+            result = db.read_query_data(cnx, get_csm_query, name_value)
+            cnx.close()
+
+            # labels on the x-axis
+            x_axis = ['B(Y)', 'E(Y)', 'I(Y)', 'A(Y)', 'I(Y)',
+                      'B(C)', 'E(C)', 'I(C)', 'A(C)', 'I(C)',
+                      'B(N)', 'E(N)', 'I(N)', 'A(N)', 'I(N)']
+
+            plt.bar(x_axis, result[0])                      # create the bars
+            plt.title('Assessment: {}'.format(values[1]))   # assessment name as the title of the graph
+            plt.show()                                      # show graph
+    #endregion
+
+
+# this function handles the top level window when the hint label is pressed (displays information about the symbols)
+def top_level(frame, widget):
+    top = tk.Toplevel(frame, background = "#ffffe0", relief = 'solid')
+    top.geometry("+{}+{}".format(widget.winfo_rootx()-300, widget.winfo_rooty()))
+    top.wm_overrideredirect(1)
+
+    info_label = tk.Label(top, background = "#ffffe0", font='Calibri 10', 
+                          text='Symbols found in this page:\nB: Baseline, E: Evolving, I/Inter: Intermediate, A: Advanced, I/Inno: Innovative\n(Y): Yes, (C): Compensating, (N): No')
+    
+    info_label.pack()
+    top.focus()
+
+    top.bind('<Escape>', lambda e: hide())
+    top.bind('<FocusOut>', lambda e: hide())
+
+    def hide():
+        top.destroy()
+
+
+# this function handles the validation before displaying the IRP results
+def display_irp(frame):
     cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
-    name = db.read_query(cnx, get_assessment_name)
-    result = db.read_query(cnx, get_irp_test)
+
+    get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
+    username = [login.Login_Page.logged_in]
+    uid = db.read_query_data(cnx, get_user_id_query, username)
+
+    get_irp_query = """ SELECT iid FROM irp WHERE user=%s; """
+    user = [uid[0][0]]
+    results = db.read_query_data(cnx, get_irp_query, user)
+
     cnx.close()
 
-    x_axis = ['Least', 'Minimal', 'Moderate', 'Significant', 'Most']
-    plt.bar(x_axis, result[0])
-    plt.ylim(0, 20)
-    plt.xlabel("Risk Level")
-    plt.ylabel("Score")
-    plt.title('Results of {}'.format(name[0][0])) ##### change frame title
-    plt.show()
+    if not results:
+        messagebox.showwarning("Warning", "No assessments have been saved by this user")
+    else:
+        frame.switch_frame(Display_IRP)
 
 
+# this function handles the validation before displaying the CSM results 
+def display_csm(frame):
+    cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+
+    get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
+    username = [login.Login_Page.logged_in]
+    uid = db.read_query_data(cnx, get_user_id_query, username)
+
+    get_csm_query = """ SELECT cid FROM csm WHERE user=%s; """
+    user = [uid[0][0]]
+    results = db.read_query_data(cnx, get_csm_query, user)
+
+    cnx.close()
+
+    if not results:
+        messagebox.showwarning("Warning", "No assessments have been saved by this user")
+    else:
+        frame.switch_frame(Display_CSM)
+
+
+# this function displays a confirmation box and then resets all the answers before logging out
 def reset_and_logout(frame):
-    confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to logout ?')
+    confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to logout ? Unsaved results will be lost')
     if confirm:
         csm.reset_csm()
         irp.reset_irp()

@@ -1,12 +1,13 @@
 
 """ HERE IS THE LAYOUT OF EVERYTHING RELATED TO THE INHERENT RISK PROFILE """
 
-import tkinter as tk
-from tkinter import messagebox
-import DATA
 import layout.layout_home as home
 import layout.layout_login as login
+import DATA
 import db
+
+import tkinter as tk
+from tkinter import messagebox
 from datetime import datetime
 
 
@@ -16,10 +17,10 @@ class IRP_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title(login.Login_Page.logged_in.upper() + " - Inherent Risk Profile")
+        master.title(login.Login_Page.logged_in.upper() + " - Inherent Risk Profile")   # window title
 
-        self.config(bg="ghost white")
-        self.unbind_all("<MouseWheel>")
+        self.config(bg="ghost white")       # frame background
+        self.unbind_all("<MouseWheel>")     # unbind mousewheel
 
         home_button = tk.Button(self, width=10, text="HOME", font="Calibri 14", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                 command=lambda: master.switch_frame(home.Home_Page))
@@ -93,6 +94,7 @@ class IRP_Page(tk.Frame):
         reset_button.grid(row=7, column=1)
         final_score_button.grid(row=7, column=2)
 
+        # adds a tooltip to the final score button
         ToolTip(widget=final_score_button, text="Answer all the questions to proceed")
 
         # if all the questions are answered, then enable the submit button
@@ -100,11 +102,12 @@ class IRP_Page(tk.Frame):
             final_score_button['state'] = "normal"
 
 
+    # confirmation window which resets the IRP answers if the user clicks ok
     def reset_switch_irp(frame):
         confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
         if confirm:
             reset_irp()
-            frame.switch_frame(IRP_Page)
+            frame.switch_frame(IRP_Page)    # switch frame to IRP_Page
     #endregion
 
 
@@ -152,10 +155,16 @@ class IRP_Cat1_Page(tk.Frame):
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor="center")
+
         vertical_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
         vertical_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, bg="white")
 
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
+
+        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set, bg="white")
+
+        # defines the scrolling distance when mousewheel is used
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
 
@@ -164,10 +173,6 @@ class IRP_Cat1_Page(tk.Frame):
         
         middle_frame = tk.Frame(my_canvas, bg="white")
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
-
-        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
-        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
-        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Labels representing the risk levels
         label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
@@ -249,9 +254,9 @@ class IRP_Cat2_Page(tk.Frame):
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
 
         horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
-        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set, bg='white')
         horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
-
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set, bg='white')
+        
         # Labels representing the risk levels
         label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
         label2 = tk.Label(middle_frame, width=15, text="Minimal", font='Calibri 10', borderwidth=3, relief="groove")
@@ -325,9 +330,14 @@ class IRP_Cat3_Page(tk.Frame):
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor="center")
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, bg="white")
+
+        vertical_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
+        vertical_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
+
+        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set, bg="white")
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
@@ -337,10 +347,6 @@ class IRP_Cat3_Page(tk.Frame):
         
         middle_frame = tk.Frame(my_canvas, bg="white")
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
-
-        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
-        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
-        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Labels representing the risk levels
         label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
@@ -415,9 +421,14 @@ class IRP_Cat4_Page(tk.Frame):
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor="center")
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, bg="white")
+
+        vertical_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
+        vertical_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
+
+        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set, bg="white")
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
@@ -427,10 +438,6 @@ class IRP_Cat4_Page(tk.Frame):
         
         middle_frame = tk.Frame(my_canvas, bg="white")
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
-
-        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
-        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
-        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Labels representing the risk levels
         label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
@@ -512,8 +519,8 @@ class IRP_Cat5_Page(tk.Frame):
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
 
         horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
-        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set, bg='white')
         horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
+        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set, bg='white')
 
         # Labels representing the risk levels
         label1 = tk.Label(middle_frame, width=15, text="Least", font='Calibri 10', borderwidth=3, relief="groove")
@@ -544,6 +551,7 @@ class IRP_Cat5_Page(tk.Frame):
     #endregion
 
 
+""" Inherent Risk Profile - Score page """
 class IRP_Final(tk.Frame):
     #region
     def __init__(self, master):
@@ -573,6 +581,7 @@ class IRP_Final(tk.Frame):
         assessment_name_entry = tk.Entry(self, font="Calirbi 11 bold", relief='groove', borderwidth=3, fg='white', insertbackground='white', cursor='top_left_arrow',
                                          bg='SlateGray4', width=20, validate='key', validatecommand=(alpha_num_validation, '%S'))
 
+        # add tooltip for the assessment name entry field
         ToolTip(widget=assessment_name_entry, text="Enter a unique name for the assessment")
         
         save_results_button = tk.Button(self, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
@@ -592,6 +601,7 @@ class IRP_Final(tk.Frame):
         save_results_button.place(relx=0.68, rely=0.8, anchor='center')
 
 
+    # find the risk category with the maximum answers and return it as a String
     def find_max():
         max_value = max(calculate_total())
         indexes = [i for i, j in enumerate(calculate_total()) if j == max_value]
@@ -608,7 +618,9 @@ class IRP_Final(tk.Frame):
         elif 0 in indexes:
             return 'Least'
 
+    # handles saving the results to the database with all the validations required
     def save(frame, name):
+        name = name.lower()
         get_userInfo_query = """ SELECT uid,company FROM users WHERE username=%s; """
         u_value = [login.Login_Page.logged_in]
 
@@ -668,6 +680,7 @@ class ToolTip(object):
     #endregion
 
 
+# this funtion resets the answers of all the IRP categories
 def reset_irp():
     clear_pressed(IRP_Cat1_Page.values)
     clear_pressed(IRP_Cat2_Page.values)
@@ -676,6 +689,7 @@ def reset_irp():
     clear_pressed(IRP_Cat5_Page.values)
 
 
+# this function clears the answers of a category after a confirmation window
 def clear_category(values):
     confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
     if confirm:
@@ -683,14 +697,14 @@ def clear_category(values):
 
 
 """ This function clears the selection of radio buttons 
-    @Arg = List[] | contains the variable that is a reference to the radio buttons """
+    @arg = List[] | contains the variable that is a reference to the radio buttons """
 def clear_pressed(values):
     for i in range(len(values)):
         values[i].set(0)
 
 
 """ This function counts the number of answers in each risk level in every category independently
-    @Arg = List[] | contains the variable that is a reference to the radio buttons """
+    @arg = List[] | contains the variable that is a reference to the radio buttons """
 def calculate_total_per_category(values):
     least = minimal = moderate = significant = most = total_selected = 0
     

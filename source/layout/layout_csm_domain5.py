@@ -1,15 +1,16 @@
 
-""" HERE IS THE LAYOUT OF EVERYTHING RELATED TO THE CYBERSECURITY MATURITY """
+""" HERE IS THE LAYOUT OF EVERYTHING RELATED TO THE CYBERSECURITY MATURITY DOMAIN 5 """
 
-import tkinter as tk
-import DATA
 import layout.layout_home as home
 import layout.layout_csm as csm
 import layout.layout_login as login
+import DATA
+
+import tkinter as tk
 from tkinter import messagebox
 
-""" This file is responsible for the layout of the Cybersecurity Maturity's Domain 5 page and everything within it """
 
+""" This file is responsible for the layout of the Cybersecurity Maturity's Domain 5 page"""
 class CSM_Domain5_Page(tk.Frame):
     #region
     def __init__(self, master):
@@ -59,6 +60,7 @@ class CSM_Domain5_Page(tk.Frame):
 
         reset_button.place(relx=0.5, rely=0.8, anchor='center') 
 
+    # reset the answers of Domain 5
     def reset(frame):
         confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
         if confirm:
@@ -69,6 +71,7 @@ class CSM_Domain5_Page(tk.Frame):
     #endregion
 
 
+""" This file is responsible for the layout of the Cybersecurity Maturity's Domain 5 - Incident Planning and Strategy page """
 class CSM_Domain5_IncidentPlanningAndStrategy_Page(tk.Frame):
     #region
     values = []
@@ -108,9 +111,14 @@ class CSM_Domain5_IncidentPlanningAndStrategy_Page(tk.Frame):
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor='center')
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, bg='white')
+
+        vertical_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
+        vertical_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
+
+        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set, bg='white')
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
@@ -120,10 +128,6 @@ class CSM_Domain5_IncidentPlanningAndStrategy_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
-
-        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
-        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
-        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -139,26 +143,34 @@ class CSM_Domain5_IncidentPlanningAndStrategy_Page(tk.Frame):
                 yes_c_answer = tk.Radiobutton(middle_frame, text="Y(C)", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
                 no_answer = tk.Radiobutton(middle_frame, text="N", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
                 
+                """ First part of the value references the answer (1 = yes | 2 = yes compensating | 3 = no)
+                    Second part of the value references the maturity level (1 = Baseline | 2 = Evolving | 3 = Intermediate | 4 = Advanced | 5 = Innovative) """
+
+                # Baseline
                 if key.endswith('1'):
                     yes_answer['value'] = 11
                     yes_c_answer['value'] = 21
                     no_answer['value'] = 31
 
+                # Evolving
                 if key.endswith('2'):
                     yes_answer['value'] = 12
                     yes_c_answer['value'] = 22
                     no_answer['value'] = 32
 
+                # Intermediate
                 if key.endswith('3'):
                     yes_answer['value'] = 13
                     yes_c_answer['value'] = 23
                     no_answer['value'] = 33
 
+                # Advanced
                 if key.endswith('4'):
                     yes_answer['value'] = 14
                     yes_c_answer['value'] = 24
                     no_answer['value'] = 34
 
+                # Innovative
                 if key.endswith('5'):
                     yes_answer['value'] = 15
                     yes_c_answer['value'] = 25
@@ -172,6 +184,7 @@ class CSM_Domain5_IncidentPlanningAndStrategy_Page(tk.Frame):
     #endregion
 
 
+""" This file is responsible for the layout of the Cybersecurity Maturity's Domain 5 - Detection Response and Mitigation page """
 class CSM_Domain5_DetectionResponseAndMitigation_Page(tk.Frame):
     #region
     values = []
@@ -211,9 +224,14 @@ class CSM_Domain5_DetectionResponseAndMitigation_Page(tk.Frame):
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor='center')
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, bg='white')
+
+        vertical_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
+        vertical_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
+
+        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set, bg='white')
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
@@ -223,10 +241,6 @@ class CSM_Domain5_DetectionResponseAndMitigation_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
-
-        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
-        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
-        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -242,6 +256,9 @@ class CSM_Domain5_DetectionResponseAndMitigation_Page(tk.Frame):
                 yes_c_answer = tk.Radiobutton(middle_frame, text="Y(C)", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
                 no_answer = tk.Radiobutton(middle_frame, text="N", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
                 
+                """ First part of the value references the answer (1 = yes | 2 = yes compensating | 3 = no)
+                    Second part of the value references the maturity level (1 = Baseline | 2 = Evolving | 3 = Intermediate | 4 = Advanced | 5 = Innovative) """
+
                 if key.endswith('1'):
                     yes_answer['value'] = 11
                     yes_c_answer['value'] = 21
@@ -275,6 +292,7 @@ class CSM_Domain5_DetectionResponseAndMitigation_Page(tk.Frame):
     #endregion
 
 
+""" This file is responsible for the layout of the Cybersecurity Maturity's Domain 5 - Escalation and Reporting page """
 class CSM_Domain5_EscalationAndReporting_Page(tk.Frame):
     #region
     values = []
@@ -314,9 +332,14 @@ class CSM_Domain5_EscalationAndReporting_Page(tk.Frame):
         # Middle frame with a scrollbar and the questions
         my_canvas = tk.Canvas(self)
         my_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1, anchor='center')
-        my_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        my_canvas.configure(yscrollcommand=my_scrollbar.set, bg='white')
+
+        vertical_scrollbar = tk.Scrollbar(self, orient=tk.VERTICAL, command=my_canvas.yview)
+        vertical_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
+        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
+
+        my_canvas.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set, bg='white')
 
         def _on_mouse_wheel(event):
             my_canvas.yview_scroll(-1 * int((event.delta / 120)), "units")
@@ -326,10 +349,6 @@ class CSM_Domain5_EscalationAndReporting_Page(tk.Frame):
 
         middle_frame = tk.Frame(my_canvas, bg='white')
         my_canvas.create_window((0,0), window=middle_frame, anchor="nw")
-
-        horizontal_scrollbar = tk.Scrollbar(bottom_frame, orient=tk.HORIZONTAL, command=my_canvas.xview)
-        my_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
-        horizontal_scrollbar.grid(row=0, column=0, columnspan=10, sticky='nsew')
 
         # Get the questions from DATA and align them on screen
         i=0
@@ -345,26 +364,34 @@ class CSM_Domain5_EscalationAndReporting_Page(tk.Frame):
                 yes_c_answer = tk.Radiobutton(middle_frame, text="Y(C)", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
                 no_answer = tk.Radiobutton(middle_frame, text="N", bg='white', relief='groove', font='Calibri 14 bold', borderwidth=0, variable=self.values[i])
                 
+                """ First part of the value references the answer (1 = yes | 2 = yes compensating | 3 = no)
+                    Second part of the value references the maturity level (1 = Baseline | 2 = Evolving | 3 = Intermediate | 4 = Advanced | 5 = Innovative) """
+
+                # Baseline
                 if key.endswith('1'):
                     yes_answer['value'] = 11
                     yes_c_answer['value'] = 21
                     no_answer['value'] = 31
-
+                
+                # Evolving
                 if key.endswith('2'):
                     yes_answer['value'] = 12
                     yes_c_answer['value'] = 22
                     no_answer['value'] = 32
 
+                # Intermediate
                 if key.endswith('3'):
                     yes_answer['value'] = 13
                     yes_c_answer['value'] = 23
                     no_answer['value'] = 33
 
+                # Advanced
                 if key.endswith('4'):
                     yes_answer['value'] = 14
                     yes_c_answer['value'] = 24
                     no_answer['value'] = 34
 
+                # Innovative
                 if key.endswith('5'):
                     yes_answer['value'] = 15
                     yes_c_answer['value'] = 25

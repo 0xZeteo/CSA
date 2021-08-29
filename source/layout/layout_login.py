@@ -1,13 +1,15 @@
+""" Here is everything relating to the login and register pages including the layout and all the handlers """
+
 import layout.layout_home as home
+import db
 
 import tkinter as tk
 from tkcalendar import DateEntry
-from tkinter import Toplevel, messagebox
-import db
-import bcrypt
-import re
+from tkinter import  messagebox
 from PIL import Image, ImageTk
 import webbrowser
+import bcrypt
+import re
 
 
 """ This class handles the layout of the Login page (Grid Layout) """
@@ -15,15 +17,22 @@ class Login_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Login")
 
-        self.config(bg='ghost white')
+        master.title("Login")           # window title
+        self.config(bg='ghost white')   # frame background
+
+        # limit entry to alphanumeric characters only
+        def only_alphanumeric(char):
+            return char.isalnum()
+
+        alpha_num_validation = self.register(only_alphanumeric) # register validation function
 
         user_label = tk.Label       (self, text="Username", font="Calibri 20", bg='ghost white')
         password_label = tk.Label   (self, text="Password", font="Calibri 20", bg='ghost white')
 
         user_entry = tk.Entry       (self, font="Calirbi 15", relief='groove', borderwidth=3, bg='SlateGray4', 
-                                     fg='white', insertbackground='white', cursor='top_left_arrow')
+                                     fg='white', insertbackground='white', cursor='top_left_arrow',
+                                     validate="key", validatecommand=(alpha_num_validation, '%S'))
 
         password_entry = tk.Entry   (self, font="Calirbi 15", relief='groove', borderwidth=3, bg='SlateGray4', 
                                      fg='white', insertbackground='white', cursor='top_left_arrow', show="*") 
@@ -37,12 +46,14 @@ class Login_Page(tk.Frame):
         # Configure the empty rows and columns on each corner to make them scalable when the window is resized
         # Keeps all the widgets in the middle of the screen
 
-        self.columnconfigure(0, weight=1) # empty first column that scales 
-        self.columnconfigure(3, weight=1) # empty last column that scales 
-
-        self.rowconfigure(0, weight=1)    # empty first row that scales
+        # rows
+        self.rowconfigure(0, weight=1)
         self.rowconfigure(1, minsize=100)
-        self.rowconfigure(5, weight=1)    # empty last row that scales
+        self.rowconfigure(5, weight=1)
+
+        # columns
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(3, weight=1)
 
         user_label.grid         (row=2, column=1, padx=15, pady=20, sticky='nsew') 
         password_label.grid     (row=3, column=1, padx=15, pady=20, sticky='nsew')
@@ -58,12 +69,14 @@ class Login_Page(tk.Frame):
         
         user_entry.focus() # Set the focus to the username entry
 
+        # Add the IMT logo to the login page
         image = Image.open("resources/imt.png")
-        photo_image = ImageTk.PhotoImage(image)
-        image_label = tk.Label(self, image=photo_image)
+        photo_image = ImageTk.PhotoImage(image)     
+        image_label = tk.Label(self, image=photo_image) 
         image_label.image = photo_image
         image_label.place(relx=0.5, rely=0.2, anchor='center')
 
+        # About label containing information about the app and a link to the repository
         about_label = tk.Label(self, text='About', font="Calibri 15 underline", bg='ghost white', fg='blue')
         about_label.place(relx=0.5, rely=0.9, anchor='center')
         about_label.bind("<Button-1>", lambda e: top_level(self, about_label))
@@ -75,9 +88,8 @@ class Register_Page(tk.Frame):
     #region
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.title("Register")
-
-        self.config(bg='ghost white')
+        master.title("Register")        # window title
+        self.config(bg='ghost white')   # frame background
 
         # Bind enter key to the registration function === Submit button pressed
         self.bind_all('<Return>', lambda e: registration(master, username_entry.get(), password_entry.get(), confirm_password_entry.get(), 
@@ -91,6 +103,7 @@ class Register_Page(tk.Frame):
         def only_alphanumeric(char):
             return char.isalnum()
 
+        # register validation functions
         alpha_validation = self.register(only_alpha)
         alpha_num_validation = self.register(only_alphanumeric)
 
@@ -133,6 +146,7 @@ class Register_Page(tk.Frame):
                                     command=lambda: registration(master, username_entry.get(), password_entry.get(), confirm_password_entry.get(), 
                                         firstname_entry.get(), lastname_entry.get(), email_entry.get(), company_entry.get(), dob_entry.get_date()))
 
+        # Display a tooltip when hovering over the password entry field
         ToolTip(widget=password_entry, text="Password must be at least 9 characters long, with 1+ uppercase, 1+ numeric and 1+ special characters ($,@,#,%)")
 
         # Configure empty rows and columns in every corner as well as in the middle making the windgets scalable when the window is resized
@@ -203,6 +217,9 @@ class ToolTip(object):
     #endregion
 
 
+""" This function handles the display of the Toplevel frame that is shown when the About label is pressed
+    @arg frame - parent frame
+    @arg widget - defines the widget to attach this frame to """
 def top_level(frame, widget):
     top = tk.Toplevel(frame, background = "#ffffe0", relief = 'solid')
     top.geometry("+{}+{}".format(widget.winfo_rootx()-250, widget.winfo_rooty()-50))
@@ -225,13 +242,13 @@ def top_level(frame, widget):
 
 
 """ This function handles the registration of the user when the Register button is pressed
-    @Arg frame - represents the parent frame (master) to be switched
-    @Args - the remaining arguments represent all the entries in the registration page that the user can fill """    
+    @arg frame - represents the parent frame (master) to be switched
+    @args - the remaining arguments represent all the entries in the registration page that the user can fill """    
 def registration(frame, user_name, password, confirm_password, first_name, last_name, email, company, dob):
 
-    SpecialChar = ['$', '@', '#', '%']
-    user_name = user_name.lower()
-    email = email.lower()
+    SpecialChar = ['$', '@', '#', '%']  # special characters allowed
+    user_name = user_name.lower()       # convert to lower case string
+    email = email.lower()               # convert to lower case string
 
     # Generate salt and a hash code from the user's entered password
     salt = bcrypt.gensalt(rounds=12)
@@ -259,6 +276,7 @@ def registration(frame, user_name, password, confirm_password, first_name, last_
     # if passwords do not match
     elif (password != confirm_password):
         messagebox.showwarning("Warning", "Password mismatch")
+    # if password does not conform to the required format
     elif (len(password) < 9 or not any(char.isdigit() for char in password) or not any(char.isupper() for char in password) or not any(char in SpecialChar for char in password)):
         messagebox.showwarning("Warning", "Password must be 9 characters long with at least 1 numeric, 1 uppercase and 1 special character ($,@,#,%)")
     # check if email is valid
@@ -272,8 +290,8 @@ def registration(frame, user_name, password, confirm_password, first_name, last_
 
 
 """ This function handles the verification of the username and password when the user presses Login
-    @Arg frame - represents the parent frame (master) to be switched 
-    @Args - username and password """
+    @arg frame - represents the parent frame (master) to be switched 
+    @args - username and password """
 def verify_login(frame, user_name, password):
 
     # get from db queries
@@ -300,5 +318,6 @@ def verify_login(frame, user_name, password):
         frame.switch_frame(home.Home_Page)   # switch frame to Home page
  
 
+# This functions opens a url using the default browser
 def open_url(url):
     webbrowser.open_new(url)

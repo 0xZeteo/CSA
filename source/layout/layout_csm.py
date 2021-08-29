@@ -1,5 +1,5 @@
-import tkinter as tk
-from tkinter import messagebox
+""" Here is the layout of the CSM home page which contains all 5 domains """
+
 import layout.layout_home as home
 import layout.layout_login as login
 import layout.layout_csm_domain1 as d1
@@ -9,11 +9,14 @@ import layout.layout_csm_domain4 as d4
 import layout.layout_csm_domain5 as d5
 import DATA
 import db
+
+import tkinter as tk
+from tkinter import messagebox
 from datetime import datetime
+
 
 """ This class is responsible for the layout of the Cybersecurity Maturity's Main page
     Contains all the categories and links to each one """
-
 class CSM_Page(tk.Frame):
     #region
     def __init__(self, master):
@@ -98,6 +101,7 @@ class CSM_Page(tk.Frame):
         final_score_button = tk.Button(self, width=10, text="Final Score", font="Calibri 14", relief="raised", borderwidth=2, bg="azure3", activebackground='light blue',
                                        command=lambda: master.switch_frame(CSM_Final), state='disabled')
         
+        # add a tooltip to the final score button
         ToolTip(widget=final_score_button, text="Answer all the questions to proceed")
 
         home_button.place(relx=0.1, rely=0.1)
@@ -117,12 +121,14 @@ class CSM_Page(tk.Frame):
         reset_button.place(relx=0.5, rely=0.85, anchor='center')
         final_score_button.place(relx=0.75, rely=0.85, anchor='center')
 
+        # contains all the dictionaries for the CSM in the DATA file
         dicts = [DATA.CSM_Domain1_Governance, DATA.CSM_Domain1_RiskManagement, DATA.CSM_Domain1_Resources, DATA.CSM_Domain1_TrainingAndCulture,
                  DATA.CSM_Domain2_ThreatIntelligence, DATA.CSM_Domain2_MonitoringAndAnalyzing, DATA.CSM_Domain2_InformationSharing,
                  DATA.CSM_Domain3_PreventiveControls, DATA.CSM_Domain3_DetectiveControls, DATA.CSM_Domain3_CorrectiveControls,
                  DATA.CSM_Domain4_Connections, DATA.CSM_Domain4_RelationshipManagement,
                  DATA.CSM_Domain5_IncidentPlanningAndStrategy, DATA.CSM_Domain5_DetectionResponseAndMitigation, DATA.CSM_Domain5_EscalationAndReporting]
 
+        # count the total number of questions
         count = 0
         for i in range(len(dicts)):
             for list in dicts[i].values():
@@ -133,6 +139,7 @@ class CSM_Page(tk.Frame):
             final_score_button['state'] = 'normal'
 
 
+    # resets the answers of all the CSM domains and categories
     def reset_switch_csm(frame):
         confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
         if confirm:
@@ -141,6 +148,7 @@ class CSM_Page(tk.Frame):
     #endregion
 
 
+""" This class handles the scoring of the Cybersecurity maturity """
 class CSM_Final(tk.Frame):
     #region
     def __init__(self, master):
@@ -180,6 +188,7 @@ class CSM_Final(tk.Frame):
         assessment_name_entry = tk.Entry(self, font="Calirbi 11 bold", relief='groove', borderwidth=3, fg='white', insertbackground='white', cursor='top_left_arrow',
                                          bg='SlateGray4', width=20, validate='key', validatecommand=(alpha_num_validation, '%S'))
 
+        # add a tooltip to the assessment name entry field
         ToolTip(widget=assessment_name_entry, text="Enter a unique name for the assessment")
         
         save_results_button = tk.Button(self, font='Calibri 14', relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
@@ -199,6 +208,7 @@ class CSM_Final(tk.Frame):
         assessment_name_entry.place(relx=0.51, rely=0.8, anchor='center')
         save_results_button.place(relx=0.68, rely=0.8, anchor='center')
 
+    # finds the total number of answers for all the categories (yes, yes_c, no) and returns the risk maturity level as a String
     def find_max():
         yes_max = max(maturity_total()[0])
         #yes_c_max = max(maturity_total()[1])
@@ -218,7 +228,9 @@ class CSM_Final(tk.Frame):
         elif 4 in yes_indexes:
             return 'Innovative'
 
+    # handles the validation and querying of the database before saving the CSM results
     def save(frame, name):
+        name = name.lower()
         get_userInfo_query = """ SELECT uid,company FROM users WHERE username=%s; """
         u_value = [login.Login_Page.logged_in]
 
@@ -284,17 +296,19 @@ class ToolTip(object):
     #endregion
 
 
+# confirmation box before clearing the answers of a single category
 def clear_category(values):
     confirm = messagebox.askokcancel('Confirmation', 'Are you sure you want to reset your answers ?')
     if confirm:
         clear_pressed(values)
 
-
+# clear the answers the given list of values
 def clear_pressed(values):
     for i in range(len(values)):
         values[i].set(0)
 
 
+# this function the number of answers under each possible answers and their total for a single category
 def submit_pressed(values):
     y = y_c = n = total_selected = 0
 
@@ -312,6 +326,7 @@ def submit_pressed(values):
     return [y, y_c, n, total_selected]
 
 
+# this function resets the answers of all the CSM Domains
 def reset_csm():
     clear_pressed(d1.CSM_Domain1_Governance_Page.values)
     clear_pressed(d1.CSM_Domain1_RiskManagement_Page.values)
@@ -330,6 +345,8 @@ def reset_csm():
     clear_pressed(d5.CSM_Domain5_EscalationAndReporting_Page.values)
 
 
+# calculate the total number of answers for the 3 possible answers (yes, yes(compensating), no)
+# returns them as a list
 def calculate_total():
     yes_total = (submit_pressed(d1.CSM_Domain1_Governance_Page.values)[0] + submit_pressed(d1.CSM_Domain1_RiskManagement_Page.values)[0]
                 + submit_pressed(d1.CSM_Domain1_Resources_Page.values)[0] + submit_pressed(d1.CSM_Domain1_TrainingAndCulture_Page.values)[0]
@@ -363,7 +380,8 @@ def calculate_total():
 
     return [yes_total, yes_compensating_total, no_total]
 
-# 1: Baseline, 2: Evolving, 3: Intermediate, 4: Advanced, 5: Innovative
+
+# get the total for the maturity levels under each category (Baseline, Evolving, Intermediate, Advanced, Innovative)
 def maturity_total():
 
     pages = [d1.CSM_Domain1_Governance_Page, d1.CSM_Domain1_RiskManagement_Page, d1.CSM_Domain1_Resources_Page, d1.CSM_Domain1_TrainingAndCulture_Page,
