@@ -18,7 +18,7 @@ Before cloning the repository, make sure you have the following requirements ins
 
 
 This application was developed and tested on Windows 10 Pro version 1903 build 18362.30.
-The user interface is written in tkinter, a library that comes with python. Other requirements that need to be installed are included in the requirements.txt file.
+The user interface is written in tkinter, a library that comes with python. Other libraries that need to be installed are included in the 'requirements.txt' file.
 
 IMPORTANT: after cloning the repository, go to the file 'source/db.py' and change the rp variable to include your MySQL root password, otherwise authentication will not work.
 PS: because the database is hosted locally, i kept it this way for now, however, this will be changed later on to reflect a more secure way of authentication.
