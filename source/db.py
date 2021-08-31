@@ -181,7 +181,7 @@ if not username:
     insert_admin = """ 
     INSERT INTO users 
     (first_name, last_name, date_of_birth, email, company, username, password, salt) 
-    VALUES ('','',NOW(),'','','admin',%s,%s); 
+    VALUES ('admin','admin',NOW(),'admin','admin','admin',%s,%s); 
     """
     salt = bcrypt.gensalt(rounds=12)
     values = [bcrypt.hashpw('admin'.encode('utf8'), salt), salt]
