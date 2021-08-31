@@ -371,7 +371,7 @@ class Display_CSM(tk.Frame):
 
         user = [uid[0][0]]
 
-        if uid[0][0] == 1:
+        if login.Login_Page.logged_in == 'admin':
             results = db.read_query(cnx, get_csm_all_query)
             delete_button = tk.Button(top_frame, text="Delete Row",  width=10, font="Calibri 10", relief='raised', borderwidth=2, bg='azure3', 
                                       activebackground='light blue', command=lambda: Display_CSM.delete(table.item(table.focus()), master))
