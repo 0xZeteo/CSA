@@ -624,7 +624,7 @@ class IRP_Final(tk.Frame):
         get_userInfo_query = """ SELECT uid,company FROM users WHERE username=%s; """
         u_value = [login.Login_Page.logged_in]
 
-        db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
+        db_connection = db.create_db_connection("localhost", "root", db.rp, "CSA") # open db connection
         uInfo = db.read_query_data(db_connection, get_userInfo_query, u_value)
 
         insert_irp_query = """ 

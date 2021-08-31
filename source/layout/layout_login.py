@@ -257,7 +257,7 @@ def registration(frame, user_name, password, confirm_password, first_name, last_
     # Get username query
     get_username_query = """ SELECT username FROM users WHERE username=%s; """
     u_value = [user_name]
-    db_con = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+    db_con = db.create_db_connection("localhost", "root", db.rp, "CSA")
     username = db.read_query_data(db_con, get_username_query, u_value)
     db_con.close()
 
@@ -283,7 +283,7 @@ def registration(frame, user_name, password, confirm_password, first_name, last_
     elif (not re.match(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email)):
         messagebox.showwarning("Warning", "Invalid email")
     else:
-        db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
+        db_connection = db.create_db_connection("localhost", "root", db.rp, "CSA")    # open db connection
         db.execute_query_data(db_connection, insert_users_query, values)                       # insert values into db
         db_connection.close()                                                                  # close connection
         frame.switch_frame(Login_Page)                                                         # switch frame to Login page
@@ -299,10 +299,10 @@ def verify_login(frame, user_name, password):
     get_password_query = """ SELECT password FROM users WHERE username=%s; """
     u_value = [user_name]
 
-    db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA") # open db connection
-    user = db.read_query_data(db_connection, get_username_query, u_value)                  # get username from db
-    hash = db.read_query_data(db_connection, get_password_query, u_value)                  # get hash from db
-    db_connection.close()                                                                  # close connection
+    db_connection = db.create_db_connection("localhost", "root", db.rp, "CSA")    # open db connection
+    user = db.read_query_data(db_connection, get_username_query, u_value)         # get username from db
+    hash = db.read_query_data(db_connection, get_password_query, u_value)         # get hash from db
+    db_connection.close()                                                         # close connection
 
     # if there's an empty field
     if (user_name == "") or (password == ""):

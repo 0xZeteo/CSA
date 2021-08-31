@@ -16,7 +16,7 @@ class Main_App(tk.Tk):
         self.iconbitmap(default='resources/cyber.ico') # icon of the window
 
         # set window size and starting position
-        self.geometry("1280x768+{}+{}".format(100,20)) 
+        self.geometry("1280x768") 
 
         self.protocol("WM_DELETE_WINDOW", lambda: Main_App.on_closing(self)) # add confirmation popup for exiting with X
 

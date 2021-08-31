@@ -3,6 +3,13 @@
 import mysql.connector
 from mysql.connector import Error
 from tkinter import messagebox
+import bcrypt
+
+
+""" IMPORTANT - this is the password for the root user in the mysql database. Change this to your root password to access the db 
+    This must be later changed to reflect a more modern and secure way of managing db access """
+
+rp = "TempNewPass#158"
 
 
 # Establish a server connection with @args: host, username, password
@@ -94,7 +101,7 @@ def read_query_data(connection, query, data):
 
 
 # Create database query
-create_database_query = "CREATE DATABASE IF NOT EXISTS CSA"
+create_database_query = "CREATE DATABASE IF NOT EXISTS CSA;"
 
 # Create users table query that stores information about the users with their passwords and their information
 create_users_table = """
@@ -126,7 +133,7 @@ CREATE TABLE IF NOT EXISTS irp (
     most INT NOT NULL,
     risk_level VARCHAR(20) NOT NULL,
     FOREIGN KEY (user) REFERENCES users(uid)
-)
+);
 """
 
 # Create csm table query that stores all the information of the Cybersecurity Maturity
@@ -154,15 +161,31 @@ CREATE TABLE IF NOT EXISTS csm (
     innovative_no INT NOT NULL,
     maturity_level VARCHAR(20) NOT NULL,
     FOREIGN KEY (user) REFERENCES users(uid)
-)
+);
 """
 
-server_connection = create_server_connection("localhost", "root", "TempNewPass#158")    # server connection
-create_database(server_connection, create_database_query)                               # create database
-server_connection.close()                                                               # close connection
+server_connection = create_server_connection("localhost", "root", rp)             # server connection
+create_database(server_connection, create_database_query)                         # create database
+server_connection.close()                                                         # close connection
 
-db_connection = create_db_connection("localhost", "root", "TempNewPass#158", "CSA")     # db connection
-execute_query(db_connection, create_users_table)                                        # create users table
-execute_query(db_connection, create_irp_table)                                          # create irp table
-execute_query(db_connection, create_csm_table)                                          # create csm table
-db_connection.close()                                                                   # close connection
+db_connection = create_db_connection("localhost", "root", rp, "CSA")              # db connection
+execute_query(db_connection, create_users_table)                                  # create users table
+execute_query(db_connection, create_irp_table)                                    # create irp table
+execute_query(db_connection, create_csm_table)                                    # create csm table
+
+# On first run, create user=admin with password=admin
+# admin will be able to delete data from the database
+get_username_query = """ SELECT username FROM users WHERE username='admin'; """
+username = read_query(db_connection, get_username_query)
+if not username:
+    insert_admin = """ 
+    INSERT INTO users 
+    (first_name, last_name, date_of_birth, email, company, username, password, salt) 
+    VALUES ('','',NOW(),'','','admin',%s,%s); 
+    """
+    salt = bcrypt.gensalt(rounds=12)
+    values = [bcrypt.hashpw('admin'.encode('utf8'), salt), salt]
+    execute_query_data(db_connection, insert_admin, values)
+
+db_connection.close()                                                             # close connection
+

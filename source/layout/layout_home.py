@@ -73,6 +73,8 @@ class Home_Page(tk.Frame):
         display_irp_button.place(relx=0.1, rely=0.3, anchor='center')
         display_csm_button.place(relx=0.1, rely=0.4, anchor='center')
         change_pass_button.place(relx=0.1, rely=0.2, anchor='center')
+
+        # if admin is logged in
     #endregion
 
 
@@ -136,7 +138,7 @@ class Change_Password_Page(tk.Frame):
         u_value = [login.Login_Page.logged_in]
         new_values = [new_hash, salt, login.Login_Page.logged_in]
 
-        db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+        db_connection = db.create_db_connection("localhost", "root", db.rp, "CSA")
         old_hash = db.read_query_data(db_connection, get_password_query, u_value)
         db_connection.close()
 
@@ -155,7 +157,7 @@ class Change_Password_Page(tk.Frame):
             elif (len(new_pass) < 9 or not any(char.isdigit() for char in new_pass) or not any(char.isupper() for char in new_pass) or not any(char in SpecialChar for char in new_pass)):
                 messagebox.showwarning("Warning", "Password must be 9 characters long with at least 1 numeric, 1 uppercase and 1 special character ($,@,#,%)")
             else:
-                db_connection = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+                db_connection = db.create_db_connection("localhost", "root", db.rp, "CSA")
                 db.execute_query_data(db_connection, change_password_query, new_values)
                 db_connection.close()
                 frame.switch_frame(Home_Page)
@@ -199,24 +201,12 @@ class Display_IRP(tk.Frame):
         master.title(login.Login_Page.logged_in.upper() + ' - Inherent Risk Profile Results')
         self.config(bg='ghost white')
 
-        cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
-
-        get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
-        username = [login.Login_Page.logged_in]
-        uid = db.read_query_data(cnx, get_user_id_query, username)
-
-        get_irp_query = """ SELECT date, name, least, minimal, moderate, significant, most, risk_level FROM irp WHERE user=%s ORDER BY date DESC; """
-        user = [uid[0][0]]
-        results = db.read_query_data(cnx, get_irp_query, user)
-
-        cnx.close()
-
         # top frame
         top_frame = tk.Frame(self, bg='ghost white')
         top_frame.pack(side=tk.TOP, fill='x')
 
         back_button = tk.Button(top_frame, text='BACK', width=10, font="Calibri 10", relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
-                                command=lambda: master.switch_frame(Home_Page))
+                                command=lambda: master.switch_frame(Home_Page))     
 
         graph_button = tk.Button(top_frame, text='Graph Display', width=12, relief='raised', borderwidth=2, bg='azure3', activebackground='light blue',
                                  command=lambda: Display_IRP.graph(table.item(table.focus())))
@@ -237,6 +227,26 @@ class Display_IRP(tk.Frame):
 
         table.configure(yscrollcommand=scrollbar.set)
 
+        cnx = db.create_db_connection("localhost", "root", db.rp, "CSA")
+
+        get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
+        username = [login.Login_Page.logged_in]
+        uid = db.read_query_data(cnx, get_user_id_query, username)
+
+        get_irp_query = """ SELECT date, name, least, minimal, moderate, significant, most, risk_level FROM irp WHERE user=%s ORDER BY date DESC; """
+        get_irp_all_query = """ SELECT date, name, least, minimal, moderate, significant, most, risk_level FROM irp ORDER BY date DESC; """
+        user = [uid[0][0]]
+
+        if login.Login_Page.logged_in == 'admin':
+            results = db.read_query(cnx, get_irp_all_query)
+            delete_button = tk.Button(top_frame, text="Delete Row",  width=10, font="Calibri 10", relief='raised', borderwidth=2, bg='azure3', 
+                                      activebackground='light blue', command=lambda: Display_IRP.delete(table.item(table.focus()), master))
+            delete_button.pack(side='left')
+        else:
+            results = db.read_query_data(cnx, get_irp_query, user)
+
+        cnx.close()
+
         # display table column names and width
         for col in cols:
             table.heading(col, text=col)
@@ -244,19 +254,22 @@ class Display_IRP(tk.Frame):
 
         # insert data rows into display table
         for result in results:
-            table.insert("", "end", values=(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7]))
+            vals = []
+            for i in range(len(result)):
+                vals.append(result[i])
+            table.insert("", "end", values=tuple(vals))
         
         nametofont("TkHeadingFont").configure(weight='bold')    # headings font bold
         table.pack(side=tk.LEFT, expand='yes', fill='both')
 
-     # this function handles the display of a single row from the table as a bar graph
+    # this function handles the display of a single row from the table as a bar graph
     def graph(row):
         values = row.get('values')
         
         if not values:
             messagebox.showwarning('Warning', 'Select an assessment to visualize')
         else:
-            cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+            cnx = db.create_db_connection("localhost", "root", db.rp, "CSA")
             get_irp_query = """ SELECT least, minimal, moderate, significant, most FROM irp WHERE name=%s; """
             name_value = [values[1]]
             result = db.read_query_data(cnx, get_irp_query, name_value)
@@ -268,6 +281,21 @@ class Display_IRP(tk.Frame):
             plt.bar(x_axis, result[0])                          # create the bars
             plt.title('Assessment: {}'.format(values[1]))       # assessment name as the title for the graph
             plt.show()                                          # show graph
+
+    # this function deletes a row from the irp table when given the name of the assessment in the row
+    def delete(row, frame):
+        values = row.get('values')
+
+        if not values:
+            messagebox.showwarning("Warning", "Select a row to delete")
+        else:
+            cnx = db.create_db_connection("localhost", "root", db.rp, "CSA")
+            delete_row_query = """ DELETE FROM irp WHERE name=%s; """
+            name_value = [values[1]]
+            if messagebox.askyesno("Confirmation", "Are you sure you want to delete this row ?"):
+                db.execute_query_data(cnx, delete_row_query, name_value)
+                frame.switch_frame(Display_IRP)
+            cnx.close()
     #endregion
 
 
@@ -278,23 +306,6 @@ class Display_CSM(tk.Frame):
         tk.Frame.__init__(self, master) 
         master.title(login.Login_Page.logged_in.upper() + ' - Cybersecurity Maturity Results')
         self.config(bg='ghost white')
-
-        cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
-
-        get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
-        username = [login.Login_Page.logged_in]
-        uid = db.read_query_data(cnx, get_user_id_query, username)
-        
-        get_csm_query = """ 
-        SELECT date, name, 
-        baseline_yes, evolving_yes, intermediate_yes, innovative_yes, advanced_yes, 
-        baseline_compensating, evolving_compensating, intermediate_compensating, advanced_compensating, innovative_compensating,
-        baseline_no, evolving_no, intermediate_no, advanced_no, innovative_no,
-        maturity_level FROM csm WHERE user=%s ORDER BY date DESC; """
-        user = [uid[0][0]]
-        results = db.read_query_data(cnx, get_csm_query, user)
-
-        cnx.close()
 
         # top frame
         top_frame = tk.Frame(self, bg='ghost white')
@@ -338,10 +349,45 @@ class Display_CSM(tk.Frame):
             else:
                 table.column(col, width=15, anchor='center')
 
+        cnx = db.create_db_connection("localhost", "root", db.rp, "CSA")
+
+        get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
+        username = [login.Login_Page.logged_in]
+        uid = db.read_query_data(cnx, get_user_id_query, username)
+        
+        get_csm_query = """ 
+        SELECT date, name, 
+        baseline_yes, evolving_yes, intermediate_yes, innovative_yes, advanced_yes, 
+        baseline_compensating, evolving_compensating, intermediate_compensating, advanced_compensating, innovative_compensating,
+        baseline_no, evolving_no, intermediate_no, advanced_no, innovative_no,
+        maturity_level FROM csm WHERE user=%s ORDER BY date DESC; """
+
+        get_csm_all_query = """ 
+        SELECT date, name, 
+        baseline_yes, evolving_yes, intermediate_yes, innovative_yes, advanced_yes, 
+        baseline_compensating, evolving_compensating, intermediate_compensating, advanced_compensating, innovative_compensating,
+        baseline_no, evolving_no, intermediate_no, advanced_no, innovative_no,
+        maturity_level FROM csm ORDER BY date DESC; """
+
+        user = [uid[0][0]]
+
+        if uid[0][0] == 1:
+            results = db.read_query(cnx, get_csm_all_query)
+            delete_button = tk.Button(top_frame, text="Delete Row",  width=10, font="Calibri 10", relief='raised', borderwidth=2, bg='azure3', 
+                                      activebackground='light blue', command=lambda: Display_CSM.delete(table.item(table.focus()), master))
+            delete_button.pack(side='left')
+        else:
+            results = db.read_query_data(cnx, get_csm_query, user)
+
+        cnx.close()
+
         # insert values into display table
         for result in results:
-            table.insert("", "end", values=(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15], result[16], result[17]))
-        
+            vals = []
+            for i in range(len(result)):
+                vals.append(result[i])
+            table.insert("", "end", values=tuple(vals))
+
         nametofont("TkHeadingFont").configure(weight='bold') # make headings bold
         table.pack(side=tk.LEFT, expand='yes', fill='both')
 
@@ -357,7 +403,7 @@ class Display_CSM(tk.Frame):
         if not values:
             messagebox.showwarning('Warning', 'Select an assessment to visualize')
         else:
-            cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+            cnx = db.create_db_connection("localhost", "root", db.rp, "CSA")
             get_csm_query = """ SELECT 
             baseline_yes, evolving_yes, intermediate_yes, innovative_yes, advanced_yes, 
             baseline_compensating, evolving_compensating, intermediate_compensating, advanced_compensating, innovative_compensating,
@@ -375,6 +421,21 @@ class Display_CSM(tk.Frame):
             plt.bar(x_axis, result[0])                      # create the bars
             plt.title('Assessment: {}'.format(values[1]))   # assessment name as the title of the graph
             plt.show()                                      # show graph
+
+    # this function deletes a row from the csm table when given the name of the assessment in the row
+    def delete(row, frame):
+        values = row.get('values')
+
+        if not values:
+            messagebox.showwarning("Warning", "Select a row to delete")
+        else:
+            cnx = db.create_db_connection("localhost", "root", db.rp, "CSA")
+            delete_row_query = """ DELETE FROM csm WHERE name=%s; """
+            name_value = [values[1]]
+            if messagebox.askyesno("Confirmation", "Are you sure you want to delete this row ?"):
+                db.execute_query_data(cnx, delete_row_query, name_value)
+                frame.switch_frame(Display_CSM)
+            cnx.close()
     #endregion
 
 
@@ -399,15 +460,20 @@ def top_level(frame, widget):
 
 # this function handles the validation before displaying the IRP results
 def display_irp(frame):
-    cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+    cnx = db.create_db_connection("localhost", "root", db.rp, "CSA")
 
     get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
     username = [login.Login_Page.logged_in]
     uid = db.read_query_data(cnx, get_user_id_query, username)
 
     get_irp_query = """ SELECT iid FROM irp WHERE user=%s; """
+    get_irp_all_query = """ SELECT iid FROM irp; """
     user = [uid[0][0]]
-    results = db.read_query_data(cnx, get_irp_query, user)
+
+    if uid[0][0] == 1:
+        results = db.read_query(cnx, get_irp_all_query)
+    else:
+        results = db.read_query_data(cnx, get_irp_query, user)
 
     cnx.close()
 
@@ -419,15 +485,20 @@ def display_irp(frame):
 
 # this function handles the validation before displaying the CSM results 
 def display_csm(frame):
-    cnx = db.create_db_connection("localhost", "root", "TempNewPass#158", "CSA")
+    cnx = db.create_db_connection("localhost", "root", db.rp, "CSA")
 
     get_user_id_query = """ SELECT uid FROM users WHERE username=%s; """
     username = [login.Login_Page.logged_in]
     uid = db.read_query_data(cnx, get_user_id_query, username)
 
     get_csm_query = """ SELECT cid FROM csm WHERE user=%s; """
+    get_csm_all_query = """ SELECT cid FROM csm; """
     user = [uid[0][0]]
-    results = db.read_query_data(cnx, get_csm_query, user)
+
+    if uid[0][0] == 1:
+        results = db.read_query(cnx, get_csm_all_query)
+    else:
+        results = db.read_query_data(cnx, get_csm_query, user)
 
     cnx.close()
 

@@ -2,6 +2,9 @@
 """ HERE IS ALL THE DATA REQUIRED (QUESTIONS, POSSIBLE ANSWERS, ...)
     IMPORTANT: PAY ATTENTION TO CASE SENSITIVITY WHEN DEALING WITH STRINGS """
 
+""" PS: the document was made for the U.S. If the software will be used in Europe for example, all the references 
+    for the U.S. need to be updated alongside changing $ to € """
+
 
 """ Inherent Risk Profile questions - 5 categories
     Each category consists of a dictionary
@@ -91,11 +94,11 @@ IRP_Category2 = {
            "Mobile banking application\nincludes external transfers\n(e.g., for corporate clients,\nrecurring external transactions)", 
            "Full functionality,\nincluding originating new\ntransactions\n(e.g., ACH, wire)"],
     
-    "**Automated Teller Machines (ATM) (Operation)**" 
+    "Automated Teller Machines (ATM) (Operation)" 
         : ["No ATM services", 
            "ATM services offered\n\nNo owned machines", 
            "ATM services managed by a\nthird party\n\nATMs at local and regional\nbranches\n\nCash reload services outsourced", 
-           "ATM services managed internally\n\nATMs at U.S. branches and retail\nlocations\n\nCash reload services outsourced", 
+           "ATM services managed internally\n\nATMs at domestic branches\nand retail locations\n\nCash reload services outsourced", 
            "ATM services managed internally\nand provided to other financial\ninstitutions\n\nATMs at domestic and international\nbranches and retail locations\n\nCash reload services managed\ninternally"]
 }   #endregion
 
