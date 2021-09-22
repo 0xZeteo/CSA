@@ -228,7 +228,7 @@ def top_level(frame, widget):
     info_label = tk.Label(top, background = "#ffffe0", font='Calibri 10', text='This project is powered by python.\nIt was made for the university of IMT Mines Ales and is completely open-source at their request.\nFeel free to contribute to the project via its github repository below.\nIf you have any concerns, requests or recommendations, you can reach me at miles.muollas@gmail.com')
     git_label = tk.Label(top, background = "#ffffe0", fg='blue', font='Calibri 10 underline', text="https://github.com/zarathus-tra/cybersecurity-assessment-tool")
     
-    git_label.bind('<Button-1>', lambda e: open_url("https://github.com/zarathus-tra/cybersecurity-assessment-tool"))
+    git_label.bind('<Button-1>', lambda e: open_url("https://github.com/zarathustre/cybersecurity-assessment-tool"))
 
     info_label.pack()
     git_label.pack()
