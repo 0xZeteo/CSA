@@ -20,7 +20,7 @@ Before cloning the repository, make sure you have the following requirements ins
 This application was developed and tested on Windows 10 Pro version 1903 build 18362.30.
 The user interface is written in tkinter, a library that comes with python. Other libraries that need to be installed are included in the 'requirements.txt' file.
 
-IMPORTANT: after cloning the repository, go to the file 'source/db.py' and change the rp variable to include your MySQL root password, otherwise authentication will not work (because the database is hosted locally, i kept it this way for now, however, this will be changed later on to reflect a more secure way of authentication).
+N.B. after cloning the repository, go to the file 'source/db.py' and change the rp variable to include your MySQL root password, otherwise authentication will not work (because the database is hosted locally, i kept it this way for now, however, this will be changed later on to reflect a more secure way of authentication).
 
 To get this working on ubuntu (tested on 20.04.3 LTS) go to the file 'source/main.py' and comment the line 'self.iconbitmap(default='resources/cyber.ico')' in the 'Main_App' class. Because ubuntu does not handle .ico files, you have to change this line if you want an icon for the window. 
 This will get it working on ubuntu, however, some quality of life improvements are needed:
