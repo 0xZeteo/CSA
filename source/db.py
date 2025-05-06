@@ -9,7 +9,7 @@ import bcrypt
 """ IMPORTANT - this is the password for the root user in the mysql database. Change this to your root password to access the db 
     This must be later changed to reflect a more modern and secure way of managing db access """
 
-rp = "REPLACE WITH ROOT PASSWORD"
+rp = "Pristine13."
 
 
 # Establish a server connection with @args: host, username, password

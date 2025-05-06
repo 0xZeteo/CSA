@@ -13,7 +13,8 @@ class Main_App(tk.Tk):
         tk.Tk.__init__(self)
 
         self._frame = None
-        self.iconbitmap(default='resources/cyber.ico') # icon of the window
+        self.iconbitmap(r"C:\Users\prist\cybersecurity-assessment-tool\resources\cyber.ico")
+ # icon of the window
 
         # set window size and starting position
         self.geometry("1280x768") 
